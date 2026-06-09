@@ -1,0 +1,140 @@
+/* -------------------------------------------------------------------------- */
+/* DEPENDÊNCIAS DO DESIGN SYSTEM                                              */
+/* -------------------------------------------------------------------------- */
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+/* -------------------------------------------------------------------------- */
+/* CONFIGURAÇÃO DO CONTAINER MASTER (ENGINE DE FLUIDEZ MÁXIMA)                */
+/* -------------------------------------------------------------------------- */
+.containerQuartel {
+  background-color: #000000; 
+  min-height: 100vh;         
+  width: 100%;
+  color: #ffffff;
+  overflow-x: hidden;        
+  scroll-behavior: smooth;
+
+  /* INSTANCIAÇÃO DE CAMADA ISOLADA (ANTI-DELAY): 
+     Força o navegador a criar um contexto de renderização independente, 
+     impedindo que o carregamento do Banner trave o scroll dos elementos abaixo. */
+  contain: layout style;
+}
+
+/* CONTAINER DE CONTEÚDO: Preserva a integridade do fluxo vertical */
+.contentWrapper {
+  padding-top: $sp-4;
+  padding-bottom: $sp-6;
+  display: flex;
+  flex-direction: column;
+  gap: $sp-6;                
+  position: relative;
+  z-index: 2;
+}
+
+/* CONTAINER DE CONTROLE TÁTICO: Reserva o espaço exato para mitigar Layout Shifts */
+.fadeContainer {
+  width: 100%;
+  display: block;
+  position: relative;
+  min-height: 140px; 
+  /* Isola o escopo de sub-elementos para cálculos ultra rápidos do Intersection Observer */
+  contain: paint; 
+}
+
+/* -------------------------------------------------------------------------- */
+/* TIMING ENGINE CINEMATOGRÁFICO (5 SEGUNDOS REAIS - 60FPS GARANTIDOS)        */
+/* -------------------------------------------------------------------------- */
+
+/* Estado Ocultado: Deslocado fisicamente e totalmente transparente */
+.revealHidden {
+  opacity: 0;
+  /* Multi-pass 3D Matrix: Garante a promoção do elemento para a GPU (Hardware Acceleration) */
+  transform: translate3d(0, 50px, 0); 
+  
+  /* SEGURANÇA OPERACIONAL: Transição restrita unicamente a canais otimizados. 
+     NUNCA use 'all' em blocos monitorados por animações lentas. */
+  transition: opacity 5000ms cubic-bezier(0.16, 1, 0.3, 1), 
+              transform 5000ms cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* Pré-alocação de memória gráfica para transições suaves sem jittering (solavancos) */
+  will-change: transform, opacity;    
+}
+
+/* Estado Ativo: Renderização final acionada estritamente na marca dos 80% */
+.revealActive {
+  opacity: 1 !important;
+  transform: translate3d(0, 0, 0) !important;
+}
+
+/* -------------------------------------------------------------------------- */
+/* ARQUITETURA VISUAL DO COMPONENTE LEGADO                                    */
+/* -------------------------------------------------------------------------- */
+
+/* BLOCO LEGADO (CTA): Caixa de destaque inferior com estética militar */
+.secaoLegado {
+  background-color: $color-surface-card; 
+  border: 1px solid $color-border;
+  border-radius: $radius-md;
+  padding: $sp-5 $sp-6;
+  margin-top: $sp-4;
+  box-shadow: $shadow-md;
+}
+
+/* TÍTULO DO CTA */
+.legadoTitulo {
+  font-family: $font-headline;
+  font-weight: $font-weight-black;
+  font-size: $font-size-lg;
+  color: #ffffff;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: $sp-2;
+}
+
+/* TEXTO DE APOIO DO CTA */
+.legadoTexto {
+  font-family: $font-body;
+  font-size: $font-size-base;
+  color: $color-tertiary;
+  line-height: $line-height-base;
+  max-width: 680px;
+  margin: 0;
+}
+
+/* BOTÃO DE AÇÃO: Estética Verde Oliva com canal de transição isolado */
+.btnLegado {
+  background-color: $color-primary-light; 
+  color: $color-secondary;               
+  font-family: $font-label;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-md;
+  padding: $sp-3 $sp-5;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  width: 100%;                            
+
+  /* CORREÇÃO DE FRAME-DROP: Transição focada apenas nas propriedades mutáveis do hover */
+  transition: background-color $transition-fast ease, 
+              box-shadow $transition-fast ease, 
+              transform $transition-fast ease;
+
+  @include md {
+    width: auto;                          
+  }
+
+  /* Micro-interações de Hover */
+  &:hover {
+    background-color: #ffffff;
+    box-shadow: 0 0 15px rgba($color-primary-light, 0.4); 
+    transform: translate3d(0, -2px, 0); /* Evolução para transform 3D para manter a fluidez */
+  }
+
+  /* Feedback táctil de clique */
+  &:active {
+    transform: translate3d(0, 0, 0);
+  }
+}

@@ -1,0 +1,49 @@
+// ============================================================
+// _reset.scss — Reset global + tipografia base
+// ============================================================
+@use 'variables' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin    : 0;
+  padding   : 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family     : $font-body;
+  font-size       : $font-size-base;
+  background-color: $color-neutral;
+  color           : #f0f0ee;
+  line-height     : $line-height-base;
+  -webkit-font-smoothing : antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-headline;
+  line-height: $line-height-tight;
+  color      : #ffffff;
+}
+
+a {
+  color          : $color-primary-light;
+  text-decoration: none;
+  transition     : color $transition-fast;
+
+  &:hover { color: lighten($color-primary-light, 15%); }
+}
+
+button {
+  cursor: pointer;
+  font-family: $font-body;
+}
+
+img, svg {
+  display  : block;
+  max-width: 100%;
+}

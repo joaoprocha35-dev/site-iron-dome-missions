@@ -1,0 +1,351 @@
+// ============================================================
+// LANDING PAGE STYLES - ARCHITECTURE VERSION
+// ============================================================
+
+@use "../../styles/variables" as *;
+
+.hero-section {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background-color: $color-neutral;
+    padding: 20px;
+}
+
+// ============================================================
+// BACKGROUND, FILM FILTER & OVERLAYS
+// ============================================================
+.hero-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.hero-background-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    filter: brightness(0.6) contrast(1.8);
+    
+    @media (min-width: 1400px) {
+        min-height: 100vh;
+        width: 100vw;
+        object-position: center 30%; 
+    }
+}
+
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba($color-neutral, 0.4) 60%,
+            $color-neutral 100%);
+}
+
+// ============================================================
+// ATMOSPHERIC EMBERS (ENERGY PARTICLES)
+// ============================================================
+.ember-container {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.ember-particle {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    width: 5px;
+    height: 5px;
+    background: #09ff00;
+    border-radius: 50%;
+    opacity: 0;
+    animation: ember-rise 12s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+    box-shadow: 0 0 8px 2px rgba(#00ff66, 0.6), 0 0 16px 4px rgba(#00ff0d, 0.3);
+
+    &:nth-child(3n) {
+        width: 3px;
+        height: 3px;
+        background: #a6ff00;
+        box-shadow: 0 0 6px 2px rgba(#a6ff00, 0.5);
+    }
+
+    &:nth-child(5n) {
+        width: 6px;
+        height: 6px;
+        background: #00cf1c;
+        box-shadow: 0 0 10px 3px rgba(#00cf1c, 0.5);
+    }
+}
+
+@for $i from 1 through 20 {
+    .ember-particle:nth-child(#{$i}) {
+        --random: #{($i % 10 + 1) / 10};
+        left: ($i - 1) * 5 * 1%; 
+        animation-duration: #{8s + ($i % 4) * 2.5s}; 
+        animation-delay: #{($i * 0.4s)};
+        animation-name: ember-rise-#{$i};
+    }
+
+    @keyframes ember-rise-#{$i} {
+        0% { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
+        15% { opacity: 0.65; }
+        25% { transform: translateY(-25vh) translateX(calc(-40px + (80px * var(--random)))) scale(0.9); }
+        50% { opacity: 0.5; transform: translateY(-50vh) translateX(calc(50px - (100px * var(--random)))) scale(0.7); }
+        75% { transform: translateY(-75vh) translateX(calc(-30px + (60px * var(--random)))) scale(0.5); }
+        100% { opacity: 0; transform: translateY(-105vh) translateX(calc(40px - (80px * var(--random)))) scale(0.2); }
+    }
+}
+
+// ============================================================
+// TOP OPERATIONAL BADGE
+// ============================================================
+.hero-badge-wrapper {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeInBadge 1s ease forwards;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    font-family: $font-label;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: $color-primary-light;
+    background: rgba($color-primary, 0.15);
+    border: 1px solid rgba($color-primary, 0.3);
+    border-radius: 4px;
+}
+
+.hero-badge-icon {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: $color-primary-light;
+    border-radius: 50%;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% { opacity: 1; box-shadow: 0 0 4px $color-primary-light; }
+    50% { opacity: 0.4; box-shadow: 0 0 12px $color-primary-light; }
+}
+
+// ============================================================
+// TYPEWRITER TITLE EFFECT (SLOWER & MORE DELIBERATE)
+// ============================================================
+.hero-title {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    line-height: 0.85;
+    font-family: $font-headline;
+
+    span span {
+        display: inline-block;
+        opacity: 0;
+        transform: scale(1.15) translateY(-5px);
+        filter: blur(8px); // Desfocado sutil no início do aparecimento
+        
+        // Calibragem Sênior: Aumentado para 0.4s para aparecer mais devagar e suave
+        animation: typeTacticalLetter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        
+        // Multiplicador temporal controlado pelo index injetado pelo React
+        animation-delay: calc(var(--letter-index) * 0.15s);
+    }
+}
+
+.hero-title-accent {
+    font-size: clamp(2.5rem, 10vw, 6rem);
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    color: $color-tertiary;
+    text-shadow: 0 0 30px rgba($color-primary, 0.2);
+}
+
+.hero-title-main {
+    font-size: clamp(4.5rem, 18vw, 11rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #ffffff;
+    text-shadow: 0 0 50px rgba($color-primary, 0.4), 0 4px 20px rgba(0, 0, 0, 0.9);
+}
+
+// ============================================================
+// LOWER CONTENT REVEAL (SLIDES UP FROM BOTTOM)
+// ============================================================
+.hero-reveal-content {
+    opacity: 0;
+    transform: translateY(40px);
+    
+    // Entra em cena de forma imponente logo após a digitação do título finalizar (aprox 1.2s)
+    animation: revealContentUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 1.2s;
+}
+
+.hero-subtitle {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    margin-top: 1.5rem;
+    font-family: $font-body;
+    font-size: 1.1rem;
+    font-weight: 400;
+    line-height: 1.7;
+    color: $color-tertiary;
+}
+
+// ============================================================
+// INTERACTION BUTTONS
+// ============================================================
+.hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 220px;
+    padding: 14px 28px;
+    font-family: $font-body;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all $transition-base;
+}
+
+.hero-btn-primary {
+    color: #ffffff;
+    background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
+    box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+
+    &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba($color-primary, 0.6);
+        filter: brightness(1.15);
+    }
+}
+
+.hero-btn-secondary {
+    color: #ffffff;
+    background: transparent;
+    border: 1px solid rgba($color-tertiary, 0.3);
+    backdrop-filter: blur(4px);
+
+    &:hover {
+        background: rgba(#ffffff, 0.05);
+        border-color: #ffffff;
+        transform: translateY(-2px);
+    }
+}
+
+.hero-btn-icon {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.hero-btn-icon-shield {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3C/svg%3E");
+}
+
+.hero-btn-icon-play {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");
+}
+
+// ============================================================
+// STATS PANEL & MONITOR INFRASTRUCTURE
+// ============================================================
+.hero-stats {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid rgba($color-tertiary, 0.15);
+}
+
+.hero-stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 0 20px;
+}
+
+.hero-stat-value {
+    font-family: $font-headline;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: $color-primary-light;
+    // CRUCIAL: Evita oscilação de largura nos elementos vizinhos durante a contagem ativa do script
+    font-variant-numeric: tabular-nums; 
+}
+
+.hero-stat-label {
+    font-family: $font-label;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $color-tertiary;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-stat-divider {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(180deg, transparent 0%, rgba($color-tertiary, 0.2) 50%, transparent 100%);
+}
+
+// ============================================================
+// ANIMATION KEYFRAMES DICTIONARY
+// ============================================================
+@keyframes fadeInBadge {
+    to { opacity: 1; }
+}
+
+@keyframes typeTacticalLetter {
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes revealContentUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// RESPONSIVIDADE EM DISPOSITIVOS MOBILE
+@media (max-width: 767.98px) {
+    .hero-subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+
+    .hero-btn {
+        width: 100%;
+    }
+}

@@ -1,0 +1,49 @@
+// ============================================================
+// _mixins.scss — Mixins reutilizáveis
+// ============================================================
+@use 'variables' as *;
+
+// Card base
+@mixin card-base {
+  background : $color-surface-card;
+  border     : 1px solid $color-border;
+  border-radius: $radius-lg;
+  padding    : $sp-4;
+}
+
+// Badge genérico
+@mixin badge-base {
+  display       : inline-flex;
+  align-items   : center;
+  font-size     : $font-size-xs;
+  font-weight   : $font-weight-bold;
+  letter-spacing: 0.4px;
+  padding       : 3px 7px;
+  border-radius : $radius-sm;
+}
+
+// Flex centro
+@mixin flex-center {
+  display    : flex;
+  align-items: center;
+}
+
+// Linha divisória
+@mixin divider {
+  border-top: 1px solid $color-border;
+}
+
+// Truncar texto
+@mixin truncate {
+  white-space  : nowrap;
+  overflow     : hidden;
+  text-overflow: ellipsis;
+}
+
+// Breakpoints
+@mixin md {
+  @media (max-width: 768px) { @content; }
+}
+@mixin sm {
+  @media (max-width: 576px) { @content; }
+}

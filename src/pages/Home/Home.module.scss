@@ -1,0 +1,35 @@
+@use '../../styles/variables' as *;
+
+.page {
+  background-color: $color-neutral;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.section {
+  padding: $sp-4 0;
+  width: 100%;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 $sp-4;
+
+  @media (min-width: 992px) {
+    padding: 0 $sp-6;
+  }
+}
+
+// Layout em Grid que substitui o Row/Col do Bootstrap com performance máxima
+.gridDashboard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @media (min-width: 992px) {
+    // Proporção clássica 7 colunas por 5 colunas
+    grid-template-columns: 7fr 5fr; 
+  }
+}

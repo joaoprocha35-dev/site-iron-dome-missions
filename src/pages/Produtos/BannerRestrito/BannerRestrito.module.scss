@@ -1,0 +1,205 @@
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+/* -------------------------------------------------------------------------- */
+/* ENGINE DE ANIMAÇÕES ULTRA-FLUIDAS (60FPS - GPU ACCELERATED)               */
+/* -------------------------------------------------------------------------- */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes radarPulse {
+  0% { transform: scale(0.97); opacity: 0.75; }
+  50% { transform: scale(1.03); opacity: 1; }
+  100% { transform: scale(0.97); opacity: 0.75; }
+}
+
+// Movimento flutuante veloz e orgânico para simular partículas na luz neon
+@keyframes microFloat {
+  0% {
+    transform: translate3d(0, 0, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.65; // Partículas bem definidas ao passar pelo feixe de luz
+  }
+  85% {
+    opacity: 0.65;
+  }
+  100% {
+    transform: translate3d(40px, -90px, 0);
+    opacity: 0;
+  }
+}
+
+/* -------------------------------------------------------------------------- */
+/* PLANO DE FUNDO DE ALTA SATURAÇÃO (ESTILO NEON REFERÊNCIA)                  */
+/* -------------------------------------------------------------------------- */
+
+.heroSection {
+  position: relative;
+  width: 100%;
+  min-height: 75vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // Gradiente simulando o fundo esmeralda tático ultra profundo da referência
+  background: radial-gradient(circle at 50% 50%, #041a10 0%, #020b07 65%, #010503 100%);
+  padding: $sp-8 0;
+  overflow: hidden;
+}
+
+/* O Grande Brilho Neon Difuso do Centro (Nébula de Luz Traseira) */
+.ambientOverlay {
+  position: absolute;
+  inset: 0;
+  // Opacidade de 0.25 para injetar potência absoluta no verde limão central
+  background: radial-gradient(circle at 50% 45%, rgba(0, 255, 102, 0.25) 0%, transparent 55%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Iluminação Secundária de Atmosfera Volumétrica */
+.neonCoreGlow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 255, 102, 0.08) 0%, transparent 75%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* -------------------------------------------------------------------------- */
+/* SISTEMA DE MICRO-PARTÍCULAS ACELERADAS E FLUIDAS                           */
+/* -------------------------------------------------------------------------- */
+
+.particlesContainer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  filter: contrast(1.2); // Intensifica o brilho neon das partículas cadentes
+}
+
+.dustParticle {
+  position: absolute;
+  background-color: #00ff66; 
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(0, 255, 102, 0.7); // Glow individual nas micro-partículas
+  opacity: 0;
+  will-change: transform, opacity; // Descarrega a renderização direto na placa de vídeo
+}
+
+// Orquestração de alta fluidez (tempos reduzidos de 4s a 7s para maior velocidade e dinamismo)
+.p1 { width: 1.5px; height: 1.5px; left: 18%; top: 85%; animation: microFloat 5s infinite linear; }
+.p2 { width: 2px; height: 2px; left: 32%; top: 75%; animation: microFloat 6s infinite linear 1.5s; }
+.p3 { width: 1px; height: 1px; left: 50%; top: 90%; animation: microFloat 4s infinite linear 0.5s; }
+.p4 { width: 2px; height: 2px; left: 72%; top: 70%; animation: microFloat 7s infinite linear 3s; }
+.p5 { width: 1.5px; height: 1.5px; left: 85%; top: 80%; animation: microFloat 5.5s infinite linear 2s; }
+.p6 { width: 2px; height: 2px; left: 25%; top: 92%; animation: microFloat 6.5s infinite linear 4s; }
+.p7 { width: 1px; height: 1px; left: 60%; top: 65%; animation: microFloat 4.5s infinite linear 1s; }
+.p8 { width: 2.5px; height: 2.5px; left: 45%; top: 88%; animation: microFloat 5s infinite linear 2.5s; }
+
+/* -------------------------------------------------------------------------- */
+/* ELEMENTOS DA INTERFACE DE USUÁRIO (UI)                                     */
+/* -------------------------------------------------------------------------- */
+
+.badgeWrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: $sp-2 $sp-4;
+  background-color: rgba(2, 8, 5, 0.85);
+  border: 1px solid rgba(0, 255, 102, 0.35);
+  backdrop-filter: blur(10px);
+  border-radius: 9999px;
+  animation: radarPulse 4s infinite ease-in-out;
+  z-index: 2;
+}
+
+.badgeText {
+  font-family: $font-label;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: #00ff66;
+  letter-spacing: 1.8px;
+  display: flex;
+  align-items: center;
+  gap: $sp-2;
+}
+
+.lockIcon {
+  color: #00ff66;
+  filter: drop-shadow(0 0 2px #00ff66);
+}
+
+.mainTitle {
+  font-family: $font-headline;
+  font-weight: $font-weight-black;
+  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  color: #ffffff;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: -0.5px;
+  margin-bottom: $sp-4;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+  z-index: 2;
+}
+
+.highlightText {
+  color: #00ff66;
+  text-shadow: 0 0 25px rgba(0, 255, 102, 0.45); // Glow expansivo aplicado à palavra-chave
+}
+
+.supportText {
+  font-family: $font-body;
+  font-size: clamp(1rem, 1.8vw, 1.15rem);
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 700px;
+  margin: 0 auto $sp-5 auto;
+  line-height: 1.6;
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  position: relative;
+  z-index: 2;
+}
+
+.actionButton {
+  font-family: $font-label;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-sm;
+  color: #010503;
+  background-color: #00ff66;
+  padding: $sp-3 2rem;
+  border: none;
+  border-radius: $radius-sm;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  transition: all $transition-fast;
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 4px 25px rgba(0, 255, 102, 0.35);
+
+  &:hover {
+    background-color: #ffffff;
+    box-shadow: 0 0 30px rgba(0, 255, 102, 0.75);
+    transform: translate3d(0, -2px, 0);
+  }
+
+  &:active {
+    transform: translate3d(0, 0, 0);
+  }
+}

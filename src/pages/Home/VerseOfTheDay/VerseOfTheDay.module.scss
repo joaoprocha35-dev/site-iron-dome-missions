@@ -1,0 +1,137 @@
+// ============================================================
+// VerseOfTheDay.module.scss
+// ============================================================
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+// 1. GRID MESTRE MATRIZ 2x2
+.gridContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  width: 100%;
+  align-items: stretch;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr; // Vira uma coluna perfeita no telemóvel/celular
+  }
+}
+
+// 2. CONFIGURAÇÃO DE ESTADO INICIAL DOS CARDS (Invisíveis)
+.card {
+  background: $color-primary-dim;
+  border: 1px solid $color-border-green;
+  border-radius: $radius-lg;
+  padding: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  
+  // Efeito de entrada: invisível e um pouco abaixo da posição real
+  opacity: 0;
+  transform: translateY(50px);
+  
+  // Transições sincronizadas para o Scroll e para o efeito Hover funcionar liso
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              transform 0.8s cubic-bezier(0.25, 1, 0.5, 1), 
+              box-shadow 0.3s ease, 
+              border-color 0.3s ease;
+}
+
+// 3. CLASSE ACIONADA DINAMICAMENTE PELO SCROLL
+.visible {
+  opacity: 1;
+  transform: translateY(0); // Volta para a posição original de forma suave
+
+  // EFECTO HOVER DE PROFUNDIDADE (Só ativa depois que o card já deu o scroll de entrada)
+  &:hover {
+    transform: scale(1.01) translateY(-8px) !important; // Amplia (scale) e sobe (translateY) gerando relevo
+    box-shadow: 0 20px 40px rgba(0, 255, 0, 0.116); // Projeta uma super sombra verde profunda no fundo
+    border-color: $color-primary-light; // Acende a borda
+    cursor: pointer;
+  }
+}
+
+// 4. ELEMENTOS INTERNOS DOS BLOCOS
+.title {
+  font-size: 1.35rem;
+  color: #ffffff;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.imageWrapper {
+  width: 100%;
+  border-radius: $radius-md;
+  overflow: hidden; 
+  border: 1px solid rgba(0, 128, 0, 0.15);
+  margin-bottom: 16px;
+  
+  // 💥 Adeus alturas fixas! Usamos proporção cinematográfica (famoso 16:9 de TVs e Monitores)
+  // Isso faz com que a altura cresça organicamente junto com a largura em telas grandes.
+  aspect-ratio: 16 / 9; 
+
+  // Ajuste fino para celulares: deixamos um formato um pouco mais compacto verticalmente
+  @media (max-width: 700px) {
+    aspect-ratio: 16 / 10;
+  }
+}
+
+.imageAnimated {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; // Preenche o espaço proporcional sem distorcer a foto
+  
+  // 🎯 O SEGREDO DO ENQUADRAMENTO: 
+  // Em vez de 'center 15%', usamos 'top center'. 
+  // Isso fixa o topo da imagem (onde estão as cabeças/rostos do pastor e da liderança) 
+  // como prioridade absoluta de exibição, impedindo que o corte aconteça ali!
+  object-position: top center; 
+  
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.textAnimated {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.locationList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.locationItem {
+  background: rgba(0, 0, 0, 0.25);
+  padding: 12px 16px;
+  border-radius: $radius-md;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.95rem;
+}
+
+.subText {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.checkIcon {
+  color: $color-primary-light;
+  font-weight: bold;
+}

@@ -1,0 +1,150 @@
+// ============================================================
+// HeroBanner.module.scss
+// ============================================================
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.hero {
+  position  : relative;
+  min-height: 200px;
+  display   : flex;
+  align-items: flex-end;
+  padding   : $sp-8 $sp-8 $sp-8;
+  overflow  : hidden;
+
+  @include md {
+
+    min-height: 260px;
+
+    padding   : $sp-6 $sp-4;
+
+  }
+
+}
+
+
+
+// --- Camadas de fundo ---
+// 1. Criando a animação de surgir da DIREITA para a ESQUERDA
+@keyframes fadeInRightToLeft {
+  from {
+    opacity: 0;
+    transform: translateX(40px); // Começa 40px deslocada para a direita
+  }
+  to {
+    opacity: 0.15;               // Termina na opacidade sutil de 0.05 que você definiu
+    transform: translateX(0);    // Termina na posição original (right: 80px)
+  }
+}
+
+.bgBase {
+
+  position  : absolute;
+
+  inset     : 0;
+
+  background: linear-gradient(135deg, #000000 0%, #1b2712 45%, #111a0c 100%);
+
+  z-index   : 0;
+
+}
+
+.cruz{
+  
+}
+
+.bgGlow {
+  position  : absolute;
+  top       : -60px;
+  right     : -60px;
+  width     : 380px;
+  height    : 380px;
+  background: radial-gradient(
+    circle at 60% 40%,
+    rgba(70, 104, 36, 0.425) 0%,
+    transparent 65%
+  );
+  z-index: 1;
+}
+
+.bgCross {
+  position   : absolute;
+  right      : 30px;
+  top        : 180px;
+  font-size  : 90px;
+  font-weight: 100;
+  color      : #ffffff;
+  opacity    : 0;  //Começa invisível para a animação fazer o fade-in correto
+  line-height: 1;
+  user-select: none;
+  z-index    : 1;
+  // Ela vai durar 1.2 segundos e terá um leve delay de 0.2s para surgir logo após o texto principal
+  animation: fadeInRightToLeft 1.2s ease-out 0.2s forwards;
+  // Em telas maiores (tablets e computadores), ela ganha mais destaque e espaçamento:
+  @media (min-width: 768px) {
+    font-size: 140px;
+    right    : 80px;
+    top      : 30px;
+  }
+}
+
+.bgOverlay {
+  position  : absolute;
+  inset     : 0;
+  background: linear-gradient(
+    to right,
+    rgba(13, 17, 10, 0.85) 40%,
+    transparent 100%
+  );
+  z-index: 2;
+}
+
+
+
+// --- Conteúdo ---
+// 1. Criando a animação de surgir (Fade In + subir um pouquinho)
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px); // Começa 20px mais abaixo
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);    // Termina na posição original
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position : relative;
+  z-index  : 3;
+  max-width: 800px;
+  margin: 0 auto;
+  animation: fadeInUp 2s ease-out forwards;
+}
+
+// Headline
+.headline {
+
+  font-family  : $font-headline;
+  font-size    : clamp(1.6rem, 4vw, 2.2rem);
+  font-weight  : $font-weight-black;
+  line-height  : $line-height-tight;
+  color        : #ffffff;
+  margin-bottom: $sp-3;
+  letter-spacing: -0.5px;
+}
+
+
+
+.headlineAccent {
+  color     : #438514de;
+  font-style: normal;
+  display: block;
+  margin-top: $sp-2;
+}
+

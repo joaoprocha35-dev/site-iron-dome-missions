@@ -1,0 +1,133 @@
+// ============================================================
+// Navbar.module.scss
+// ============================================================
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.navbar {
+  background-color: #0000007e !important;
+  border-bottom   : 1px solid $color-border;
+  padding         : 4px !important; 
+  min-height      : 10px;
+  z-index         : 1000;
+}
+
+.inner {
+  padding: 0 $sp-6;
+  min-height: 50px;
+  align-items: center;
+}
+
+// --- Brand ---
+.brand {
+  @include flex-center;
+  gap            : $sp-2;
+  font-family: $font-headline;
+  font-size  : $font-size-md;
+  font-weight: $font-weight-black;
+  color      : #ffffff !important;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  
+  &:hover { color: #12dd0096 !important; }
+}
+
+.brandIcon {
+  width           : 22px;
+  height          : 22px;
+  background      : $color-primary;
+  border-radius   : $radius-sm;
+  display         : flex;
+  align-items     : center;
+  justify-content : center;
+  font-size       : 11px;
+  color           : #ffffff;
+  flex-shrink     : 0;
+}
+
+// --- Container dos Links ---
+.navLinks {
+  gap: $sp-6;
+}
+
+// ============================================================
+// COMPORTAMENTO COMPLETO DA TAG <p> E SEUS HOVERS
+// ============================================================
+// 1. O Container do Link (Tag <a> do Bootstrap)
+.linkContainer {
+  padding         : 0 !important;
+  text-decoration : none !important;
+  display         : flex;
+  align-items     : center;
+
+  // Se o mouse passar na área do container, pinta o texto de verde
+  &:hover {
+    .linkText {
+      color: #0adf03 !important; 
+    }
+  }
+}
+
+// 2. A tag <p> com o seu texto interno
+.linkText {
+  font-size       : $font-size-sm !important;
+  font-weight     : $font-weight-semibold !important;
+  color           : rgb(243, 247, 243) !important; // Cor padrão esbranquiçada
+  margin          : 0 !important;  // Remove margens do <p> para não quebrar o layout
+  padding         : 0 !important;
+  transition      : color $transition-fast !important;
+
+  // BLINDAGEM COMPLETA: Se o mouse passar direto em cima da tag <p>, força o verde
+  &:hover {
+    color: #0adf03 !important;
+  }
+}
+
+// 3. Estilo aplicado quando a rota estiver Ativa (Link selecionado)
+.linkActive {
+  border-bottom : 2px solid $color-primary !important; // Linha laser verde embaixo
+  padding-bottom: 2px !important;
+
+  // Força o texto da tag <p> a ficar BRANCO PURO quando ativo e sem mouse em cima
+  .linkText {
+    color: #ffffff !important;
+  }
+
+  // Garante que o hover verde funcione mesmo com o link ativo
+  &:hover {
+    .linkText {
+      color: #0adf03 !important;
+    }
+  }
+}
+// ============================================================
+
+// --- Toggler ---
+.toggler {
+  border: 1px solid $color-border;
+  color : $color-tertiary;
+  
+  & :global(.navbar-toggler-icon) {
+    filter: invert(1) brightness(1.5); 
+  }
+  &:focus { box-shadow: none; }
+}
+
+// --- Botão Sair ---
+.voltarbtn {
+  width: 70px;
+  background    : rgba(29, 28, 28, 0.356) !important;
+  border        : 1px solid rgba(60, 255, 0, 0.219) !important;
+  color         : #ffffff !important;
+  font-size     : $font-size-xs;
+  font-weight   : $font-weight-black;
+  letter-spacing: 0.8px;
+  border-radius : $radius-sm !important;
+  transition    : background $transition-fast;
+
+  &:hover {
+    background: #414040 !important;
+  }
+
+  &:focus { box-shadow: none !important; }
+}

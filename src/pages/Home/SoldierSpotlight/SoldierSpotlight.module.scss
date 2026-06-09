@@ -1,0 +1,227 @@
+// ============================================================
+// SoldierSpotlight.module.scss (Otimizado para Animação)
+// ============================================================
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+$bg-card: #0a0a0a;
+$bg-panel: #111111;
+$green-glow: #66bb6a;
+$text-bright: #ffffff;
+$text-dim: #888888;
+
+.commandCard {
+  background-color: $bg-card;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    border-color: rgba($green-glow, 0.25);
+    box-shadow: 0 12px 30px rgba(0, 255, 0, 0.03);
+    transform: translateY(-2px);
+  }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 14px;
+}
+
+.titleContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.radarPulse {
+  width: 8px;
+  height: 8px;
+  background-color: $green-glow;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: $green-glow;
+    border-radius: 50%;
+    animation: pulse 2s infinite ease-in-out;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 800;
+  color: $text-bright;
+  letter-spacing: 1.5px;
+  margin: 0;
+}
+.systemStatus {
+  font-size: 11px;
+  font-weight: 700;
+  color: $green-glow;
+  background-color: rgba($green-glow, 0.08);
+  padding: 5px 10px;
+  border-radius: 4px;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 6px; // Espaço entre a bolinha e o texto
+  border: 1px solid rgba($green-glow, 0.15);
+  
+  // Animação de pulso na caixinha inteira (opcional, dá um efeito neon excelente)
+  animation: badgeGlow 2s infinite ease-in-out;
+}
+
+// A bolinha verde que pulsa expandindo
+.onlineDot {
+  width: 6px;
+  height: 6px;
+  background-color: $green-glow;
+  border-radius: 50%;
+  position: relative;
+  display: inline-block;
+
+  &::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: $green-glow;
+    border-radius: 50%;
+    animation: dotPulse 2s infinite ease-in-out;
+  }
+}
+
+// Keyframes para a expansão da bolinha
+@keyframes dotPulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(2.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+
+// Keyframes para o brilho sutil do fundo do badge
+@keyframes badgeGlow {
+  0% { 
+    background-color: rgba($green-glow, 0.08); 
+    border-color: rgba($green-glow, 0.15); 
+  }
+  50% { 
+    background-color: rgba($green-glow, 0.18); 
+    border-color: rgba($green-glow, 0.4);
+    box-shadow: 0 0 6px rgba($green-glow, 0.15);
+  }
+  100% { 
+    background-color: rgba($green-glow, 0.08); 
+    border-color: rgba($green-glow, 0.15); 
+  }
+}
+
+.gridSectors {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sectorItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+    
+    .meterFill {
+      background-color: #00e676;
+      box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
+    }
+  }
+}
+
+.sectorInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sectorName {
+  font-size: 13px;
+  font-weight: 600;
+  color: #dddddd;
+}
+
+.sectorPercentage {
+  font-size: 13px;
+  font-weight: 700;
+  color: $green-glow;
+  font-variant-numeric: tabular-nums; // Evita que os outros textos tremam enquanto o número muda
+}
+
+.meterContainer {
+  height: 6px;
+  background-color: #1a1a1a;
+  border-radius: 3px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.meterFill {
+  height: 100%;
+  background-color: $green-glow;
+  border-radius: 3px;
+  // Deixamos linear e rápido no CSS porque o controle fino do efeito "Ease" já é ditado pelo JavaScript acima!
+  transition: width 0.1s linear, background-color 0.3s ease;
+}
+
+.operationFeed {
+  background-color: $bg-panel;
+  border-left: 2px solid $green-glow;
+  padding: 12px 14px;
+  border-radius: 0 6px 6px 0;
+  margin-top: auto;
+}
+
+.feedHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: $green-glow;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.feedText {
+  font-size: 17px;
+  color: #aaaaaa;
+  line-height: 1.5;
+  margin: 0;
+  font-style: italic;
+}

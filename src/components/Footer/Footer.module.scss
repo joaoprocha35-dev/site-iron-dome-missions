@@ -1,0 +1,43 @@
+// ============================================================
+// Footer.module.scss
+// ============================================================
+@use '../../styles/variables' as *;
+@use '../../styles/mixins' as *;
+
+.footer {
+  border-top      : 1px solid $color-border;
+  background-color: #111111;
+  padding         : $sp-4 0;
+  margin-top      : $sp-6;
+}
+
+.inner {
+  padding: 0 $sp-6;
+}
+
+.brand {
+  font-family   : $font-headline;
+  font-size     : $font-size-md;
+  font-weight   : $font-weight-black;
+  color         : #ffffff;
+  letter-spacing: 0.5px;
+}
+
+.copy {
+  font-size  : $font-size-xs;
+  color      : $color-tertiary;
+  margin     : 0;
+}
+
+.links {
+  @include flex-center;
+  gap: $sp-4;
+
+  a {
+    font-size  : $font-size-xs;
+    color      : $color-tertiary;
+    transition : color $transition-fast;
+
+    &:hover { color: #ffffff; }
+  }
+}

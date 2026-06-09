@@ -1,0 +1,648 @@
+/**
+ * MainHistoria.module.scss
+ * ─────────────────────────────────────────────────────────────────────────────
+ * ENGINE DE ANIMAÇÃO TÁTICA - IRON DOME TIMELINE + SISTEMA DE PARTÍCULAS CANVAS
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+/* ════════════════════════════════════════════════════════════════
+   1. SEÇÃO WRAPPER E ENGINE DE PARTÍCULAS CADENTES
+════════════════════════════════════════════════════════════════ */
+
+.historiaSection {
+  background: transparent;
+  position: relative;
+  overflow: hidden; // Bloqueia scrollbar horizontal gerado pelas animações de saída
+  z-index: 1;
+}
+
+// Camada do Canvas de Partículas estendida em todo o background da Timeline
+.particleCanvasSky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; // Permite cliques normais nos elementos por trás do canvas
+  z-index: 1;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   2. BADGE TÁTICO
+════════════════════════════════════════════════════════════════ */
+
+.badgeTactical {
+  background: transparent;
+  color: #00ff66;
+  border: 1px solid rgba(0, 255, 102, 0.4);
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  border-radius: 4px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   3. TIPOGRAFIA GERAL
+════════════════════════════════════════════════════════════════ */
+
+.sectionTitle {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.textContent {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  font-weight: 400;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   4. NÚMEROS / MÉTRICAS
+════════════════════════════════════════════════════════════════ */
+
+.greenNumber {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: #00ff66;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.greenNumberSmall {
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  color: #00ff66;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   5. CARDS DE MÉTRICA + ANIMAÇÃO FLUTUANTE
+════════════════════════════════════════════════════════════════ */
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.metricCard {
+  background: rgba(14, 14, 14, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
+  height: 100%;
+  transition: border-color 0.4s ease, box-shadow 0.4s ease;
+
+  &:hover {
+    border-color: rgba(0, 255, 102, 0.22);
+    box-shadow:
+      0 25px 50px rgba(0, 0, 0, 0.95),
+      0 4px 24px rgba(0, 51, 20, 0.45),
+      0 0 18px rgba(0, 255, 102, 0.04);
+  }
+}
+
+.floating    { animation: floatAnim 6s ease-in-out infinite; will-change: transform; }
+.floatDelay1 { animation-delay: 0s; }
+.floatDelay2 { animation-delay: 1.5s; }
+.floatDelay3 { animation-delay: 3s; }
+
+/* ════════════════════════════════════════════════════════════════
+   6. HEADER — ANIMAÇÕES DE ENTRADA DO TEXTO SUPERIOR
+════════════════════════════════════════════════════════════════ */
+
+.animTopDown {
+  opacity: 0;
+  transform: translateY(-28px);
+  transition:
+    opacity   1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.animLeftRight {
+  opacity: 0;
+  transform: translateX(-36px);
+  transition:
+    opacity   1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s,
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.3s;
+}
+
+.animBottomUp {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity   1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.delayText1 { transition-delay: 0.6s; }
+.delayText2 { transition-delay: 0.8s; }
+
+.cardEntrance {
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity   1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.delayCard1 { transition-delay: 1.0s; }
+.delayCard2 { transition-delay: 1.2s; }
+.delayCard3 { transition-delay: 1.4s; }
+
+/* Gatilho global via escopo do React */
+.animate {
+  .animTopDown,
+  .animLeftRight,
+  .animBottomUp,
+  .cardEntrance {
+    opacity: 1 !important;
+    transform: translate(0, 0) !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   7. KEYFRAMES DE ANIMAÇÃO DOS CARDS DA TIMELINE
+════════════════════════════════════════════════════════════════ */
+
+@keyframes rollInFromLeft {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) translateX(-50px) translateY(12px) rotateY(-18deg) scale(0.88);
+  }
+  65% {
+    opacity: 1;
+    transform: perspective(900px) translateX(6px) translateY(-2px) rotateY(3deg) scale(1.025);
+  }
+  82% {
+    transform: perspective(900px) translateX(-2px) translateY(0px) rotateY(-0.5deg) scale(0.997);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(900px) translateX(0) translateY(0) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes rollInFromRight {
+  0% {
+    opacity: 0;
+    transform: perspective(900px) translateX(50px) translateY(12px) rotateY(18deg) scale(0.88);
+  }
+  65% {
+    opacity: 1;
+    transform: perspective(900px) translateX(-6px) translateY(-2px) rotateY(-3deg) scale(1.025);
+  }
+  82% {
+    transform: perspective(900px) translateX(2px) translateY(0px) rotateY(0.5deg) scale(0.997);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(900px) translateX(0) translateY(0) rotateY(0deg) scale(1);
+  }
+}
+
+@keyframes rollInMobile {
+  0% {
+    opacity: 0;
+    transform: translateX(-18px) translateY(18px) scale(0.93);
+  }
+  70% {
+    opacity: 1;
+    transform: translateX(3px) translateY(-2px) scale(1.015);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) translateY(0) scale(1);
+  }
+}
+
+@keyframes zoomOutLeft {
+  0% { opacity: 1; transform: perspective(900px) translateX(0) scale(1) rotateY(0deg); }
+  25% { opacity: 1; transform: perspective(900px) translateX(12px) scale(1.04, 0.92) rotateY(4deg); }
+  100% { opacity: 0; transform: perspective(900px) translateX(-110px) scale(0.35) rotateY(-25deg); }
+}
+
+@keyframes zoomOutRight {
+  0% { opacity: 1; transform: perspective(900px) translateX(0) scale(1) rotateY(0deg); }
+  25% { opacity: 1; transform: perspective(900px) translateX(-12px) scale(1.04, 0.92) rotateY(-4deg); }
+  100% { opacity: 0; transform: perspective(900px) translateX(110px) scale(0.35) rotateY(25deg); }
+}
+
+@keyframes zoomOutMobile {
+  0%   { opacity: 1; transform: translateX(0) scale(1); }
+  20%  { opacity: 1; transform: translateX(4px) scale(1.02); }
+  100% { opacity: 0; transform: translateX(-40px) scale(0.55); }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   8. TIMELINE — CONTAINER PRINCIPAL
+════════════════════════════════════════════════════════════════ */
+
+.timelineContainer {
+  position: relative;
+  padding-left: 52px;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  z-index: 2;
+
+  @media (min-width: 768px) {
+    padding-left: 60px;
+  }
+
+  @media (min-width: 992px) {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   9. LINHA GUIA VERTICAL (BASE CINZA + PROGRESSO VERDE)
+════════════════════════════════════════════════════════════════ */
+
+.timelineLineBase {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 20px;
+  width: 3px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 3px;
+  overflow: hidden;
+
+  @media (min-width: 768px) {
+    left: 24px;
+  }
+
+  @media (min-width: 992px) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+.timelineLineProgress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0%;
+  background: linear-gradient(to bottom, rgba(0, 255, 102, 0.5), #00ff66);
+  box-shadow: 0 0 16px #00ff66;
+  border-radius: 3px;
+  transition: height 0.07s linear;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   10. ITEM DA TIMELINE
+════════════════════════════════════════════════════════════════ */
+
+.timelineItem {
+  position: relative;
+  margin-bottom: 3rem;
+
+  &:last-child { margin-bottom: 0; }
+
+  @media (min-width: 992px) {
+    margin-bottom: 5rem;
+    min-height: 60px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   11. NÓ DA TIMELINE (bolinha na linha guia)
+════════════════════════════════════════════════════════════════ */
+
+.timelineNode {
+  position: absolute;
+  z-index: 5;
+  left: -40px;
+  top: 12px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #0e0e0e;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    border-color 0.35s ease,
+    box-shadow   0.35s ease,
+    background   0.25s ease;
+
+  @media (min-width: 768px) {
+    left: -45px;
+    width: 18px;
+    height: 18px;
+  }
+
+  @media (min-width: 992px) {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.nodeInnerCircle {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+
+  @media (min-width: 992px) {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+.nodeActive {
+  border-color: #00ff66 !important;
+  background: #021408 !important;
+  box-shadow:
+    0 0 0 5px rgba(0, 255, 102, 0.07),
+    0 0 16px rgba(0, 255, 102, 0.55);
+
+  .nodeInnerCircle {
+    background: #00ff66 !important;
+    box-shadow: 0 0 8px rgba(0, 255, 102, 0.9);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   12. CARD DE CONTEÚDO — ESTADO PADRÃO
+════════════════════════════════════════════════════════════════ */
+
+.timelineContentWrapper {
+  opacity: 0;
+  will-change: transform, opacity;
+  background: rgba(11, 13, 11, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 1.25rem;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  backface-visibility: hidden;
+
+  @media (min-width: 992px) {
+    max-width: 550px;
+    width: 100%;
+    padding: 1.75rem 2rem;
+  }
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 1.5rem;
+  }
+
+  &:hover,
+  &:focus-within {
+    border-color: rgba(0, 80, 30, 0.45);
+    box-shadow:
+      0 8px 36px rgba(0, 18, 7, 0.6),
+      0 3px 12px rgba(0, 51, 20, 0.38),
+      inset 0 1px 0 rgba(0, 255, 102, 0.04);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   13. SISTEMA DE ESTADOS DE ANIMAÇÃO DOS CARDS
+════════════════════════════════════════════════════════════════ */
+
+.itemActive .timelineContentWrapper {
+  animation: rollInMobile 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+}
+
+.itemCollapsed .timelineContentWrapper {
+  animation: zoomOutMobile 0.42s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+}
+
+@media (min-width: 992px) {
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   14. POSICIONAMENTO DESKTOP — CARDS ALTERNADOS (L / R)
+════════════════════════════════════════════════════════════════ */
+
+.timelineItemLeft {
+  @media (min-width: 992px) {
+    .timelineContentWrapper {
+      margin-right: calc(50% + 32px);
+      text-align: left;
+    }
+  }
+}
+
+.timelineItemRight {
+  @media (min-width: 992px) {
+    .timelineContentWrapper {
+      margin-left: calc(50% + 32px);
+    }
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   15. BLOCO DE DATA (Ano + Mês)
+════════════════════════════════════════════════════════════════ */
+
+.cardDateBlock {
+  margin-bottom: 1rem;
+}
+
+.timelineYear {
+  font-family: $font-headline;
+  font-size: 0.78rem;
+  color: #00ff66;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  display: block;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.timelineMonth {
+  font-size: clamp(1.1rem, 2vw, 1.45rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   16. BLOCO DE MÍDIA (Imagem + Descrição)
+════════════════════════════════════════════════════════════════ */
+
+.mediaContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.imageWrapper {
+  width: 100%;
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: border-color 0.35s ease, box-shadow 0.35s ease;
+
+  img {
+    width: 100%;
+    height: 388px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    opacity: 0.90;
+    transition: opacity 0.4s ease, transform 0.5s ease;
+    background: rgba(18, 20, 18, 0.85);
+  }
+
+  &:hover {
+    border-color: rgba(0, 60, 22, 0.5);
+    box-shadow:
+      0 6px 28px rgba(0, 20, 8, 0.5),
+      0 2px 8px rgba(0, 51, 20, 0.32);
+
+    img {
+      opacity: 1;
+      transform: scale(1.03);
+    }
+  }
+}
+
+.mediaDescription {
+  font-size: 0.93rem;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+  font-weight: 400;
+  text-align: left;
+
+  strong {
+    color: #00e85c;
+    font-family: monospace;
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+    margin-right: 4px;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   17. BLOCO FINAL — ENGINE DE ESCRITA CORRIGIDA & RESPONSIVA
+════════════════════════════════════════════════════════════════ */
+
+// CORRIGIDO: Utiliza variação controlada para Desktop
+@keyframes continuousTypingDesktop {
+  0%, 5%    { max-width: 0; }
+  45%, 55%  { max-width: 45ch; } 
+  95%, 100% { max-width: 0; }
+}
+
+// NOVO: Animação baseada em largura total para telas que quebram linha (Mobile)
+@keyframes continuousTypingMobile {
+  0%, 5%    { max-height: 0; opacity: 0; }
+  45%, 55%  { max-height: 150px; opacity: 1; } // Altura suficiente para até 2 ou 3 linhas
+  95%, 100% { max-height: 0; opacity: 0; }
+}
+
+.bridgeTitle {
+  font-family: $font-headline;
+  font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+  font-weight: 800;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+  
+  display: inline-block;
+  border-right: 3px solid #00ff66;
+  padding-right: 8px;
+  overflow: hidden; 
+  
+  background: linear-gradient(90deg, #ffffff 0%, #a0a0a0 30%, #ffffff 55%, #d0d0d0 80%, #ffffff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  
+  // Configuração padrão adaptada para Mobile (Quebra linhas de forma segura)
+  white-space: normal; 
+  word-break: break-word;
+  animation: 
+    silverFlow 6s linear infinite,
+    tacticalCursor 0.8s steps(2, start) infinite,
+    continuousTypingMobile 8s ease-in-out infinite;
+
+  // Ativa o efeito clássico de digitação em linha única apenas onde há espaço (Desktop)
+  @media (min-width: 768px) {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      tacticalCursor 0.8s steps(2, start) infinite,
+      continuousTypingDesktop 8s steps(33, end) infinite;
+  }
+}
+.bridgeDesc {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.65;
+  max-width: 580px;
+  margin: 0 auto;
+  will-change: text-shadow, filter;
+  
+  // Ativação da nova engine de pulsação natural contínua
+  animation: naturalMetallicGlow 2.5s ease-in-out infinite; 
+}
+
+/* ════════════════════════════════════════════════════════════════
+   18. ACESSIBILIDADE — prefers-reduced-motion
+════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  .animTopDown,
+  .animLeftRight,
+  .animBottomUp,
+  .cardEntrance,
+  .floating {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .timelineContentWrapper {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  .bridgeTitle {
+    animation: none !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    max-width: none !important;
+    border: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+  
+  .bridgeDesc {
+    animation: none !important;
+  }
+}

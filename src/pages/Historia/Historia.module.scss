@@ -1,0 +1,9 @@
+@use '../../styles/variables' as *;
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #0a0a0a; // Mantendo o tom escuro e tático do projeto
+  color: #ffffff;
+  overflow-x: hidden;
+}

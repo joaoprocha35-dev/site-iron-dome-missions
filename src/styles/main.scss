@@ -1,0 +1,21 @@
+// 1. Importa os tokens do Design System de forma global e segura
+@use 'variables' as *;
+@use 'mixins' as *;
+@use 'reset';
+// Importando a estrutura bruta do Bootstrap
+@import 'bootstrap/scss/bootstrap';
+
+// Estilos globais para o tema tático escuro do Iron Dome
+body {
+  background-color: $color-neutral; // Aplica o cinza escuro de fundo
+  color: $color-tertiary;          // Aplica o cinza claro nos textos padrão
+  font-family: $font-body;         // Configura a fonte Inter como padrão
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;              // Evita barras de rolagem horizontais quebradas
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-headline;     // Configura a fonte Montserrat para os títulos
+  color: $color-primary-light;     // Dá um leve destaque tático nos títulos
+}

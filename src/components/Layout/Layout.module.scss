@@ -1,0 +1,16 @@
+// ============================================================
+// Layout.module.scss
+// ============================================================
+@use '../../styles/variables' as *;
+
+.shell {
+  display       : flex;
+  flex-direction: column;
+  min-height    : 100vh;
+  background    : $color-neutral;
+}
+// Trava tática de segurança para as páginas internas (Home, Historia, etc.)
+.mainContent {
+  flex: 1; // Faz o conteúdo expandir e empurrar o Footer sempre para o rodapé
+  width: 100%;
+}
