@@ -21,8 +21,8 @@
 
 import React, { useEffect, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from './headerTestemunho.module.scss';
-import HeaderParticles from './headerParticles';
+import styles from './HeaderTestemunho.module.scss';
+import HeaderParticles from './HeaderParticles';
 
 // ── Constantes de conteúdo ─────────────────────────────────────
 const RESTRICTED_LABEL = 'ARQUIVOS REAIS DE TRANSFORMAÇÃO';
