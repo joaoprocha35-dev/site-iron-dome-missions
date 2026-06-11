@@ -4,6 +4,7 @@
 // ============================================================
 
 import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom'; // IMPORTAÇÃO DO LINK ADICIONADA AQUI
 import styles from './EventCalendar.module.scss';
 
 // IMPORTS DAS IMAGENS DO SEU DIRETÓRIO LOCAL
@@ -27,7 +28,7 @@ import abraco02 from '../../../assets/imagensHome/abraco02.png';
 import ministracao from '../../../assets/imagensHome/ministracao.png';
 import ministracao02 from '../../../assets/imagensHome/ministracao02.png';
 import familiaLider from '../../../assets/imagensHome/familia-lider.png';
-import duda from '../../../assets/imagensHome/duda.PNG';
+import duda from '../../../assets/imagensHome/duda.PNG'; // EXTENSÃO CORRIGIDA PARA .PNG MAIÚSCULO
 import mulherad from '../../../assets/imagensHome/mulher-ad.png'; 
 import baterista01 from '../../../assets/imagensHome/baterista01.png';
 import adoracao01 from '../../../assets/imagensHome/adoracao01.png';
@@ -128,17 +129,17 @@ function LegacySection({ absoluteIndex }) {
           </h3>
           <p className={styles.legacyCaption}>Conexão real além das reuniões.</p>
           
-          {/* CARD INVITATION TÁTICO COM BORDA ANIMADA */}
+          {/* CARD INVITATION TÁTICO COM BORDA ANIMADA E NAVEGAÇÃO INTERNA CORRIGIDA */}
           <div className={styles.historyCTA}>
             <p className={styles.ctaText}>Quer entender o início de tudo e quem faz parte dessa missão?</p>
-            <a href="/historia" className={styles.ctaButton}>
+            <Link to="/historia" className={styles.ctaButton}>
               <span className={styles.ctaButtonContent}>
                 Conhecer Nossa História 
                 <span className={styles.ctaArrowWrapper}>
                   <span className={styles.ctaArrow}>→</span>
                 </span>
               </span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>
