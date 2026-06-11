@@ -1,7 +1,12 @@
 @use '../../styles/variables' as *;
 
+// ============================================================
+// home.module.scss — Ajuste do Fundo Preto Padrão
+// ============================================================
+
 .page {
-  background-color: $color-neutral;
+  // Se a sua variável $color-neutral for cinza, altere aqui para #000000 ou #0a0a0a
+  background-color: #0a0a0a; 
   min-height: 100vh;
   width: 100%;
 }
@@ -9,6 +14,7 @@
 .section {
   padding: $sp-4 0;
   width: 100%;
+  background-color: transparent; // Garante que as seções não herdem fundos cinzas antigos
 }
 
 .container {
@@ -22,14 +28,113 @@
   }
 }
 
-// Layout em Grid que substitui o Row/Col do Bootstrap com performance máxima
+// Layout em Grid de Altíssima Performance
 .gridDashboard {
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
 
   @media (min-width: 992px) {
-    // Proporção clássica 7 colunas por 5 colunas
     grid-template-columns: 7fr 5fr; 
+  }
+}
+
+// ── Elementos do Topo (Status Bar Civil/Espiritual) ──
+.statusBar {
+  background-color: rgba(0, 0, 0, 0.4); // Escurecido para misturar perfeitamente com o fundo preto
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-family: monospace;
+  font-size: 0.75rem;
+  letter-spacing: 1px;
+  padding: 0.5rem 0;
+
+  .flexWrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .textLeft {
+    color: #39ff14;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: #39ff14;
+      border-radius: 50%;
+      margin-right: 8px;
+      box-shadow: 0 0 8px #39ff14;
+    }
+  }
+
+  .textRight {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background-color: #ff3333;
+      border-radius: 50%;
+      margin-right: 8px;
+      box-shadow: 0 0 8px #ff3333;
+    }
+  }
+}
+
+// ── Container dos 4 Cards Superiores (Estatísticas) ──
+.statsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.statCard {
+  background-color: #0f1110; // Fundo do card ligeiramente grafite para contraste sutil sobre o preto
+  border: 1px solid rgba(57, 255, 20, 0.15);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  transition: transform 0.3s ease, border-color 0.3s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba(57, 255, 20, 0.4);
+  }
+
+  .icon {
+    font-size: 1.25rem;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .number {
+    color: #39ff14;
+    font-weight: 800;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+  }
+
+  .label {
+    color: #808080;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0;
   }
 }

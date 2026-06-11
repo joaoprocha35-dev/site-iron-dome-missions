@@ -11,7 +11,6 @@ import Layout from './components/Layout/Layout'
 import LandingPage from './pages/LandingPage/LandingPage'
 import Historia from './pages/Historia/Historia'
 import Home from './pages/Home/Home'
-import Produtos from './pages/Produtos/Produtos.jsx'
 import Testemunhos from "./pages/Testemunhos/Testemunho.jsx";
 
 // Estilos globais (Carregados na ordem correta)
@@ -28,7 +27,6 @@ export default function App() {
         <Route element={<Layout />}>
           <Route path="/home"     element={<Home />}     />
           <Route path="/historia" element={<Historia />} />
-          <Route path="/produtos" element={<Produtos />} />
           <Route path="/testemunho" element={<Testemunhos />} />
 
         </Route>

@@ -544,23 +544,50 @@
     margin-right: 4px;
   }
 }
-
 /* ════════════════════════════════════════════════════════════════
    17. BLOCO FINAL — ENGINE DE ESCRITA CORRIGIDA & RESPONSIVA
 ════════════════════════════════════════════════════════════════ */
 
-// CORRIGIDO: Utiliza variação controlada para Desktop
+// Animação Desktop: Digitação linear fluida e suavização ao apagar
 @keyframes continuousTypingDesktop {
-  0%, 5%    { max-width: 0; }
-  45%, 55%  { max-width: 45ch; } 
-  95%, 100% { max-width: 0; }
+  0% { 
+    max-width: 0; 
+    opacity: 0; 
+  }
+  5% { 
+    opacity: 1; 
+  }
+  40%, 60% { 
+    max-width: 45ch; 
+    opacity: 1; 
+  }
+  95% { 
+    max-width: 0; 
+    opacity: 0; 
+  }
+  100% { 
+    max-width: 0; 
+    opacity: 0; 
+  }
 }
 
-// NOVO: Animação baseada em largura total para telas que quebram linha (Mobile)
+// Animação Mobile: Expansão vertical sem os saltos bruscos de antes
 @keyframes continuousTypingMobile {
-  0%, 5%    { max-height: 0; opacity: 0; }
-  45%, 55%  { max-height: 150px; opacity: 1; } // Altura suficiente para até 2 ou 3 linhas
-  95%, 100% { max-height: 0; opacity: 0; }
+  0% { 
+    max-height: 0; 
+    opacity: 0; 
+  }
+  10% { 
+    opacity: 1; 
+  }
+  40%, 65% { 
+    max-height: 150px; 
+    opacity: 1; 
+  }
+  90%, 100% { 
+    max-height: 0; 
+    opacity: 0; 
+  }
 }
 
 .bridgeTitle {
@@ -572,45 +599,46 @@
   margin-bottom: 1.25rem;
   
   display: inline-block;
-  border-right: 3px solid #00ff66;
-  padding-right: 8px;
   overflow: hidden; 
   
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+
   background: linear-gradient(90deg, #ffffff 0%, #a0a0a0 30%, #ffffff 55%, #d0d0d0 80%, #ffffff 100%);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   
-  // Configuração padrão adaptada para Mobile (Quebra linhas de forma segura)
   white-space: normal; 
   word-break: break-word;
+  
+  // Executa o efeito com transições tratadas para não travar
   animation: 
     silverFlow 6s linear infinite,
-    tacticalCursor 0.8s steps(2, start) infinite,
-    continuousTypingMobile 8s ease-in-out infinite;
+    continuousTypingMobile 6s ease-in-out infinite;
 
-  // Ativa o efeito clássico de digitação em linha única apenas onde há espaço (Desktop)
   @media (min-width: 768px) {
     white-space: nowrap;
     animation: 
       silverFlow 6s linear infinite,
-      tacticalCursor 0.8s steps(2, start) infinite,
-      continuousTypingDesktop 8s steps(33, end) infinite;
+      continuousTypingDesktop 6s ease-in-out infinite;
   }
 }
+
 .bridgeDesc {
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.75);
   line-height: 1.65;
   max-width: 580px;
-  margin: 0 auto;
-  will-change: text-shadow, filter;
   
-  // Ativação da nova engine de pulsação natural contínua
+  margin: 0 auto; 
+  text-align: center;
+  
+  will-change: text-shadow, filter;
   animation: naturalMetallicGlow 2.5s ease-in-out infinite; 
 }
-
 /* ════════════════════════════════════════════════════════════════
    18. ACESSIBILIDADE — prefers-reduced-motion
 ════════════════════════════════════════════════════════════════ */

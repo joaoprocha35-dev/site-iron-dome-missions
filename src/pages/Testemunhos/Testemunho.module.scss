@@ -1,77 +1,22 @@
 // ============================================================
-// Testemunho.module.scss
-// Estilos Raiz: Tela Completa de Testemunhos
+// Testemunho.module.scss — Wrapper raiz da página de Testemunhos
 // Projeto: Iron Dome — Tactical Mission Design System
-// ------------------------------------------------------------
-// Este arquivo é carregado como CSS Module pelo Testemunho.jsx.
-// Contém apenas os estilos do wrapper de página (.page),
-// que une Header + Main + Footer num único layout coeso.
-//
-// Estrutura de classes (CSS Modules — nome local):
-//   .page   → wrapper raiz da tela
-//
-// Responsabilidade:
-//   - Definir background, min-height e overflow da página
-//   - Garantir separação visual entre os blocos via ::before
-//   - NÃO sobrescreve estilos internos dos sub-componentes
-//     (cada um gerencia seu próprio SCSS)
-//
-// Manutenção:
-//   - Cores e tokens via @use '../../styles/variables'
-//     (ajuste o caminho relativo conforme sua estrutura de pastas)
-//   - Para adicionar padding global na página, edite .page
-//   - Para alterar a cor de fundo, altere $color-neutral
-//     no _variables.scss global — reflete automaticamente aqui
 // ============================================================
- 
-// Importa os tokens do Design System de forma segura (sem namespace)
+// Responsabilidade única:
+//   Envolve Header + Main + Footer em fluxo linear vertical.
+//   Background global, sem scroll horizontal, altura mínima total.
+// ============================================================
+
 @use '../../styles/variables' as *;
-@use '../../styles/mixins'    as *;
- 
-// ============================================================
-// WRAPPER DE PÁGINA
-// ============================================================
- 
-/// .page
-/// Container raiz que envolve toda a tela de testemunhos.
-/// Usa display:flex + flex-direction:column para empilhar
-/// Header → Main → Footer de forma previsível e sem gaps
-/// inesperados entre os blocos.
+@use '../../styles/mixins' as *;
+
+// Wrapper principal: flex column para empilhar as 3 seções
 .page {
-  display         : flex;
-  flex-direction  : column;
-  min-height      : 100vh;
-  width           : 100%;
-  background-color: $color-neutral;   // #121212 — Cinza Escuro Fundo
-  overflow-x      : hidden;           // Previne scroll horizontal em animações
-  position        : relative;
- 
-  // Linha de brilho tática no topo da página (assinatura visual)
-  &::before {
-    content : '';
-    position: absolute;
-    top     : 0;
-    left    : 0;
-    right   : 0;
-    height  : 3px;
-    background: linear-gradient(
-      90deg,
-      transparent        0%,
-      rgba($color-primary, 0.0)  10%,
-      rgba($color-primary, 0.7)  40%,
-      $color-primary             50%,
-      rgba($color-primary, 0.7)  60%,
-      rgba($color-primary, 0.0)  90%,
-      transparent        100%
-    );
-    z-index : 10;
-    pointer-events: none;
-  }
- 
-  // ── Responsivo ─────────────────────────────────────────────
-  // Em telas menores, remove o padding lateral que browsers
-  // eventualmente adicionam ao body, garantindo edge-to-edge.
-  @include md {
-    overflow-x: hidden;
-  }
+    min-height      : 100vh;
+    width           : 100%;
+    overflow-x      : hidden;        // evita scroll horizontal de animações
+    background-color: #0a0a0a;       // ALTERADO: Corrigido para o preto tático absoluto do projeto
+    display         : flex;
+    flex-direction  : column;
+    scroll-behavior : smooth;
 }

@@ -2,20 +2,23 @@ import React, { useMemo } from 'react';
 import styles from './FooterHistoria.module.scss';
 
 export default function FooterHistoria() {
-  // Gerador Tático de Partículas (Executado apenas na montagem para máxima performance)
+  // Gerador de Fagulhas de Fogo (Variação de tamanho, velocidade e cores quentes)
   const particles = useMemo(() => {
-    return Array.from({ length: 30 }).map(() => ({
-      x: Math.random() * 100, // Posição horizontal aleatória
-      delay: Math.random() * 5, // Delay para não subirem todas juntas
-      duration: Math.random() * 10 + 8, // Tempo de voo entre 8s e 18s
-      size: Math.random() * 4 + 2, // Tamanho entre 2px e 6px
+    const fireColors = ['#ff4500', '#ff8c00', '#ffd700']; // Tons de fogo: Laranja-avermelhado, Laranja e Dourado
+
+    return Array.from({ length: 40 }).map(() => ({
+      x: Math.random() * 100, // Posição horizontal
+      delay: Math.random() * 5,
+      duration: Math.random() * 6 + 5, // Mais rápido para simular chamas (5s a 11s)
+      size: Math.random() * 4 + 2,
+      color: fireColors[Math.floor(Math.random() * fireColors.length)]
     }));
   }, []);
 
   return (
     <section className={styles.footerSection}>
-      
-      {/* ─── SISTEMA DE PARTÍCULAS (GREEN NEON) ─── */}
+
+      {/* ─── SISTEMA DE PARTÍCULAS (FIRE SPARKS) ─── */}
       <div className={styles.particleContainer} aria-hidden="true">
         {particles.map((p, i) => (
           <div
@@ -27,6 +30,8 @@ export default function FooterHistoria() {
               animationDuration: `${p.duration}s`,
               width: `${p.size}px`,
               height: `${p.size}px`,
+              backgroundColor: p.color,
+              boxShadow: `0 0 10px ${p.color}, 0 0 20px ${p.color}80`
             }}
           />
         ))}
@@ -35,34 +40,45 @@ export default function FooterHistoria() {
       <div className={`container ${styles.contentWrapper}`}>
         <div className="row justify-content-center text-center">
           <div className="col-12 col-md-9 col-lg-8">
-            
+
             {/* BADGE TÁTICO */}
-            <span className={styles.badgeFooter}>ARSENAL DESBLOQUEADO</span>
-            
+            <span className={styles.badgeFooter}>DIRETRIZES IRON DOME</span>
+
             {/* TÍTULO PRINCIPAL */}
             <h2 className={styles.title}>
-              O Batismo de Fogo Exige a <br />
-              <span className={styles.highlight}>Armadura Certa</span>
+              Vidas Marcadas por um <br />
+              <span className={styles.highlight}>Encontro Inabalável</span>
             </h2>
-            
+
             {/* SUBTÍTULO */}
             <p className={styles.subtitle}>
-              A partir do momento em que você é convocado, a sua farda define a sua sobrevivência. Conheça as peças oficiais e o equipamento tático que nossos operadores usam no campo de batalha.
+              A verdadeira transformação começa quando você assume o seu posto e redefine a sua trajetória. Conheça as histórias reais de quem aceitou a convocação, passou pelo Encontro e hoje vive com a identidade blindada.
             </p>
-            
-            {/* BOTÃO DE AÇÃO TÁTICO (DIRECIONA PARA PRODUTOS) */}
-            <div className={styles.actionBlock}>
-              <a href="/produtos" className={styles.tacticalButton}>
-                <span className={styles.btnText}>ACESSAR ARSENAL</span>
-                <span className={styles.btnIcon}>
-                  {/* Ícone de Seta/Alvo */}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="5" y1="12" x2="19" y2="12"></line>
-                    <polyline points="12 5 19 12 12 19"></polyline>
-                  </svg>
-                </span>
-                <div className={styles.scanline}></div>
-              </a>
+
+            {/* CONTAINER DAS AÇÕES TÁTICAS */}
+            <div className={styles.actionBlockContainer}>
+              {/* BOTÃO PRINCIPAL COM BORDA INFINITA */}
+              <div className={styles.actionBlock}>
+                <a href="/testemunho" className={styles.tacticalButton}>
+                  <span className={styles.tacticalButtonContent}>
+                    <span className={styles.btnText}>ACESSAR TESTEMUNHOS</span>
+                    <span className={`${styles.btnIcon} ${styles.floatingIcon}`}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="13 17 18 12 13 7"></polyline>
+                        <polyline points="6 17 11 12 6 7"></polyline>
+                      </svg>
+                    </span>
+                  </span>
+                </a>
+              </div>
+
+              {/* CTA SECUNDÁRIO E ESTRATÉGICO: RETORNO À HOME */}
+              <div className={styles.backHomeBlock}>
+                <a href="/home" className={styles.backHomeLink}>
+                  <span className={styles.backHomeIcon}>←</span>
+                  RETORNAR ÀS COORDENADAS INICIAIS
+                </a>
+              </div>
             </div>
 
           </div>

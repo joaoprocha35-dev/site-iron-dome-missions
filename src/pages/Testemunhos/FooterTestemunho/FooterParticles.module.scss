@@ -1,0 +1,100 @@
+// ============================================================
+// FooterParticles.module.scss — Estilos e Física do Footer
+// Projeto: Iron Dome — Tactical Mission Design System
+// ============================================================
+
+@use '../../../styles/variables' as *;
+@use '../../../styles/mixins' as *;
+
+.fp-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1; // Fundo tático do footer
+  pointer-events: none;
+}
+
+.fp-particle {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  opacity: 0;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: both;
+  will-change: var(--will-change);
+}
+
+// ── FÍSICA TIPO 1: Bolinhas Decrescentes com Glow Radiante ──
+.fp-particle--dot {
+  width: var(--size);
+  height: var(--size);
+  background-color: #00ff88; // Verde brilhante tático
+  border-radius: 50%;
+  
+  // Efeito de super brilho tático (Glow)
+  box-shadow: 
+    0 0 8px rgba(0, 255, 136, 0.8),
+    0 0 16px rgba(0, 255, 136, 0.4);
+
+  animation-name: floatDownDescendent;
+  animation-delay: var(--delay);
+  animation-duration: var(--duration);
+}
+
+// ── FÍSICA TIPO 2: Pequenas Orbes Brilhantes em Diagonal ──
+// CORRIGIDO: Modificado de traço retangular para formato circular perfeito
+.fp-particle--line {
+  width: calc(var(--size) * 0.85 + 2px); // Mantém proporção arredondada baseada no tamanho
+  height: calc(var(--size) * 0.85 + 2px);
+  background-color: #39ff8a;
+  border-radius: 50%;
+  
+  // Brilho concentrado para micro esferas cinéticas
+  box-shadow: 
+    0 0 6px rgba(57, 255, 138, 0.9),
+    0 0 12px rgba(57, 255, 138, 0.5);
+
+  animation-name: traceDownDiagonal;
+  animation-delay: var(--delay);
+  animation-duration: var(--duration);
+  animation-timing-function: linear;
+}
+
+// ── KEYFRAMES (Física de Vetor Descendente) ──────────────────
+
+// Queda Livre Linear Suave (Orbes)
+@keyframes floatDownDescendent {
+  0% {
+    transform: translate3d(0, -20vh, 0);
+    opacity: 0;
+  }
+  15% {
+    opacity: calc(var(--opacity) * 1.2); // Ganho de gancho no brilho inicial
+  }
+  85% {
+    opacity: calc(var(--opacity) * 1.2);
+  }
+  100% {
+    transform: translate3d(0, 60vh, 0);
+    opacity: 0;
+  }
+}
+
+// Queda Diagonal Acentuada (Micro Orbes Rápidas)
+@keyframes traceDownDiagonal {
+  0% {
+    transform: translate3d(0, -20vh, 0);
+    opacity: 0;
+  }
+  10% {
+    opacity: calc(var(--opacity) * 1.1);
+  }
+  90% {
+    opacity: calc(var(--opacity) * 1.1);
+  }
+  100% {
+    transform: translate3d(60px, 60vh, 0); // Deslocamento diagonal limpo
+    opacity: 0;
+  }
+}

@@ -1,421 +1,461 @@
 // ============================================================
-// mainTestemunho.scss
-// Estilos: Seção Principal de Cards de Testemunho
+// mainTestemunho.module.scss — Grid de Cards de Testemunho
 // Projeto: Iron Dome — Tactical Mission Design System
-// ------------------------------------------------------------
-// Estrutura BEM:
-//   .mt-section              → bloco raiz da seção
-//   .mt-section__header      → cabeçalho com título e linhas
-//   .mt-section__grid        → grid responsivo de cards
-//   .mt-card                 → card individual de testemunho
-//   .mt-card__avatar-wrapper → wrapper do avatar + badge
-//   .mt-card__play-overlay   → overlay de play sobre avatar
-//   .mt-card__identity       → bloco nome + cargo
-//   .mt-card__stars          → avaliação em estrelas
-//   .mt-card__summary        → texto do depoimento
-//
-// Animações:
-//   @keyframes mtFadeSlide   → card sobe com fade (entrada stagger)
-//   @keyframes mtCountUp     → contador de operadores
-//   @keyframes mtCardShimmer → varredura de brilho no hover
-//   @keyframes mtPlayPulse   → pulso no ícone de play
-//   @keyframes mtStarFill    → estrelas preenchem sequencialmente
-//
-// Manutenção:
-//   - --mt-stagger-delay: passado como inline style no JSX
-//     para criar efeito de entrada em cascata sem JS extra
-//   - Para alterar o número de colunas do grid, edite
-//     .mt-section__grid grid-template-columns
 // ============================================================
 
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-// ============================================================
-// KEYFRAMES
-// ============================================================
-
-/// Card sobe com fade ao entrar na viewport
-@keyframes mtFadeSlide {
-  from { transform: translateY(40px) scale(0.97); opacity: 0; }
-  to   { transform: translateY(0)    scale(1);    opacity: 1; }
-}
-
-/// Shimmer horizontal no hover do card
-@keyframes mtCardShimmer {
-  from { transform: translateX(-100%) skewX(-12deg); }
-  to   { transform: translateX(300%)  skewX(-12deg); }
-}
-
-/// Pulso no ícone de play
-@keyframes mtPlayPulse {
-  0%, 100% { transform: scale(1);    opacity: 0.8; }
-  50%       { transform: scale(1.15); opacity: 1;   }
-}
-
-/// Estrelas aparecem em sequência (stagger via nth-child)
-@keyframes mtStarFill {
-  from { transform: scale(0) rotate(-30deg); opacity: 0; }
-  to   { transform: scale(1) rotate(0deg);   opacity: 1; }
-}
-
-/// Título da seção aparece subindo
-@keyframes mtTitleReveal {
-  from { clip-path: inset(0 100% 0 0); opacity: 0; }
-  to   { clip-path: inset(0 0% 0 0);   opacity: 1; }
-}
-
-/// Linha horizontal se expande
-@keyframes mtLineDraw {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-// ============================================================
-// SEÇÃO RAIZ
-// ============================================================
-
+// ── Seção raiz ─────────────────────────────────────────────────
 .mt-section {
-  width           : 100%;
-  background-color: $color-neutral;
-  padding         : $sp-8 $sp-4;
-  position        : relative;
-
-  // Gradiente sutil separando do header
-  &::before {
-    content : '';
-    position: absolute;
-    top     : 0;
-    left    : 0;
-    right   : 0;
-    height  : 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba($color-primary, 0.5) 30%,
-      rgba($color-primary, 0.5) 70%,
-      transparent
-    );
-  }
-
-  // ── Cabeçalho da seção ─────────────────────────────────────
-  &__header {
-    display    : flex;
-    align-items: center;
-    gap        : $sp-4;
-    max-width  : 860px;
-    margin     : 0 auto $sp-8;
-  }
-
-  &__header-line {
-    flex           : 1;
-    height         : 1px;
-    background     : linear-gradient(
-      90deg,
-      transparent,
-      rgba($color-primary, 0.45)
-    );
-    transform-origin: left center;
-    transform      : scaleX(0);
-
-    &:last-child {
-      background: linear-gradient(
-        90deg,
-        rgba($color-primary, 0.45),
-        transparent
-      );
-    }
-
-    // Correção: Vinculado ao data attribute do container pai da seção
-    .mt-section[data-visible="true"] & {
-      animation: mtLineDraw 0.7s cubic-bezier(0.77, 0, 0.18, 1) 0.2s forwards;
-    }
-  }
-
-  &__title {
-    font-family   : $font-headline;
-    font-size     : $font-size-lg;
-    font-weight   : $font-weight-bold;
-    letter-spacing: 2px;
-    color         : rgba($color-tertiary, 0.7);
-    white-space   : nowrap;
-    text-transform: uppercase;
-    opacity       : 0;
-
-    // Correção: Vinculado ao data attribute do container pai da seção
-    .mt-section[data-visible="true"] & {
-      animation: mtFadeSlide 0.5s ease 0.35s forwards;
-    }
-  }
-
-  // Número de operadores em destaque
-  &__title-count {
-    font-size  : $font-size-xl;
-    font-weight: $font-weight-black;
-    color      : $color-primary;
-  }
-
-  // ── Grid de cards (Mantido por retrocompatibilidade / Bootstrap assume via HTML) ──
-  &__grid {
-    display              : grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap                  : $sp-5;
-    max-width            : 1000px;
-    margin               : 0 auto;
+    background-color: #0a0a0a;
+    padding-top     : $sp-8 * 2;
+    padding-bottom  : $sp-8 * 2;
 
     @include md {
-      grid-template-columns: repeat(2, 1fr);
+        padding-top   : $sp-8;
+        padding-bottom: $sp-8;
+    }
+}
+
+// ── Cabeçalho "N OPERADORES RELATAM" ──────────────────────────
+.mt-section__header {
+    @include flex-center;
+    justify-content: center;
+    gap            : $sp-4;
+    opacity        : 0;
+    transform      : translateY(16px);
+    transition     : opacity 0.7s ease, transform 0.7s ease;
+}
+
+.mt-section__header-line {
+    flex      : 1;
+    max-width : 120px;
+    height    : 1px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba($color-primary, 0.4) 60%,
+        rgba($color-primary-light, 0.65)
+    );
+
+    &:last-child {
+        background: linear-gradient(
+            270deg,
+            transparent,
+            rgba($color-primary, 0.4) 60%,
+            rgba($color-primary-light, 0.65)
+        );
     }
 
-    @include sm {
-      grid-template-columns: 1fr;
-      max-width: 400px;
+    @include md { max-width: 50px; }
+}
+
+.mt-section__title {
+    font-family   : $font-headline;
+    font-size     : clamp(1rem, 3vw, 1.5rem);
+    font-weight   : $font-weight-black;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color         : #ffffff;
+    white-space   : nowrap;
+
+    @include md {
+        white-space   : normal;
+        text-align    : center;
+        letter-spacing: 2px;
     }
-  }
+}
+
+.mt-section__title-count {
+    color       : $color-primary-light;
+    margin-right: $sp-2;
+}
+
+[data-visible="true"] .mt-section__header {
+    opacity  : 1;
+    transform: translateY(0);
+}
+
+// ── Filtro por tag ─────────────────────────────────────────────
+.mt-filter {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    flex-wrap      : wrap;
+    gap            : $sp-2;
+}
+
+.mt-filter__btn {
+    font-family   : $font-label;
+    font-size     : $font-size-xs;
+    font-weight   : $font-weight-bold;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding       : $sp-2 $sp-4;
+    background    : rgba($color-primary, 0.05);
+    border        : 1px solid $color-border;
+    border-radius : $radius-sm;
+    color         : rgba($color-tertiary, 0.6);
+    cursor        : pointer;
+    transition    :
+        background    $transition-fast,
+        border-color  $transition-fast,
+        color         $transition-fast;
+
+    &:hover {
+        background  : rgba($color-primary, 0.1);
+        border-color: rgba($color-primary, 0.3);
+        color       : $color-primary-light;
+    }
+
+    &--active {
+        background  : rgba($color-primary, 0.12);
+        border-color: rgba($color-primary, 0.4);
+        color       : $color-primary-light;
+    }
 }
 
 // ============================================================
-// CARD
+// CARD DE TESTEMUNHO
 // ============================================================
 
 .mt-card {
-  @include card-base;
-  position      : relative;
-  display       : flex;
-  flex-direction: column;
-  align-items   : center;
-  text-align    : center;
-  gap           : $sp-3;
-  overflow      : hidden;
-  cursor        : pointer;
-  width         : 100%;
-  max-width     : 360px; // Garante consistência visual no grid do Bootstrap
+    position      : relative;
+    width         : 100%;
+    max-width     : 380px;
+    @include card-base;
+    background    : #0a0a0a !important; 
+    padding       : $sp-5;
+    display       : flex;
+    flex-direction: column;
+    gap           : $sp-3;
+    border-color  : $color-border;
+    
+    will-change   : transform, opacity;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 
-  // Estado inicial para animação de entrada
-  opacity  : 0;
-  transform: translateY(40px) scale(0.97);
+    transition    :
+        border-color $transition-base,
+        transform    $transition-base,
+        box-shadow   $transition-base;
 
-  // Borda verde superior (assinatura tática)
-  border-top: 2px solid rgba($color-primary, 0.50);
+    opacity            : 0;
+    transform          : translate3d(0, 30px, 0);
+    filter             : blur(4px);
+    
+    animation          : mtCardReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay    : var(--mt-stagger-delay, 0s);
+    animation-play-state: paused;
 
-  // Transição de hover (borda, sombra, transform)
-  transition:
-    border-color  $transition-base,
-    box-shadow    $transition-base,
-    transform     $transition-base;
-
-  // ── Estado visível (disparado via JS através de Data Attribute) ──
-  &[data-visible="true"] {
-    animation: mtFadeSlide 0.55s cubic-bezier(0.22, 1, 0.36, 1)
-               var(--mt-stagger-delay, 0s) forwards;
-  }
-
-  // ── Hover ──
-  &:hover {
-    border-color: rgba($color-primary, 0.85);
-    box-shadow  :
-      0 0 0 1px rgba($color-primary, 0.25),
-      $shadow-lg,
-      $shadow-glow;
-    transform   : translateY(-4px);
-
-    // Shimmer que passa sobre o card
-    &::after {
-      content   : '';
-      position  : absolute;
-      inset     : 0;
-      background: linear-gradient(
-        105deg,
-        transparent 40%,
-        rgba($color-primary, 0.07) 50%,
-        transparent 60%
-      );
-      animation : mtCardShimmer 0.6s ease forwards;
-      pointer-events: none;
+    & > * {
+        will-change: transform;
+        animation: mtCardFloatInternal 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+        animation-delay: calc(var(--mt-stagger-delay, 0s) + 0.6s);
+        animation-play-state: paused;
     }
 
-    // Revela o play overlay
-    .mt-card__play-overlay {
-      opacity: 1;
-    }
-  }
+    &:hover {
+        border-color: rgba($color-primary, 0.35);
+        transform   : translate3d(0, -14px, 0) !important; 
+        box-shadow  :
+            0 20px 40px rgba(0, 0, 0, 0.7),
+            0 0 0 1px rgba($color-primary, 0.2);
 
-  // ── Tag de categoria ───────────────────────────────────────
-  &__tag {
+        & > * {
+            animation-play-state: paused !important;
+            transform: translate3d(0, 0, 0) !important;
+        }
+    }
+}
+
+[data-visible="true"] .mt-card {
+    animation-play-state: running;
+
+    & > * {
+        animation-play-state: running;
+    }
+}
+
+// ── MOBILE (Loops desligados para focar em rolagem fluida) ──
+@media (max-width: 768px) {
+    .mt-card {
+        animation : none !important; 
+        opacity   : 0;
+        transform : translate3d(0, 30px, 0);
+        filter    : blur(4px);
+        transition:
+            opacity      0.5s cubic-bezier(0.16, 1, 0.3, 1),
+            transform    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+            filter       0.5s ease,
+            border-color $transition-base,
+            box-shadow   $transition-base;
+
+        & > * {
+            animation: none !important;
+            transform: none !important;
+        }
+    }
+
+    .mt-card[data-visible="true"] {
+        opacity  : 1;
+        transform: translate3d(0, 0, 0);
+        filter   : blur(0);
+    }
+
+    .mt-card:not([data-visible="true"]) {
+        opacity  : 0;
+        transform: translate3d(0, 30px, 0);
+        filter   : blur(4px);
+    }
+}
+
+// ── Componentes internos do card ──────────────────────────────
+.mt-card__tag {
     @include badge-base;
     position      : absolute;
-    top           : $sp-2;
-    right         : $sp-2;
-    background    : rgba($color-primary, 0.15);
-    border        : 1px solid rgba($color-primary, 0.35);
+    top           : $sp-4;
+    left          : $sp-4;
+    background    : rgba($color-primary, 0.1);
+    border        : 1px solid rgba($color-primary, 0.22);
     color         : $color-primary-light;
-    font-size     : 0.55rem;
-    letter-spacing: 1px;
-  }
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-size     : $font-size-xs;
+    z-index       : 3;
+}
 
-  // ── Avatar ────────────────────────────────────────────────
-  &__avatar-wrapper {
-    position: relative;
-    margin-top: $sp-1;
-  }
-
-  &__avatar {
-    width        : 72px;
-    height       : 72px;
-    border-radius: 50%;
-    border       : 2px solid rgba($color-primary, 0.45);
-    display      : flex;
-    align-items  : center;
-    justify-content: center;
+.mt-card__video-wrapper {
     position     : relative;
+    width        : 100%;
+    aspect-ratio : 16 / 9;
+    border-radius: $radius-md;
     overflow     : hidden;
-    box-shadow   : 0 0 12px rgba($color-primary, 0.25);
-    transition   : box-shadow $transition-base;
+    background   : #121212; 
+    border       : 1px solid $color-border;
+}
 
-    .mt-card:hover & {
-      box-shadow: 0 0 20px rgba($color-primary, 0.55);
+.mt-card__video-thumb {
+    width     : 100%;
+    height    : 100%;
+    object-fit: cover;
+    display   : block;
+    transition: transform $transition-slow, filter $transition_slow;
+
+    .mt-card__video-wrapper:hover & {
+        transform: scale(1.04);
+        filter   : brightness(0.75);
     }
-  }
+}
 
-  &__avatar-initials {
-    font-family   : $font-headline;
-    font-size     : $font-size-lg;
-    font-weight   : $font-weight-bold;
-    color         : rgba(255,255,255,0.85);
-    letter-spacing: 1px;
-    z-index       : 1;
-  }
+.mt-card__video-play-btn {
+    position       : absolute;
+    inset          : 0;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    background     : transparent;
+    border         : none;
+    cursor         : pointer;
 
-  // Overlay de play (aparece no hover)
-  &__play-overlay {
-    position        : absolute;
-    inset           : 0;
-    background      : rgba(0,0,0,0.55);
-    border-radius   : 50%;
-    display         : flex;
-    align-items     : center;
-    justify-content : center;
-    opacity         : 0;
-    transition      : opacity $transition-fast;
-    z-index         : 2;
-  }
+    &:hover .mt-card__video-play-circle {
+        transform   : scale(1.12);
+        background  : rgba($color-primary, 0.22);
+        border-color: rgba($color-primary-light, 0.9);
+    }
+}
 
-  &__play-icon {
-    font-size : 1.2rem;
-    color     : $color-primary;
-    animation : mtPlayPulse 1.5s ease-in-out infinite;
-    line-height: 1;
-    padding-left: 3px; // ajuste óptico do triângulo
-  }
+.mt-card__video-play-circle {
+    width         : 54px;
+    height        : 54px;
+    border-radius : $radius-full;
+    background    : rgba(0, 0, 0, 0.6);
+    border        : 2px solid rgba($color-primary-light, 0.65);
+    display       : flex;
+    align-items   : center;
+    justify-content: center;
+    transition    :
+        transform    $transition-base,
+        background   $transition-base,
+        border-color $transition-base;
+    animation     : mtPlayPulse 2.5s ease-in-out infinite;
+}
 
-  // ── Label de vídeo ────────────────────────────────────────
-  &__video-label {
+.mt-card__video-play-triangle {
+    width        : 0;
+    height       : 0;
+    border-top   : 9px solid transparent;
+    border-bottom: 9px solid transparent;
+    border-left  : 16px solid $color-primary-light;
+    margin-left  : 3px;
+}
+
+.mt-card__video-iframe {
+    position: absolute;
+    inset   : 0;
+    width   : 100%;
+    height  : 100%;
+    border  : none;
+}
+
+.mt-card__video-label {
     @include flex-center;
-    gap           : $sp-1;
+    gap           : $sp-2;
     font-family   : $font-label;
     font-size     : $font-size-xs;
     font-weight   : $font-weight-bold;
-    letter-spacing: 1.5px;
-    color         : rgba($color-tertiary, 0.6);
-    margin-top    : $sp-2;
+    letter-spacing: 2px;
     text-transform: uppercase;
-  }
+    color         : rgba($color-tertiary, 0.5);
+}
 
-  &__video-dot {
-    width        : 5px;
-    height       : 5px;
-    border-radius: 50%;
+.mt-card__video-dot {
+    width        : 6px;
+    height       : 6px;
+    border-radius: $radius-full;
     background   : $color-danger;
-    box-shadow   : 0 0 4px rgba($color-danger, 0.7);
-    // Pisca para indicar "gravação"
-    animation    : mtPlayPulse 1.2s ease-in-out infinite;
-  }
+    flex-shrink  : 0;
+    animation    : mtDotBlink 1.8s ease-in-out infinite;
+}
 
-  // ── Identidade ────────────────────────────────────────────
-  &__identity {
+.mt-card__avatar-wrapper {
+    @include flex-center;
+    gap: $sp-3;
+}
+
+.mt-card__avatar {
+    width         : 52px;
+    height        : 52px;
+    border-radius : $radius-full;
+    flex-shrink   : 0;
+    display       : flex;
+    align-items   : center;
+    justify-content: center;
+    border        : 1px solid rgba($color-primary, 0.18);
+}
+
+.mt-card__avatar-initials {
+    font-family   : $font-headline;
+    font-size     : $font-size-md;
+    font-weight   : $font-weight-bold;
+    color         : rgba(#ffffff, 0.8);
+    letter-spacing: 1px;
+}
+
+.mt-card__identity {
     display       : flex;
     flex-direction: column;
-    gap           : 2px;
-  }
+    gap           : 4px; /* Leve ajuste para acomodar melhor os textos sem a unidade */
+}
 
-  &__role {
+.mt-card__role {
     font-family   : $font-label;
     font-size     : $font-size-xs;
     font-weight   : $font-weight-semibold;
-    letter-spacing: 1px;
-    color         : $color-primary;
+    letter-spacing: 2px;
     text-transform: uppercase;
+    color         : rgba($color-tertiary, 0.5);
     margin        : 0;
-  }
+}
 
-  &__name {
+.mt-card__name {
     font-family: $font-headline;
-    font-size  : $font-size-md;
+    font-size  : $font-size-lg;
     font-weight: $font-weight-bold;
     color      : #ffffff;
     margin     : 0;
     line-height: $line-height-tight;
-  }
-
-  // ── Estrelas ──────────────────────────────────────────────
-  &__stars {
-    display: flex;
-    gap    : 2px;
-  }
-
-  &__star {
-    font-size : 0.875rem;
-    color     : rgba($color-tertiary, 0.25);
-    transition: color $transition-fast;
-
-    &--filled {
-      color: $color-warning;
-      // Stagger de preenchimento: cada estrela usa nth-child vinculado ao data attribute
-      @for $i from 1 through 5 {
-        &:nth-child(#{$i}) {
-          .mt-card[data-visible="true"] & {
-            animation: mtStarFill 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)
-                       calc(var(--mt-stagger-delay, 0s) + #{$i * 0.08}s + 0.4s) both;
-          }
-        }
-      }
-    }
-  }
-
-  // ── Divisória ─────────────────────────────────────────────
-  &__divider {
-    @include divider;
-    width: 100%;
-  }
-
-  // ── Resumo ────────────────────────────────────────────────
-  &__summary {
-    font-family: $font-body;
-    font-size  : $font-size-xs;
-    color      : rgba($color-tertiary, 0.70);
-    line-height: $line-height-relaxed;
-    text-align : left;
-    margin     : 0;
-  }
-
-  &__summary-label {
-    font-weight   : $font-weight-bold;
-    color         : rgba($color-tertiary, 0.90);
-    letter-spacing: 0.5px;
-  }
 }
 
-// Badge de unidade colocado fora para sincronia perfeita com o escopo do JSX corrigido
-.mt-unit-badge {
-  @include badge-base;
-  position  : absolute;
-  bottom    : -6px;
-  left      : 50%;
-  transform : translateX(-50%);
-  background: $color-neutral;
-  border    : 1px solid rgba($color-primary, 0.50);
-  color     : $color-primary-light;
-  font-size : 0.5rem;
-  padding   : 2px 6px;
-  white-space: nowrap;
+.mt-card__stars {
+    @include flex-center;
+    gap: 3px;
+}
+
+.mt-card__star {
+    font-size : 0.85rem;
+    color     : rgba($color-tertiary, 0.15);
+    transition: color $transition-fast;
+
+    &--filled { color: #facc15; }
+}
+
+.mt-card__divider { @include divider; }
+
+.mt-card__summary {
+    font-family: $font-body;
+    font-size  : $font-size-base;
+    line-height: $line-height-relaxed;
+    color      : rgba($color-tertiary, 0.7);
+    margin     : 0;
+}
+
+.mt-card__summary-label {
+    font-family   : $font-label;
+    font-size     : $font-size-xs;
+    font-weight   : $font-weight-bold;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color         : $color-primary-light;
+    margin-right  : $sp-1;
+}
+
+// ============================================================
+// KEYFRAMES
+// ============================================================
+
+@keyframes mtCardReveal {
+    from {
+        opacity  : 0;
+        transform: translate3d(0, 30px, 0);
+        filter   : blur(4px);
+    }
+    to {
+        opacity  : 1;
+        transform: translate3d(0, 0, 0);
+        filter   : blur(0);
+    }
+}
+
+@keyframes mtCardFloatInternal {
+    from {
+        transform: translate3d(0, 0, 0);
+    }
+    to {
+        transform: translate3d(0, -20px, 0);
+    }
+}
+
+@keyframes mtDotBlink {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.15; }
+}
+
+@keyframes mtPlayPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba($color-primary-light, 0); }
+    50%      { box-shadow: 0 0 0 6px rgba($color-primary-light, 0.12); }
+}
+
+// ============================================================
+// RESPONSIVIDADE
+// ============================================================
+@include md {
+    .mt-card {
+        max-width: 100%;
+        padding  : $sp-4;
+    }
+
+    .mt-filter {
+        gap: $sp-1;
+    }
+
+    .mt-filter__btn {
+        padding   : $sp-1 $sp-3;
+        font-size : 0.6rem;
+    }
+}
+
+@include sm {
+    .mt-card__name { font-size: $font-size-md; }
 }

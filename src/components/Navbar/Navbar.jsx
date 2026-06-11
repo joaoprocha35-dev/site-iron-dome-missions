@@ -56,15 +56,6 @@ export default function Navbar() {
 
             <Nav.Link
               as={NavLink}
-              to="/produtos"
-              className={({ isActive }) => `${styles.linkContainer} ${isActive ? styles.linkActive : ''}`}
-              onClick={fecharMenu}
-            >
-              <p className={styles.linkText}>Produtos</p>
-            </Nav.Link>
-
-            <Nav.Link
-              as={NavLink}
               to="/testemunho"
               className={({ isActive }) => `${styles.linkContainer} ${isActive ? styles.linkActive : ''}`}
               onClick={fecharMenu}
@@ -78,7 +69,7 @@ export default function Navbar() {
             className={styles.voltarbtn}
             onClick={() => {
               fecharMenu();
-              navigate('/LandingPage');
+              navigate('/');
             }}
           >
             Sair

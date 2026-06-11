@@ -586,7 +586,7 @@ export default function MainHistoria() {
           </span>
           <p className={styles.bridgeDesc}>
             A cada vida alcançada é um novo capítulo na nossa caminhada.
-            Descubra abaixo como fazer parte da nossa base estratégica.
+            Veja abaixo os testemunhos de pessoas que já passaram por esse encontro.
           </p>
         </div>
 

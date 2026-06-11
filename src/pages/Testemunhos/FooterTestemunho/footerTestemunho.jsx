@@ -1,72 +1,44 @@
-/**
- * ============================================================
- * footerTestemunho.jsx
- * Componente: Footer / CTA da Tela de Testemunhos
- * Projeto: Iron Dome — Tactical Mission Design System
- * ------------------------------------------------------------
- * Responsabilidades:
- * - Exibir call-to-action principal ("OPERADOR, REGISTRE…")
- * - Renderizar botão de envio de relatório tático com efeito ripple
- * - Mostrar estatísticas resumidas (total de operadores, missões, avaliação)
- * - Exibir rodapé com copyright e links táticos
- *
- * Props: nenhuma
- *
- * Eventos do botão CTA:
- * - onClick: dispara handleReportClick()
- * - Integrado com react-router-dom para gerenciamento real de rotas.
- *
- * Para alterar estatísticas exibidas:
- * - Edite o array STATS_DATA
- *
- * Dependências:
- * - footerTestemunho.scss (estilos locais)
- * - react-router-dom (Roteamento tático)
- *
- * Manutenção:
- * - Classes BEM: .ft-[bloco]__[elemento]--[modificador]
- * - O efeito ripple do botão é 100% CSS, não precisa de lib
- * ============================================================
- */
+// ============================================================
+// footerTestemunho.jsx — Footer da Tela de Testemunhos
+// Projeto: Iron Dome — Tactical Mission Design System
+// ============================================================
 
 import React, { useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './footerTestemunho.module.scss';
+import FooterParticles from './FooterParticles';
 
-// ── Constantes de conteúdo ─────────────────────────────────────
-const CTA_LABEL     = 'OPERADOR, REGISTRE TUA EXPERIÊNCIA DE CAMPO';
-const CTA_BUTTON    = 'ENVIAR RELATÓRIO TÁTICO';
-const CTA_SUBLABEL  = 'Tua experiência fortalece a missão de todo o time.';
+// ── Constantes de conteúdo direcionadas aos Veteranos/Servos ──
+const CTA_TITLE   = 'VETERANO OU SERVO, REGISTRE TUA EXPERIÊNCIA DE CAMPO';
+const CTA_SUB     = 'Espaço exclusivo para quem já passou ou serve no Encontro Iron Dome. Tua história fortalece a missão.';
+const CTA_BUTTON  = 'ENVIAR RELATÓRIO TÁTICO';
 
-// ── Estatísticas exibidas na faixa de dados ────────────────────
-// MANUTENÇÃO: ajuste os valores ou adicione novos itens aqui.
+// Configuração do WhatsApp do Operador
+const WHATSAPP_PHONE = '5514998813787'; // DDI + DDD + Número
+const WHATSAPP_MSG   = 'Olá! Participei/sirvo no Encontro Iron Dome e gostaria de enviar meu testemunho para o projeto.';
+
+// Estatísticas exibidas na faixa superior
 const STATS_DATA = [
-  { value: '847+',  label: 'Operadores',    icon: '🎖️' },
-  { value: '1.2K',  label: 'Missões',       icon: '🎯' },
-  { value: '4.97',  label: 'Avg. Rating',   icon: '⭐' },
-  { value: '100%',  label: 'Satisfação',    icon: '🛡️' },
+  { value: '12', label: 'RELATÓRIOS ATIVOS',      icon: '🎖️' },
+  { value: '8', label: 'TEMÁTICAS DE COMBATE',     icon: '🎯' },
+  { value: '4.97', label: 'MÉDIA DE AVALIAÇÃO',   icon: '⭐' },
+  { value: '100%', label: 'SATISFAÇÃO',           icon: '🛡️' },
 ];
 
-// ── Constantes do rodapé ───────────────────────────────────────
-const FOOTER_BRAND   = 'IRON DOME';
-const FOOTER_COPY    = `© ${new Date().getFullYear()} Iron Dome — Todos os direitos reservados.`;
-const FOOTER_LINKS   = [
+// Links do rodapé legal
+const FOOTER_LINKS = [
   { label: 'Política de Privacidade', href: '#' },
   { label: 'Termos de Uso',           href: '#' },
   { label: 'Suporte Tático',          href: '#' },
 ];
 
-/**
- * FooterTestemunho
- * Renderiza o bloco de CTA + estatísticas + rodapé da tela.
- * 100% Responsivo com Bootstrap, CSS Modules e Roteamento ativo.
- */
+const BRAND_NAME = 'IRON DOME';
+const COPYRIGHT  = `© ${new Date().getFullYear()} Iron Dome — Todos os direitos reservados.`;
+
 const FooterTestemunho = () => {
   const sectionRef = useRef(null);
-  const navigate = useNavigate();
 
-  // ── IntersectionObserver para animações de entrada ──────────
+  // IntersectionObserver: injeta data-visible para animar os filhos
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -85,28 +57,29 @@ const FooterTestemunho = () => {
     return () => observer.disconnect();
   }, []);
 
-  /**
-   * handleReportClick
-   * Handler do botão CTA com redirecionamento de rota real.
-   * Redireciona o operador para a rota do formulário de relatório.
-   */
-  const handleReportClick = useCallback(() => {
-    console.log('[Iron Dome] CTA clicado: Redirecionando para rota de relatório');
-    navigate('/relatorio-tatico');
-  }, [navigate]);
+  // Redirecionamento seguro para a API do WhatsApp com mensagem tática
+  const handleWhatsAppRedirect = useCallback(() => {
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }, []);
 
   return (
     <footer
       ref={sectionRef}
       className={styles['ft-footer']}
-      aria-label="Seção de chamada para ação e rodapé"
+      aria-label="Estatísticas, chamada para ação e rodapé"
     >
+      <FooterParticles />
       <Container fluid className="px-0">
-        
-        {/* ── Faixa de estatísticas responsiva com Bootstrap ── */}
-        <div className={styles['ft-footer__stats']} role="list" aria-label="Estatísticas de campo">
+
+        {/* ── 1. Faixa de estatísticas ──────────────────────── */}
+        <div
+          className={styles['ft-footer__stats']}
+          role="list"
+          aria-label="Estatísticas de campo"
+        >
           <Container>
-            <Row className="g-4 text-center justify-content-center">
+            <Row className="g-3 text-center justify-content-center">
               {STATS_DATA.map((stat, i) => (
                 <Col
                   key={stat.label}
@@ -118,10 +91,20 @@ const FooterTestemunho = () => {
                     className={styles['ft-footer__stat']}
                     role="listitem"
                     style={{ '--ft-stat-delay': `${i * 0.1}s` }}
+                    aria-label={`${stat.label}: ${stat.value}`}
                   >
-                    <span className={styles['ft-footer__stat-icon']} aria-hidden="true">{stat.icon}</span>
-                    <span className={styles['ft-footer__stat-value']}>{stat.value}</span>
-                    <span className={styles['ft-footer__stat-label']}>{stat.label}</span>
+                    <span
+                      className={styles['ft-footer__stat-icon']}
+                      aria-hidden="true"
+                    >
+                      {stat.icon}
+                    </span>
+                    <span className={styles['ft-footer__stat-value']}>
+                      {stat.value}
+                    </span>
+                    <span className={styles['ft-footer__stat-label']}>
+                      {stat.label}
+                    </span>
                   </div>
                 </Col>
               ))}
@@ -129,49 +112,86 @@ const FooterTestemunho = () => {
           </Container>
         </div>
 
-        {/* ── CTA principal centralizado ── */}
+        {/* ── 2. Bloco CTA ──────────────────────────────────── */}
         <div className={styles['ft-footer__cta']}>
           <Container>
             <Row className="justify-content-center text-center">
-              <Col xs={12} lg={8}>
-                {/* Linha decorativa superior do CTA */}
-                <div className={styles['ft-footer__cta-line']} aria-hidden="true" />
+              <Col xs={12} lg={9}>
 
-                <p className={styles['ft-footer__cta-title']}>{CTA_LABEL}</p>
-                <p className={styles['ft-footer__cta-sub']}>{CTA_SUBLABEL}</p>
+                {/* Linha decorativa superior */}
+                <div
+                  className={styles['ft-footer__cta-line']}
+                  aria-hidden="true"
+                />
 
-                {/* Botão CTA com efeito ripple */}
-                <button
-                  className={styles['ft-footer__cta-btn']}
-                  onClick={handleReportClick}
-                  type="button"
-                  aria-label={CTA_BUTTON}
-                >
-                  <span className={styles['ft-footer__cta-btn-icon']} aria-hidden="true">📋</span>
-                  {CTA_BUTTON}
-                </button>
+                {/* Título e subtítulo do CTA */}
+                <h2 className={styles['ft-footer__cta-title']}>{CTA_TITLE}</h2>
+                <p className={styles['ft-footer__cta-sub']}>{CTA_SUB}</p>
 
-                {/* Linha decorativa inferior do CTA */}
-                <div className={styles['ft-footer__cta-line']} aria-hidden="true" />
+                {/* CONTAINER DAS AÇÕES TÁTICAS */}
+                <div className={styles['ft-action-container']}>
+                  
+                  {/* Botão Operacional Ultra Black com Borda Infinita Conic-Gradient */}
+                  <div className={styles['ft-btn-wrapper']}>
+                    <button
+                      className={styles['ft-footer__cta-btn']}
+                      onClick={handleWhatsAppRedirect}
+                      type="button"
+                      aria-label={CTA_BUTTON}
+                    >
+                      <span className={styles['ft-footer__cta-btn-content']}>
+                        <span
+                          className={styles['ft-footer__cta-btn-icon']}
+                          aria-hidden="true"
+                        >
+                          📋
+                        </span>
+                        <span className={styles['ft-btn-text']}>{CTA_BUTTON}</span>
+                      </span>
+                    </button>
+                  </div>
+
+                  {/* CTA SECUNDÁRIO: RETORNO DIRETAMENTE À ROTA HISTÓRIA */}
+                  <div className={styles['ft-back-home-block']}>
+                    <a href="/historia" className={styles['ft-back-home-link']}>
+                      <span className={styles['ft-back-home-icon']}>←</span>
+                      RETORNAR AO QG PRINCIPAL
+                    </a>
+                  </div>
+
+                </div>
+
+                {/* Linha decorativa inferior */}
+                <div
+                  className={styles['ft-footer__cta-line']}
+                  aria-hidden="true"
+                />
+
               </Col>
             </Row>
           </Container>
         </div>
 
-        {/* ── Rodapé legal com Grid alinhado ── */}
+        {/* ── 3. Rodapé legal ───────────────────────────────── */}
         <div className={styles['ft-footer__legal']}>
           <Container>
             <Row className="align-items-center g-3 text-center text-md-start">
+
+              {/* Brand */}
               <Col xs={12} md={4}>
-                <span className={styles['ft-footer__brand']} aria-label={`Iron Dome — ${FOOTER_BRAND}`}>
-                  {FOOTER_BRAND}
+                <span
+                  className={styles['ft-footer__brand']}
+                  aria-label={`Marca: ${BRAND_NAME}`}
+                >
+                  {BRAND_NAME}
                 </span>
               </Col>
-              
+
+              {/* Links legais */}
               <Col xs={12} md={4} className="d-flex justify-content-center">
                 <nav
                   className={styles['ft-footer__links']}
-                  aria-label="Links do rodapé"
+                  aria-label="Links legais do rodapé"
                 >
                   {FOOTER_LINKS.map((link) => (
                     <a
@@ -185,9 +205,11 @@ const FooterTestemunho = () => {
                 </nav>
               </Col>
 
+              {/* Copyright */}
               <Col xs={12} md={4} className="text-center text-md-end">
-                <p className={styles['ft-footer__copy']}>{FOOTER_COPY}</p>
+                <p className={styles['ft-footer__copy']}>{COPYRIGHT}</p>
               </Col>
+
             </Row>
           </Container>
         </div>

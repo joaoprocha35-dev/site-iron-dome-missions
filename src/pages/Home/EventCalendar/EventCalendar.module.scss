@@ -1,6 +1,5 @@
 // ============================================================
 // EventCalendar.module.scss — Layout Corrigido e Otimizado
-// Correção: Proporção Horizontal Adequada para a Foto da Família
 // ============================================================
 
 @use '../../../styles/variables' as *;
@@ -214,7 +213,7 @@
 }
 
 // ============================================================
-// SEÇÃO ALICERCE DA VISÃO (CORRIGIDA - FOTO FAMÍLIA INTEIRA)
+// SEÇÃO ALICERCE DA VISÃO (FOTO FAMÍLIA)
 // ============================================================
 .legacySection {
   margin-top: calc($sp-5 * 1.5);
@@ -250,14 +249,13 @@
   @media (min-width: 992px) {
     flex-direction: row;
     gap: 40px;
-    align-items: center; // Alinha o texto perfeitamente ao centro vertical da foto horizontal
+    align-items: center;
   }
 }
 
 .legacyImageFrame {
   position: relative;
   width: 100%;
-  // Proporção no mobile: levemente mais alta, mas segura para fotos horizontais de grupo
   aspect-ratio: 4 / 3; 
   overflow: hidden;
   border-radius: 8px;
@@ -268,8 +266,6 @@
 
   @media (min-width: 768px) {
     max-width: 520px; 
-    // CORREÇÃO CRUCIAL: Modificado para 16/10 (proporção horizontal panorâmica).
-    // Isso garante que todas as pessoas nas extremidades fiquem perfeitamente visíveis!
     aspect-ratio: 16 / 10; 
   }
 }
@@ -278,7 +274,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 20%; // Mantém o foco ligeiramente mais alto no enquadramento dos rostos
+  object-position: center 20%;
   transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   transform: translateZ(0);
 }
@@ -347,8 +343,155 @@
 }
 
 // ============================================================
+// INVITATION CARD CTA (HISTORY) — PRETO PURO COESIVO
+// ============================================================
+.historyCTA {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #000000; // CORRIGIDO: Agora 100% preto absoluto, sem tons cinzas
+  border: 1px solid rgba($color-primary-light, 0.15); 
+  border-left: 4px solid $color-primary-light; 
+  border-radius: 8px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  @media (min-width: 576px) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+  }
+
+  &:hover {
+    border-color: rgba($color-primary-light, 0.4);
+    box-shadow: 0 0 15px rgba($color-primary-light, 0.1);
+  }
+}
+
+.ctaText {
+  font-family: $font-body;
+  font-size: 0.95rem;
+  color: #dddddd;
+  margin: 0;
+  line-height: 1.4;
+}
+
+// ── BOTÃO PREMIUM: FUNDO ULTRA PRETO + ANIMAÇÃO DE BORDA TÁTICA ATIVA ──
+.ctaButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border-radius: 6px;
+  overflow: hidden;
+  padding: 2px; // Espessura da borda animada
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  // Pseudo-elemento que cria a linha laser giratória de varredura
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    // Gradiente cônico idêntico ao efeito laser da imagem enviada
+    background: conic-gradient(
+      transparent, 
+      rgba(57, 255, 20, 0.1) 30%, 
+      $color-primary-light 50%, 
+      transparent 70%
+    );
+    animation: borderRadarRotation 3.5s linear infinite;
+    will-change: transform;
+  }
+
+  // Máscara interna que força o fundo a ficar TOTALMENTE PRETO
+  .ctaButtonContent {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: #000000 !important; // Preto puro absoluto
+    color: #ffffff;
+    font-family: $font-headline;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 12px 22px;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .ctaArrowWrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ctaArrow {
+    font-size: 1.1rem;
+    color: $color-primary-light;
+    display: inline-block;
+    animation: arrowGo 1.2s infinite ease-in-out; 
+    will-change: transform;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(57, 255, 20, 0.2);
+
+    &::before {
+      animation-duration: 1.8s; // Acelera o radar no hover dando feedback tático
+    }
+
+    .ctaButtonContent {
+      background-color: #050505 !important; // Continua intensamente preto
+      color: $color-primary-light; // Texto brilha em verde
+    }
+
+    .ctaArrow {
+      animation-play-state: paused; 
+      transform: translate3d(4px, 0, 0);
+      color: #ffffff;
+    }
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ============================================================
 // KEYFRAMES (GPU HARDWARE ONLY)
 // ============================================================
+@keyframes borderRadarRotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes arrowGo {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(5px, 0, 0); }
+}
+
 @keyframes floatTacticalRich {
   0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
   50% { transform: translate3d(0, -5px, 0) rotate(calc(var(--rotate-seed, 0deg) * 0.5)) scale(1.002); }
@@ -382,7 +525,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .galleryHeader, .titlePrefix, .tacticalLine, .squadHeader, .gridSlot, .gridSlot.isVisible, .legacySection, .legacySection.isVisible {
+  .galleryHeader, .titlePrefix, .tacticalLine, .squadHeader, .gridSlot, .gridSlot.isVisible, .legacySection, .legacySection.isVisible, .ctaButton::before {
     animation: none !important;
     transition: opacity 0.3s ease !important;
     opacity: 1 !important;

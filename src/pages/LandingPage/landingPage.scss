@@ -1,9 +1,27 @@
 // ============================================================
-// LANDING PAGE STYLES - ARCHITECTURE VERSION
+// LandingPage.scss — Estilos da Landing Page Iron Dome
+// ============================================================
+// ALTERAÇÕES v3:
+//   1. Animação typewriter das letras refinada:
+//      - Cada letra entra com blur + scale + translateY escalonados
+//      - Delay calculado por --letter-index para efeito cadenciado
+//      - "IRON" entra primeiro, "DOME" logo após (índices contínuos)
+//   2. Badge bíblico superior aprimorado:
+//      - Borda com gradiente animado (shimmer lateral)
+//      - Ponto pulsante com glow mais vibrante
+//      - Tipografia refinada com espaçamento maior
+//   3. Painel de métricas redesenhado:
+//      - Cada stat-item ganhou card com fundo sutil + borda verde
+//      - Valor numérico com glow suave ao terminar a contagem
+//      - Label com letter-spacing aumentado e linha decorativa acima
+//      - Dividers substituídos por separadores mais elegantes
 // ============================================================
 
 @use "../../styles/variables" as *;
 
+// ============================================================
+// SEÇÃO HERO — container raiz
+// ============================================================
 .hero-section {
     position: relative;
     width: 100%;
@@ -17,7 +35,7 @@
 }
 
 // ============================================================
-// BACKGROUND, FILM FILTER & OVERLAYS
+// BACKGROUND: imagem + overlay gradiente
 // ============================================================
 .hero-background {
     position: absolute;
@@ -30,12 +48,12 @@
     height: 100%;
     object-fit: cover;
     object-position: center center;
-    filter: brightness(0.6) contrast(1.8);
-    
+    filter: brightness(0.4) contrast(1.6);
+
     @media (min-width: 1400px) {
         min-height: 100vh;
         width: 100vw;
-        object-position: center 30%; 
+        object-position: center 30%;
     }
 }
 
@@ -43,13 +61,13 @@
     position: absolute;
     inset: 0;
     background: linear-gradient(180deg,
-            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0.6) 0%,
             rgba($color-neutral, 0.4) 60%,
             $color-neutral 100%);
 }
 
 // ============================================================
-// ATMOSPHERIC EMBERS (ENERGY PARTICLES)
+// PARTÍCULAS ATMOSFÉRICAS — brasas de fogo flutuantes
 // ============================================================
 .ember-container {
     position: absolute;
@@ -65,87 +83,186 @@
     bottom: -20px;
     width: 5px;
     height: 5px;
-    background: #09ff00;
-    border-radius: 50%;
+    background: #00cc55;
+    border-radius: $radius-full;
     opacity: 0;
-    animation: ember-rise 12s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
-    box-shadow: 0 0 8px 2px rgba(#00ff66, 0.6), 0 0 16px 4px rgba(#00ff0d, 0.3);
+    will-change: transform, opacity;
+    box-shadow: 0 0 8px 2px rgba(#00cc55, 0.8), 0 0 16px 4px rgba(#00ff66, 0.3);
 
+    // Fagulhas miúdas — verde frio puro, mais luminosas
     &:nth-child(3n) {
         width: 3px;
         height: 3px;
-        background: #a6ff00;
-        box-shadow: 0 0 6px 2px rgba(#a6ff00, 0.5);
+        background: #00ff66;
+        box-shadow: 0 0 6px 2px rgba(#00ff66, 0.7), 0 0 12px 3px rgba(#00ff66, 0.2);
     }
 
+    // Brasas maiores — verde claro vibrante, halo mais largo
     &:nth-child(5n) {
         width: 6px;
         height: 6px;
-        background: #00cf1c;
-        box-shadow: 0 0 10px 3px rgba(#00cf1c, 0.5);
+        background: #39ff8a;
+        box-shadow: 0 0 10px 3px rgba(#39ff8a, 0.6), 0 0 20px 5px rgba(#00ff66, 0.2);
     }
 }
 
-@for $i from 1 through 20 {
+@for $i from 1 through 25 {
     .ember-particle:nth-child(#{$i}) {
         --random: #{($i % 10 + 1) / 10};
-        left: ($i - 1) * 5 * 1%; 
-        animation-duration: #{8s + ($i % 4) * 2.5s}; 
-        animation-delay: #{($i * 0.4s)};
+        left: ($i - 1) * 4 * 1%;
+        animation-duration: #{6s + ($i % 4) * 2s};
+        animation-delay: #{($i * 0.3s)};
         animation-name: ember-rise-#{$i};
     }
 
     @keyframes ember-rise-#{$i} {
-        0% { opacity: 0; transform: translateY(0) translateX(0) scale(1); }
-        15% { opacity: 0.65; }
-        25% { transform: translateY(-25vh) translateX(calc(-40px + (80px * var(--random)))) scale(0.9); }
-        50% { opacity: 0.5; transform: translateY(-50vh) translateX(calc(50px - (100px * var(--random)))) scale(0.7); }
-        75% { transform: translateY(-75vh) translateX(calc(-30px + (60px * var(--random)))) scale(0.5); }
-        100% { opacity: 0; transform: translateY(-105vh) translateX(calc(40px - (80px * var(--random)))) scale(0.2); }
+        0% {
+            opacity: 0;
+            transform: translateY(0) translateX(0) scale(1);
+        }
+
+        15% {
+            opacity: 0.85;
+        }
+
+        25% {
+            transform: translateY(-25vh) translateX(calc(-40px + (80px * var(--random)))) scale(0.9);
+        }
+
+        50% {
+            opacity: 0.6;
+            transform: translateY(-50vh) translateX(calc(50px - (100px * var(--random)))) scale(0.7);
+        }
+
+        75% {
+            transform: translateY(-75vh) translateX(calc(-30px + (60px * var(--random)))) scale(0.5);
+        }
+
+        100% {
+            opacity: 0;
+            transform: translateY(-105vh) translateX(calc(40px - (80px * var(--random)))) scale(0.1);
+        }
     }
 }
 
 // ============================================================
-// TOP OPERATIONAL BADGE
+// BADGE BÍBLICO SUPERIOR — versículo verde aprimorado
+// ============================================================
+// Estrutura de animação:
+//   1. fadeInBadge: o wrapper inteiro sobe levemente + aparece (0.8s)
+//   2. shimmerBorder: pseudo-elemento percorre a borda da esquerda
+//      para direita em loop, dando vida ao contorno verde
+//   3. pulse-glow: o ponto indicador pulsa entre opaco e translúcido
 // ============================================================
 .hero-badge-wrapper {
     position: relative;
     z-index: 2;
     opacity: 0;
-    animation: fadeInBadge 1s ease forwards;
+    transform: translateY(10px);
+    // Sobe levemente ao entrar — mais elegante que fade puro
+    animation: fadeInBadge 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: 0.2s;
+    display: inline-block; // necessário para centralizar corretamente
 }
 
 .hero-badge {
+    position: relative;
     display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 20px;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 22px;
     font-family: $font-label;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 2px;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    letter-spacing: 1.5px;
+    line-height: 1.6;
     color: $color-primary-light;
-    background: rgba($color-primary, 0.15);
-    border: 1px solid rgba($color-primary, 0.3);
-    border-radius: 4px;
+    background: rgba($color-primary, 0.08);
+    border-radius: $radius-sm;
+    overflow: hidden; // contém o shimmer interno
+
+    // Borda verde base sempre visível
+    border: 1px solid rgba($color-primary, 0.35);
+
+    // Shimmer: faixa de luz que desliza pela borda de fora para dentro
+    // Cria o efeito de "energia correndo" ao longo do badge
+    &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg,
+                transparent 0%,
+                rgba($color-primary-light, 0.12) 40%,
+                rgba($color-primary-light, 0.22) 50%,
+                rgba($color-primary-light, 0.12) 60%,
+                transparent 100%);
+        // A faixa começa fora da esquerda (-100%) e termina fora da direita (200%)
+        transform: translateX(-100%);
+        animation: shimmerBadge 3.5s ease-in-out infinite;
+        animation-delay: 1.5s; // aguarda o badge aparecer antes de começar
+        pointer-events: none;
+    }
 }
 
+// Ponto indicador "ao vivo" — pulsa com glow verde intenso
 .hero-badge-icon {
     display: inline-block;
+    flex-shrink: 0;
     width: 8px;
     height: 8px;
+    margin-top: 5px; // alinha verticalmente com a primeira linha do texto
     background: $color-primary-light;
-    border-radius: 50%;
+    border-radius: $radius-full;
     animation: pulse-glow 2s ease-in-out infinite;
 }
 
 @keyframes pulse-glow {
-    0%, 100% { opacity: 1; box-shadow: 0 0 4px $color-primary-light; }
-    50% { opacity: 0.4; box-shadow: 0 0 12px $color-primary-light; }
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow:
+            0 0 4px $color-primary-light,
+            0 0 8px rgba($color-primary-light, 0.5);
+    }
+
+    50% {
+        opacity: 0.35;
+        box-shadow:
+            0 0 10px $color-primary-light,
+            0 0 20px rgba($color-primary-light, 0.4),
+            0 0 30px rgba($color-primary-light, 0.15);
+    }
+}
+
+// Faixa de brilho deslizante da esquerda para direita no badge
+@keyframes shimmerBadge {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(200%);
+    }
 }
 
 // ============================================================
-// TYPEWRITER TITLE EFFECT (SLOWER & MORE DELIBERATE)
+// TÍTULO — animação typewriter tática letra por letra
+// ============================================================
+// Como funciona:
+//   - No JSX, cada letra recebe style={{ '--letter-index': idx }}
+//   - O SCSS usa essa variável CSS para escalonar o animation-delay
+//   - "IRON" ocupa índices 0–3, "DOME" ocupa 4–7 (contínuos)
+//   - Resultado: as 8 letras entram em sequência ininterrupta
+//
+// Estado inicial de cada letra:
+//   opacity: 0        → invisível
+//   scale(1.15)       → ligeiramente maior (zoom out ao entrar)
+//   translateY(-5px)  → levemente acima (cai para a posição)
+//   blur(8px)         → desfocada (foca ao entrar)
+//
+// A curva cubic-bezier(0.16, 1, 0.3, 1) é "spring-like":
+// acelera rápido e desacelera suavemente no final
 // ============================================================
 .hero-title {
     position: relative;
@@ -154,47 +271,52 @@
     flex-direction: column;
     align-items: center;
     margin: 0;
-    line-height: 0.85;
+    line-height: $line-height-tight;
     font-family: $font-headline;
 
+    // Seletor de cada letra individualmente
     span span {
         display: inline-block;
         opacity: 0;
         transform: scale(1.15) translateY(-5px);
-        filter: blur(8px); // Desfocado sutil no início do aparecimento
-        
-        // Calibragem Sênior: Aumentado para 0.4s para aparecer mais devagar e suave
-        animation: typeTacticalLetter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        
-        // Multiplicador temporal controlado pelo index injetado pelo React
+        filter: blur(8px);
+        animation: typeTacticalLetter 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        // Delay escalonado: 0.15s entre cada letra
         animation-delay: calc(var(--letter-index) * 0.15s);
     }
 }
 
+// "IRON" — menor, cor tática acinzentada, espaçamento largo
+// Aparece acima do "DOME" como um "código de operação"
 .hero-title-accent {
     font-size: clamp(2.5rem, 10vw, 6rem);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     letter-spacing: 0.25em;
     color: $color-tertiary;
     text-shadow: 0 0 30px rgba($color-primary, 0.2);
 }
 
+// "DOME" — dominante, branco puro, impacto máximo
+// É a palavra que "ancora" a identidade visual da tela
 .hero-title-main {
     font-size: clamp(4.5rem, 18vw, 11rem);
-    font-weight: 700;
+    font-weight: $font-weight-bold;
     letter-spacing: 0.12em;
     color: #ffffff;
-    text-shadow: 0 0 50px rgba($color-primary, 0.4), 0 4px 20px rgba(0, 0, 0, 0.9);
+    text-shadow:
+        0 0 50px rgba($color-primary, 0.4),
+        0 4px 20px rgba(0, 0, 0, 0.9);
 }
 
 // ============================================================
-// LOWER CONTENT REVEAL (SLIDES UP FROM BOTTOM)
+// BLOCO DE CONTEÚDO INFERIOR — reveal unificado
+// ============================================================
+// Sobe em bloco único após 1.2s (typewriter das 8 letras = ~1.05s)
+// O delay garante que o título termina antes do conteúdo aparecer
 // ============================================================
 .hero-reveal-content {
     opacity: 0;
     transform: translateY(40px);
-    
-    // Entra em cena de forma imponente logo após a digitação do título finalizar (aprox 1.2s)
     animation: revealContentUp 1.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     animation-delay: 1.2s;
 }
@@ -205,124 +327,248 @@
     max-width: 650px;
     margin-top: 1.5rem;
     font-family: $font-body;
-    font-size: 1.1rem;
-    font-weight: 400;
-    line-height: 1.7;
+    font-size: $font-size-xl;
+    font-weight: $font-weight-regular;
+    line-height: $line-height-relaxed;
     color: $color-tertiary;
 }
 
 // ============================================================
-// INTERACTION BUTTONS
+// BOTÃO "ENTRAR NO PORTAL" — borda contínua animada verde
 // ============================================================
 .hero-btn {
+    position: relative;
+    width: 290px;
+    height: 58px;
+    padding: 1.5px;
+    background: transparent !important;
+    border: none !important;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    overflow: hidden;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    min-width: 220px;
-    padding: 14px 28px;
-    font-family: $font-body;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-decoration: none;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all $transition-base;
-}
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6);
+    transition: transform $transition-base, box-shadow $transition-base;
 
-.hero-btn-primary {
-    color: #ffffff;
-    background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
-    box-shadow: 0 4px 15px rgba($color-primary, 0.4);
+    &::before {
+        content: '';
+        position: absolute;
+        width: 170%;
+        height: 470%;
+        background: conic-gradient(transparent 0deg,
+                transparent 110deg,
+                #00ff66 165deg,
+                #39ff8a 180deg,
+                #00ff66 195deg,
+                transparent 250deg,
+                transparent 360deg);
+        animation: rotateBorder 2.5s linear infinite;
+        z-index: 0;
+    }
+
+    .hero-btn-mask {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: #0b0f0c;
+        border-radius: calc($radius-sm - 1px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        z-index: 1;
+        transition: background $transition-base;
+
+        .hero-btn-text {
+            color: #ffffff;
+            font-family: $font-body;
+            font-size: $font-size-md;
+            font-weight: $font-weight-bold;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color $transition-base;
+        }
+
+        .hero-btn-icon {
+            width: 20px;
+            height: 20px;
+            color: #00ff66;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: arrowBounce 1.6s ease-in-out infinite;
+            will-change: transform;
+            transition: transform $transition-base;
+        }
+    }
 
     &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba($color-primary, 0.6);
-        filter: brightness(1.15);
+        transform: translateY(-3px);
+        box-shadow: 0 8px 35px rgba(0, 255, 102, 0.25);
+
+        .hero-btn-mask {
+            background: rgba(0, 255, 102, 0.07);
+
+            .hero-btn-text {
+                color: #00ff66;
+            }
+        }
+
+        .hero-btn-icon {
+            animation-play-state: paused;
+            transform: translateX(6px);
+        }
     }
 }
 
-.hero-btn-secondary {
-    color: #ffffff;
-    background: transparent;
-    border: 1px solid rgba($color-tertiary, 0.3);
-    backdrop-filter: blur(4px);
+@keyframes rotateBorder {
+    0% {
+        transform: rotate(0deg);
+    }
 
-    &:hover {
-        background: rgba(#ffffff, 0.05);
-        border-color: #ffffff;
-        transform: translateY(-2px);
+    100% {
+        transform: rotate(360deg);
     }
 }
 
-.hero-btn-icon {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-}
+// Seta: avança → pausa no pico → volta
+// A pausa de 10% (45%–55%) simula "pulso mecânico"
+@keyframes arrowBounce {
 
-.hero-btn-icon-shield {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3E%3Cpath d='M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z'/%3E%3C/svg%3E");
-}
+    0%,
+    100% {
+        transform: translateX(0px);
+    }
 
-.hero-btn-icon-play {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='5' y1='12' x2='19' y2='12'%3E%3C/line%3E%3Cpolyline points='12 5 19 12 12 19'%3E%3C/polyline%3E%3C/svg%3E");
+    45% {
+        transform: translateX(5px);
+    }
+
+    55% {
+        transform: translateX(5px);
+    }
 }
 
 // ============================================================
-// STATS PANEL & MONITOR INFRASTRUCTURE
+// PAINEL DE MÉTRICAS — stats com cards e contadores animados
+// ============================================================
+// Redesenho completo:
+//   - Cada stat-item agora é um micro-card com fundo sutil
+//     e borda verde translúcida
+//   - O valor numérico tem glow verde que pulsa lentamente
+//     após a contagem terminar (via animation-delay longo)
+//   - O label ganhou uma linha decorativa acima, espaçamento
+//     maior e cor mais clara para melhor hierarquia
+//   - Os dividers verticais foram refinados com gradiente
+//     mais suave e altura proporcional ao card
 // ============================================================
 .hero-stats {
     position: relative;
     z-index: 2;
-    border-top: 1px solid rgba($color-tertiary, 0.15);
+    // Linha superior com gradiente para não cortar abruptamente
+    border-top: 1px solid rgba($color-border, 0.5);
+    padding-top: 2rem;
 }
 
 .hero-stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 0 20px;
+    gap: 8px;
+    padding: 20px 28px;
+    // Micro-card: fundo levemente mais claro que o neutro global
+    background: rgba($color-primary, 0.04);
+    border: 1px solid rgba($color-primary, 0.12);
+    border-radius: $radius-md;
+    // Transição suave no hover
+    transition: background $transition-base, border-color $transition-base;
+
+    &:hover {
+        background: rgba($color-primary, 0.08);
+        border-color: rgba($color-primary, 0.25);
+    }
 }
 
+// Valor numérico — tabular-nums evita "pulo" de layout durante contagem
+// O glow pulsa suavemente no valor após a animação de contagem
 .hero-stat-value {
     font-family: $font-headline;
-    font-size: 1.75rem;
-    font-weight: 700;
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
     color: $color-primary-light;
-    // CRUCIAL: Evita oscilação de largura nos elementos vizinhos durante a contagem ativa do script
-    font-variant-numeric: tabular-nums; 
+    font-variant-numeric: tabular-nums;
+    // Glow começa fraco e pulsa devagar — ativa após 3s (término da contagem)
+    animation: statValueGlow 3s ease-in-out infinite;
+    animation-delay: 3.5s;
 }
 
+// Label da métrica — linha decorativa acima reforça a hierarquia visual
 .hero-stat-label {
+    position: relative;
     font-family: $font-label;
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: $color-tertiary;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: rgba($color-tertiary, 0.8);
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
+    text-align: center;
+
+    // Linha decorativa fina acima do label
+    &::before {
+        content: '';
+        display: block;
+        width: 24px;
+        height: 1px;
+        background: rgba($color-primary, 0.4);
+        margin: 0 auto 6px;
+    }
 }
 
+// Divisor vertical entre os stats
+// Gradiente triplo: transparente → visível → transparente
+// Dá sensação de profundidade sem corte duro
 .hero-stat-divider {
     width: 1px;
-    height: 40px;
-    background: linear-gradient(180deg, transparent 0%, rgba($color-tertiary, 0.2) 50%, transparent 100%);
+    height: 60px;
+    background: linear-gradient(180deg,
+            transparent 0%,
+            rgba($color-primary, 0.2) 30%,
+            rgba($color-primary, 0.2) 70%,
+            transparent 100%);
+    // Alinha verticalmente ao centro dos cards
+    align-self: center;
+}
+
+// Glow pulsante no valor numérico — ativa após a contagem terminar
+@keyframes statValueGlow {
+
+    0%,
+    100% {
+        text-shadow: 0 0 8px rgba($color-primary-light, 0.3);
+    }
+
+    50% {
+        text-shadow:
+            0 0 12px rgba($color-primary-light, 0.6),
+            0 0 24px rgba($color-primary-light, 0.2);
+    }
 }
 
 // ============================================================
-// ANIMATION KEYFRAMES DICTIONARY
+// KEYFRAMES — dicionário de animações globais da Landing
 // ============================================================
+
+// Badge: sobe levemente + aparece (mais elegante que fade puro)
 @keyframes fadeInBadge {
-    to { opacity: 1; }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
+// Letras do título: desfocadas + escaladas → nítidas + posição natural
 @keyframes typeTacticalLetter {
     to {
         opacity: 1;
@@ -331,6 +577,7 @@
     }
 }
 
+// Bloco de conteúdo inferior: abaixo + invisível → posição natural
 @keyframes revealContentUp {
     to {
         opacity: 1;
@@ -338,14 +585,27 @@
     }
 }
 
-// RESPONSIVIDADE EM DISPOSITIVOS MOBILE
-@media (max-width: 767.98px) {
+// ============================================================
+// RESPONSIVIDADE MOBILE
+// ============================================================
+@media (max-width: 768px) {
     .hero-subtitle {
-        font-size: 1rem;
-        padding: 0 1rem;
+        font-size: $font-size-lg;
+        padding: 0 0.5rem;
     }
 
     .hero-btn {
         width: 100%;
+        max-width: 320px;
+    }
+
+    // Em mobile os cards de stat ficam menores e com menos padding
+    .hero-stat-item {
+        padding: 14px 16px;
+    }
+
+    // Dividers somem em mobile (Bootstrap d-none d-sm-block cuida disso no JSX)
+    .hero-stat-divider {
+        display: none;
     }
 }

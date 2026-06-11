@@ -1,372 +1,418 @@
 // ============================================================
-// footerTestemunho.scss
-// Estilos: Footer / CTA da Tela de Testemunhos
+// footerTestemunho.module.scss — Footer da Tela de Testemunhos
 // Projeto: Iron Dome — Tactical Mission Design System
-// ------------------------------------------------------------
-// Estrutura BEM:
-//   .ft-footer               → bloco raiz
-//   .ft-footer__stats        → faixa de estatísticas numéricas
-//   .ft-footer__stat         → item individual de estatística
-//   .ft-footer__cta          → bloco de call-to-action
-//   .ft-footer__cta-btn      → botão de envio com ripple
-//   .ft-footer__legal        → área de rodapé / copyright
-//
-// Animações:
-//   @keyframes ftStatCount   → número "conta" ao aparecer (bounce)
-//   @keyframes ftFadeUp      → entrada com fade+slide
-//   @keyframes ftRipple      → efeito ripple no clique do botão
-//   @keyframes ftBtnGlow     → pulso de brilho contínuo no botão
-//   @keyframes ftLineDraw    → expansão das linhas decorativas
-//   @keyframes ftScanLine    → varredura tática sobre o CTA
-//
-// Manutenção:
-//   - --ft-stat-delay: passado via inline style no JSX para stagger
-//   - Cores de hover do botão podem ser ajustadas nas custom props
-//     --ft-btn-glow e --ft-btn-bg no seletor .ft-footer__cta-btn
 // ============================================================
 
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-// ============================================================
-// KEYFRAMES
-// ============================================================
-
-/// Stat entra com micro-bounce
-@keyframes ftStatCount {
-  0%   { transform: translateY(20px) scale(0.8); opacity: 0; }
-  65%  { transform: translateY(-4px) scale(1.05); opacity: 1; }
-  100% { transform: translateY(0)   scale(1);    opacity: 1; }
-}
-
-/// Entrada genérica com slide+fade
-@keyframes ftFadeUp {
-  from { transform: translateY(24px); opacity: 0; }
-  to   { transform: translateY(0);    opacity: 1; }
-}
-
-/// Ripple expandindo do centro do botão
-@keyframes ftRipple {
-  from { transform: scale(0); opacity: 0.45; }
-  to   { transform: scale(4); opacity: 0;    }
-}
-
-/// Pulso de brilho no botão (idle)
-@keyframes ftBtnGlow {
-  0%, 100% { box-shadow: 0 0 14px rgba($color-primary, 0.40), 0 4px 16px rgba(0,0,0,0.5); }
-  50%       { box-shadow: 0 0 28px rgba($color-primary, 0.70), 0 6px 20px rgba(0,0,0,0.6); }
-}
-
-/// Linha deco se expande
-@keyframes ftLineDraw {
-  from { transform: scaleX(0); }
-  to   { transform: scaleX(1); }
-}
-
-/// Scanline tática passando sobre o bloco CTA
-@keyframes ftScanLine {
-  0%   { top: -4px;    opacity: 0.6; }
-  80%  { top: 110%;    opacity: 0.4; }
-  100% { top: 110%;    opacity: 0;   }
-}
-
-// ============================================================
-// BLOCO RAIZ
-// ============================================================
-
+// ── Wrapper raiz ───────────────────────────────────────────────
 .ft-footer {
-  width           : 100%;
-  background-color: $color-neutral;
-  position        : relative;
-  overflow        : hidden;
+    width           : 100%;
+    background-color: #0a0a0a; 
+    border-top      : 1px solid $color-border;
+    overflow        : hidden;
+}
 
-  // Separador visual do main
-  &::before {
-    content : '';
-    position: absolute;
-    top     : 0;
-    left    : 0;
-    right   : 0;
-    height  : 2px;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba($color-primary, 0.4) 40%,
-      rgba($color-primary, 0.4) 60%,
-      transparent
-    );
-  }
+// ============================================================
+// FAIXA DE ESTATÍSTICAS (FLUTUAÇÃO NO CARD PAI)
+// ============================================================
 
-  // ── Faixa de Estatísticas ─────────────────────────────────
-  &__stats {
-    display        : flex;
-    justify-content: center;
-    gap            : 0;
-    border-bottom  : 1px solid $color-border;
-    flex-wrap      : wrap;
-    background-color: rgba($color-neutral, 0.3);
-  }
+.ft-footer__stats {
+    padding   : $sp-8 0;
+    background: rgba($color-primary, 0.02);
+    border-bottom: 1px solid $color-border;
+}
 
-  &__stat {
-    @include flex-center;
+// Item individual de estatística (CARD PAI)
+.ft-footer__stat {
+    display       : flex;
     flex-direction: column;
-    gap           : 2px;
-    padding       : $sp-5 $sp-8;
+    align-items   : center;
+    gap           : $sp-2;
+    padding       : $sp-4 $sp-3;
+    background    : rgba($color-primary, 0.04);
+    border        : 1px solid rgba($color-primary, 0.12);
+    border-radius : $radius-md;
     width         : 100%;
-    opacity       : 0;
-    transform     : translateY(20px) scale(0.8);
-    transition    : background $transition-base;
+    max-width     : 160px;
+    
+    // Aceleração por Hardware (GPU) para animação fluida
+    will-change   : transform, opacity;
+    
+    // Transições para os estados de reveal e interações do mouse
+    transition    :
+        background    $transition-base,
+        border-color  $transition-base,
+        box-shadow    $transition-base,
+        opacity       0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
-    // Correção: Vinculado ao data attribute de visibilidade do CSS Modules
-    .ft-footer[data-visible="true"] & {
-      animation: ftStatCount 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)
-                 calc(var(--ft-stat-delay, 0s) + 0.1s) forwards;
-    }
+    // ── ANIMAÇÃO 1: Entrada (Stagger) ──
+    opacity   : 0;
+    transform : translate3d(0, 25px, 0);
+    
+    // Executa o reveal tático assim que entra na tela
+    animation : ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--ft-stat-delay, 0s);
+    animation-play-state: paused;
 
-    // Linha de separação brilhante no hover
+    // ── ANIMAÇÃO 2: Loop de Flutuação Contínua ──
+    animation: ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+               ftStatFloatMain 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+    
+    // O float espera o reveal acabar (0.6s) + o delay do stagger para começar de forma orgânica
+    animation-delay: var(--ft-stat-delay, 0s), calc(var(--ft-stat-delay, 0s) + 0.6s);
+
     &:hover {
-      background: rgba($color-primary, 0.04);
+        background  : rgba($color-primary, 0.06);
+        border-color: rgba($color-primary, 0.35);
+        
+        // Trava o loop infinito e força uma subida fixa e imponente de hover
+        animation-play-state: paused !important; 
+        transform   : translate3d(0, -15px, 0) !important; 
+        
+        box-shadow  : 
+            0 16px 32px rgba(0, 0, 0, 0.6),
+            0 0 0 1px rgba($color-primary, 0.2);
     }
+}
 
-    @include md {
-      padding  : $sp-4 $sp-5;
-    }
-  }
+.ft-footer__stat-icon {
+    font-size  : 1.3rem;
+    line-height: 1;
+}
 
-  &__stat-icon {
-    font-size: 1.1rem;
-    filter   : drop-shadow(0 0 5px rgba($color-primary, 0.5));
-  }
+.ft-footer__stat-value {
+    font-family         : $font-headline;
+    font-size           : $font-size-2xl;
+    font-weight         : $font-weight-black;
+    color               : $color-primary-light;
+    font-variant-numeric: tabular-nums;
+    line-height         : 1;
+}
 
-  &__stat-value {
-    font-family   : $font-headline;
-    font-size     : $font-size-2xl;
-    font-weight   : $font-weight-black;
-    color         : $color-primary;
-    line-height   : 1;
-    letter-spacing: -1px;
-
-    @include sm { font-size: $font-size-xl; }
-  }
-
-  &__stat-label {
+.ft-footer__stat-label {
     font-family   : $font-label;
     font-size     : $font-size-xs;
-    font-weight   : $font-weight-semibold;
-    letter-spacing: 1px;
-    color         : rgba($color-tertiary, 0.55);
+    font-weight   : $font-weight-bold;
+    letter-spacing: 2px;
     text-transform: uppercase;
-  }
+    color         : rgba($color-tertiary, 0.5);
+}
 
-  // ── Bloco CTA ─────────────────────────────────────────────
-  &__cta {
-    position       : relative;
-    display        : flex;
-    flex-direction : column;
-    align-items    : center;
-    text-align     : center;
-    padding        : $sp-8 $sp-4;
-    gap            : $sp-4;
-    overflow       : hidden;
+// ============================================================
+// BLOCO CTA (ARQUITETURA DE BORDA INFINITA ULTRA-BLACK)
+// ============================================================
 
-    // Fundo com gradiente radial centrado no verde
-    background: radial-gradient(
-      ellipse 60% 70% at 50% 50%,
-      rgba($color-primary, 0.07) 0%,
-      transparent 70%
-    );
+.ft-footer__cta {
+    padding: $sp-8 * 2 0;
+    opacity  : 0;
+    transform: translate3d(0, 25px, 0);
+    transition:
+        opacity   0.7s ease,
+        transform 0.7s ease;
+    transition-delay: 0.2s;
 
-    // Scanline tática (estética militar)
-    &::before {
-      content   : '';
-      position  : absolute;
-      left      : 0;
-      right     : 0;
-      height    : 2px;
-      background: linear-gradient(
+    @include md { padding: $sp-8 0; }
+}
+
+.ft-footer__cta-line {
+    width     : 0;
+    height    : 1px;
+    background: linear-gradient(
         90deg,
         transparent,
-        rgba($color-primary, 0.25) 20%,
-        rgba($color-primary, 0.60) 50%,
-        rgba($color-primary, 0.25) 80%,
+        rgba($color-primary, 0.45) 30%,
+        rgba($color-primary-light, 0.75) 50%,
+        rgba($color-primary, 0.45) 70%,
         transparent
-      );
-      
-      // Correção: Vinculado ao data attribute de visibilidade do container pai
-      .ft-footer[data-visible="true"] & {
-        animation: ftScanLine 3.5s linear 1.2s infinite;
-      }
-    }
-  }
-
-  // Linha decorativa do CTA (acima e abaixo do texto)
-  &__cta-line {
-    width           : min(520px, 90%);
-    height          : 1px;
-    background      : linear-gradient(
-      90deg,
-      transparent,
-      rgba($color-primary, 0.50) 30%,
-      rgba($color-primary, 0.50) 70%,
-      transparent
     );
-    transform-origin: center;
-    transform       : scaleX(0);
-    margin          : $sp-3 auto;
+    margin    : $sp-5 auto;
+    transition: width 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    transition-delay: 0.45s;
+}
 
-    .ft-footer[data-visible="true"] & {
-      animation: ftLineDraw 0.7s cubic-bezier(0.77, 0, 0.18, 1) 0.4s forwards;
-    }
-  }
-
-  &__cta-title {
+.ft-footer__cta-title {
     font-family   : $font-headline;
-    font-size     : clamp($font-size-lg, 3vw, $font-size-2xl);
-    font-weight   : $font-weight-bold;
-    letter-spacing: 1.5px;
+    font-size     : clamp(0.95rem, 2.5vw, 1.25rem);
+    font-weight   : $font-weight-black;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
     color         : #ffffff;
-    text-transform: uppercase;
-    margin        : 0;
-    opacity       : 0;
+    margin-bottom : $sp-3;
+    line-height   : $line-height-base;
+}
 
-    .ft-footer[data-visible="true"] & {
-      animation: ftFadeUp 0.5s ease 0.55s forwards;
-    }
+.ft-footer__cta-sub {
+    font-family : $font-body;
+    font-size   : $font-size-md;
+    color       : rgba($color-tertiary, 0.65);
+    max-width   : 680px;
+    margin      : 0 auto $sp-6 auto;
+    line-height : $line-height-relaxed;
+}
+
+// ── CONTAINER DE AÇÕES COMPILADAS ──
+.ft-action-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.ft-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.ft-footer__cta-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 290px;
+  height: 54px;
+  padding: 1.5px; 
+  background: transparent;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  // Feixe tático de radar rotativo contínuo e infinito
+  &::before {
+    content: '';
+    position: absolute;
+    top: -180%;
+    left: -180%;
+    width: 460%;
+    height: 460%;
+    background: conic-gradient(
+      transparent 0deg,
+      transparent 120deg,
+      #00ff66 180deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    animation: ftRotateBorder 3.5s linear infinite;
+    will-change: transform;
+    z-index: 0;
   }
 
-  &__cta-sub {
+  // Camada interna para blindagem do fundo preto puro
+  .ft-footer__cta-btn-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $sp-3;
+    background-color: #000000 !important; 
+    width: 100%;
+    height: 100%;
+    padding: 0 $sp-5;
+    border-radius: calc(#{$radius-sm} - 1px);
+    transition: background-color 0.3s ease;
+  }
+
+  .ft-btn-text {
     font-family: $font-body;
-    font-size  : $font-size-sm;
-    color      : rgba($color-tertiary, 0.60);
-    margin     : 0 auto $sp-2;
-    font-style : italic;
-    opacity    : 0;
-
-    .ft-footer[data-visible="true"] & {
-      animation: ftFadeUp 0.5s ease 0.65s forwards;
-    }
-  }
-
-  // ── Botão CTA ──────────────────────────────────────────────
-  &__cta-btn {
-    // Custom properties locais para tuning rápido
-    --ft-btn-bg      : #{$color-primary};
-    --ft-btn-bg-hover: #{$color-primary-light};
-    --ft-btn-glow    : #{rgba($color-primary, 0.55)};
-
-    @include flex-center;
-    display       : inline-flex;
-    gap           : $sp-2;
-    padding       : $sp-3 $sp-8;
-    background    : var(--ft-btn-bg);
-    border        : none;
-    border-radius : $radius-sm;
-    color         : $color-secondary;
-    font-family   : $font-headline;
-    font-size     : $font-size-sm;
-    font-weight   : $font-weight-bold;
-    letter-spacing: 1.5px;
+    font-size: $font-size-md;
+    font-weight: $font-weight-bold;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    position      : relative;
-    overflow      : hidden;
-    opacity       : 0;
-    transition    : background $transition-base, transform $transition-base;
+    color: #00ff66; 
+    transition: color 0.3s ease;
+  }
 
-    // Animação idle de glow ativa sob visibilidade
-    .ft-footer[data-visible="true"] & {
-      animation:
-        ftFadeUp  0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.75s forwards,
-        ftBtnGlow 2.5s ease-in-out 1.5s infinite;
+  .ft-footer__cta-btn-icon {
+    font-size: 1.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    transform: translate3d(0, -2px, 0);
+    box-shadow: 0 8px 25px rgba(0, 255, 102, 0.25);
+
+    &::before {
+      animation-duration: 1.8s; 
     }
 
-    // Ripple via ::after
-    &::after {
-      content      : '';
-      position     : absolute;
-      width        : 60px;
-      height       : 60px;
-      background   : rgba(255,255,255,0.35);
-      border-radius: 50%;
-      top          : 50%;
-      left         : 50%;
-      transform    : translate(-50%,-50%) scale(0);
-      opacity      : 0;
+    .ft-footer__cta-btn-content {
+      background-color: #050505 !important; 
     }
 
-    &:active::after {
-      animation: ftRipple 0.5s ease-out forwards;
+    .ft-btn-text {
+      color: #ffffff; 
     }
 
-    &:hover {
-      background: var(--ft-btn-bg-hover);
-      transform : translateY(-2px);
-    }
-
-    &:focus-visible {
-      outline       : 2px solid $color-primary;
-      outline-offset: 3px;
+    .ft-footer__cta-btn-icon {
+      transform: scale(1.12);
     }
   }
 
-  &__cta-btn-icon {
-    font-size: 1rem;
+  &:active {
+    transform: translate3d(0, 0, 0);
   }
 
-  // ── Rodapé legal ───────────────────────────────────────────
-  &__legal {
-    padding        : $sp-5 $sp-4;
-    border-top     : 1px solid $color-border;
-    opacity        : 0;
-    background-color: rgba(0, 0, 0, 0.1);
+  @include md {
+    min-width: 100%;
+    max-width: 340px;
+  }
+}
 
-    .ft-footer[data-visible="true"] & {
-      animation: ftFadeUp 0.5s ease 0.9s forwards;
+// ── CTA SECUNDÁRIO: LINK DE VOLTA PARA A ROTA DA HISTÓRIA ──
+.ft-back-home-block {
+  display: flex;
+  justify-content: center;
+  margin-top: 4px;
+}
+
+.ft-back-home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Monospace', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+
+  .ft-back-home-icon {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    color: #00ff66; 
+    border-color: rgba(0, 255, 102, 0.15);
+    background-color: rgba(0, 255, 102, 0.02);
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+
+    .ft-back-home-icon {
+      transform: translate3d(-4px, 0, 0); 
     }
   }
+}
 
-  &__brand {
+// ============================================================
+// RODAPÉ LEGAL
+// ============================================================
+
+.ft-footer__legal {
+    padding  : $sp-5 0;
+    border-top: 1px solid $color-border;
+    opacity  : 0;
+    transition: opacity 0.6s ease;
+    transition-delay: 0.6s;
+}
+
+.ft-footer__brand {
     font-family   : $font-headline;
     font-size     : $font-size-lg;
     font-weight   : $font-weight-black;
     letter-spacing: 4px;
-    color         : $color-primary;
     text-transform: uppercase;
-  }
+    color         : $color-primary-light;
 
-  &__links {
-    display : flex;
-    gap     : $sp-5;
-    flex-wrap: wrap;
-    margin  : 0;
-    padding : 0;
-  }
-
-  &__link {
-    font-family   : $font-label;
-    font-size     : $font-size-xs;
-    font-weight   : $font-weight-semibold;
-    letter-spacing: 0.8px;
-    color         : rgba($color-tertiary, 0.50);
-    text-transform: uppercase;
-    transition    : color $transition-fast;
-    text-decoration: none;
-
-    &:hover {
-      color: $color-primary-light;
+    @include md {
+        display      : block;
+        text-align   : center;
+        margin-bottom: $sp-3;
     }
-  }
+}
 
-  &__copy {
+.ft-footer__links {
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    gap            : $sp-4;
+    flex-wrap      : wrap;
+
+    @include sm { gap: $sp-3; }
+}
+
+.ft-footer__link {
+    font-family    : $font-body;
+    font-size      : $font-size-sm;
+    color          : rgba($color-tertiary, 0.45);
+    text-decoration: none;
+    letter-spacing : 0.5px;
+    transition     : color $transition-fast;
+
+    &:hover { color: $color-primary-light; }
+
+    @include sm { font-size: $font-size-xs; }
+}
+
+.ft-footer__copy {
     font-family: $font-body;
-    font-size  : $font-size-xs;
-    color      : rgba($color-tertiary, 0.35);
+    font-size  : $font-size-sm;
+    color      : rgba($color-tertiary, 0.3);
     margin     : 0;
-  }
 
-  // ── Ajustes Responsivos de Fallback ────────────────────────
-  @include md {
-    &__cta     { padding: $sp-6 $sp-3; }
-    &__cta-btn { padding: $sp-3 $sp-6; font-size: $font-size-xs; }
-    &__links   { justify-content: center; gap: $sp-3; }
-  }
+    @include md { text-align: center; }
+}
+
+// ============================================================
+// KEYFRAMES E DETECTORES TÁTICOS
+// ============================================================
+
+@keyframes ftRotateBorder {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes ftStatReveal {
+    from {
+        opacity  : 0;
+        transform: translate3d(0, 25px, 0);
+    }
+    to {
+        opacity  : 1;
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+@keyframes ftStatFloatMain {
+    0% {
+        transform: translate3d(0, 0, 0);
+    }
+    100% {
+        transform: translate3d(0, -18px, 0);
+    }
+}
+
+// ── ATIVAÇÃO PELO OBSERVER ───────────────────────────────────
+[data-visible="true"] {
+    .ft-footer__stat {
+        animation-play-state: running;
+    }
+
+    .ft-footer__cta {
+        opacity  : 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .ft-footer__cta-line { width: 100px; }
+
+    .ft-footer__legal { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .ft-footer__stat {
+        animation: ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+    }
 }

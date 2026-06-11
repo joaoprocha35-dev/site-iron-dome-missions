@@ -6,19 +6,18 @@ import styles from './DirectivesCard.module.scss'
 export default function DirectivesCard() {
     // Dados do Calendário com o mês de Julho ativado
 const timelineData = [
-    { id: 1, date: 'JAN 2026', title: 'Regional Centro', active: false },
-    { id: 2, date: 'MAR 2026', title: 'Missão Leste', active: false },
+    { id: 1, date: 'JAN 2026', title: 'Reunião', active: false },
+    { id: 2, date: 'MAR 2026', title: 'Retiro Iron dome', active: false },
     { id: 3, date: 'MAI 2026', title: 'Congresso Nacional', active: false },
-    { id: 4, date: 'JUL 2026', title: 'Retiro de Joves', active: true }, // 🗓️ Julho agora está ativo e vai pulsar!
-    { id: 5, date: 'SET 2026', title: 'Missão Sul', active: false },
+    { id: 4, date: 'JUL 2026', title: 'Retiro iron dome', active: true }, // 🗓️ Julho agora está ativo e vai pulsar!
+    { id: 5, date: 'SET 2026', title: 'Reunião e alinhamento', active: false },
     { id: 6, date: 'NOV 2026', title: 'Conferência Iron', active: false },
     { id: 7, date: 'DEZ 2026', title: 'Encerramento', active: false },
 ];
 
     const scheduleData = [
-        { id: 1, day: 'SEXTA', events: '20:00 - Chegada e Acomodação | 22:00 - Culto de Abertura' },
-        { id: 2, day: 'SÁBADO', events: '08:00 - Café da Manhã | 10:00 - Dinâmicas | 15:00 - Louvor | 20:00 - Vigília' },
-        { id: 3, day: 'DOMINGO', events: '09:00 - Testemunhos | 12:00 - Almoço de Encerramento | 14:00 - Despedida' },
+        { id: 1, day: 'SÁBADO', events: '08:00 - Palestra - 09:00 á 12:00 | 12:00 - almoço.' },
+        { id: 2, day: 'DOMINGO', events: '08:00 - Café da manhã | Palestra - 9:00 - 12:00 | 12:00 - Almoço | 14:00 - Palestra | 15:00 - Momento Iron.' },
     ];
 
     return (
@@ -62,7 +61,7 @@ const timelineData = [
                 <header className={styles.header}>
                     <h2 className={styles.title}>
                         <span className={styles.icon} aria-hidden="true">🏕️</span>
-                        Cronograma de Retiro de Jovens
+                        Cronograma de Retiro Iron Dome
                     </h2>
                 </header>
 

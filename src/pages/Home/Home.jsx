@@ -16,7 +16,7 @@ export default function Home() {
       {/* 1. Hero / Banner Principal */}
       <HeroBanner />
 
-      {/* 2. Seção: Versículo do Dia */}
+      {/* 2. Seção: Liderança */}
       <section className={styles.section} aria-label="Versículo do dia">
         <div className={styles.container}>
           <VerseOfTheDay />

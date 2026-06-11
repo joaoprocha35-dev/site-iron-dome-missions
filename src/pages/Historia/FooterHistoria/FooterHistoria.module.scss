@@ -20,11 +20,11 @@
 
 .contentWrapper {
   position: relative;
-  z-index: 10; // Fica acima das partículas
+  z-index: 10;
 }
 
 /* ════════════════════════════════════════════════════════════════
-   2. MOTOR DE PARTÍCULAS (NEON BRILHANTE)
+   2. MOTOR DE PARTÍCULAS (COR DE FOGO / FAGULHAS)
 ════════════════════════════════════════════════════════════════ */
 
 .particleContainer {
@@ -33,37 +33,33 @@
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; // Evita que bloqueie cliques do usuário
+  pointer-events: none;
   z-index: 1;
 }
 
 .particle {
   position: absolute;
   bottom: -50px;
-  background: #00ff66;
   border-radius: 50%;
-  box-shadow: 
-    0 0 10px #00ff66,
-    0 0 20px rgba(0, 255, 102, 0.5);
   opacity: 0;
   animation: floatParticle linear infinite;
-  // Aceleração via Hardware para fluidez total:
   will-change: transform, opacity;
 }
 
 @keyframes floatParticle {
   0% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
     opacity: 0;
   }
   15% {
-    opacity: 0.8;
+    opacity: 0.9;
   }
   85% {
-    opacity: 0.8;
+    opacity: 0.6;
+    transform: translateY(-600px) scale(0.6);
   }
   100% {
-    transform: translateY(-800px); // Sobe 800px na tela
+    transform: translateY(-800px) scale(0.1);
     opacity: 0;
   }
 }
@@ -111,27 +107,80 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
-   4. BOTÃO DE AÇÃO (CTA) - ESTILO ARSENAL
+   4. BLOCO DE AÇÕES E BOTÕES (PRINCIPAL + RETORNO HOME)
 ════════════════════════════════════════════════════════════════ */
+
+.actionBlockContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
 
 .actionBlock {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
+@keyframes microFloatHorizontal {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(6px); }
+}
+
+@keyframes borderRadarRotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+// ── BOTÃO DE ADORADORES: BORDA ROTATIVA INFINITA + PRETO PURO ──
 .tacticalButton {
   position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(0, 255, 102, 0.05);
-  border: 1px solid #00ff66;
-  padding: 18px 40px;
-  border-radius: 4px;
+  justify-content: center;
   text-decoration: none;
+  border-radius: 6px;
   overflow: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 20px rgba(0, 255, 102, 0.1);
+  padding: 2px; // Espessura exata da borda laser
+  background: transparent;
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  // Linha laser contínua e INFINITA por trás
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: conic-gradient(
+      transparent, 
+      rgba(0, 255, 102, 0.1) 30%, 
+      #00ff66 50%, 
+      transparent 70%
+    );
+    animation: borderRadarRotation 3.5s linear infinite; // Rotação infinita e contínua ativada
+    will-change: transform;
+  }
+
+  .tacticalButtonContent {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    background-color: #000000 !important; // Fundo 100% ultra-black fixo
+    padding: 18px 40px;
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.3s ease;
+  }
 
   .btnText {
     color: #00ff66;
@@ -141,56 +190,93 @@
     font-family: $font-headline;
     text-transform: uppercase;
     transition: color 0.3s ease;
-    z-index: 2;
   }
 
   .btnIcon {
     width: 24px;
     height: 24px;
     color: #00ff66;
-    transition: transform 0.3s ease, color 0.3s ease;
-    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease, transform 0.3s ease;
   }
 
-  /* Scanline interna (Efeito Radar) */
-  .scanline {
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(0, 255, 102, 0.4),
-      transparent
-    );
-    transform: skewX(-20deg);
-    transition: none;
-    z-index: 1;
+  .floatingIcon {
+    animation: microFloatHorizontal 1.5s ease-in-out infinite;
+    will-change: transform;
   }
 
   &:hover {
-    background: #00ff66;
-    box-shadow: 
-      0 0 30px rgba(0, 255, 102, 0.4),
-      0 0 10px rgba(0, 255, 102, 0.2) inset;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 255, 102, 0.25);
 
-    .btnText, .btnIcon {
-      color: #051409; // Fica escuro quando o fundo brilha verde
+    &::before {
+      animation-duration: 1.8s; // Acelera o giro de feedback no hover
+    }
+
+    .tacticalButtonContent {
+      background-color: #050505 !important; // Preserva o preto absoluto
+    }
+
+    .btnText {
+      color: #ffffff; // Texto brilha em branco sob foco
     }
 
     .btnIcon {
-      transform: translateX(5px); // Seta empurra para a direita
+      animation-play-state: paused;
+      transform: translate3d(4px, 0, 0);
+      color: #ffffff;
     }
+  }
 
-    .scanline {
-      animation: scanSweep 0.6s ease-out forwards;
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ── CTA SECUNDÁRIO E PEQUENO: LINK DE VOLTA PARA A HOME ──
+.backHomeBlock {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}
+
+.backHomeLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Monospace', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  text-decoration: none;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+
+  .backHomeIcon {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    color: #00ff66; // Transição suave para o verde neon do ecossistema
+    border-color: rgba(0, 255, 102, 0.15);
+    background-color: rgba(0, 255, 102, 0.02);
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
+
+    .backHomeIcon {
+      transform: translate3d(-4px, 0, 0); // Pequeno recuo responsivo tático na seta
     }
   }
 }
 
-@keyframes scanSweep {
-  0% { left: -100%; }
-  100% { left: 200%; }
+@media (prefers-reduced-motion: reduce) {
+  .tacticalButton::before, .floatingIcon, .backHomeLink .backHomeIcon {
+    animation: none !important;
+    transform: none !important;
+  }
 }
