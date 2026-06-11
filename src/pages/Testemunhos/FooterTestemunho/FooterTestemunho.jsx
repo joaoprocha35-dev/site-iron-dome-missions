@@ -5,7 +5,7 @@
 
 import React, { useEffect, useRef, useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from './footerTestemunho.module.scss';
+import styles from './FooterTestemunho.module.scss';
 import FooterParticles from './FooterParticles';
 
 // ── Constantes de conteúdo direcionadas aos Veteranos/Servos ──

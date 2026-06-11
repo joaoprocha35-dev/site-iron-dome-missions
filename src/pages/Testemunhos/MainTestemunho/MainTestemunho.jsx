@@ -40,7 +40,7 @@
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import styles from './mainTestemunho.module.scss';
+import styles from './MainTestemunho.module.scss';
 
 // ── Dados dos 12 testemunhos (Alternando entre Encontristas e Servos) ──
 const TESTIMONIALS_DATA = [

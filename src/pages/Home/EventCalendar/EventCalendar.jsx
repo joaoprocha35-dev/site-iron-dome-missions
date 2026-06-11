@@ -27,7 +27,7 @@ import abraco02 from '../../../assets/imagensHome/abraco02.png';
 import ministracao from '../../../assets/imagensHome/ministracao.png';
 import ministracao02 from '../../../assets/imagensHome/ministracao02.png';
 import familiaLider from '../../../assets/imagensHome/familia-lider.png';
-import duda from '../../../assets/imagensHome/duda.png';
+import duda from '../../../assets/imagensHome/duda.PNG';
 import mulherad from '../../../assets/imagensHome/mulher-ad.png'; 
 import baterista01 from '../../../assets/imagensHome/baterista01.png';
 import adoracao01 from '../../../assets/imagensHome/adoracao01.png';

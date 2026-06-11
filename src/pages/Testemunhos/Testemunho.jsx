@@ -19,9 +19,9 @@
 import React from 'react';
 import styles from './Testemunho.module.scss';
 
-import HeaderTestemunho from './HeaderTestemunho/headerTestemunho';
-import MainTestemunho   from './MainTestemunho/mainTestemunho';
-import FooterTestemunho from './FooterTestemunho/footerTestemunho';
+import HeaderTestemunho from './HeaderTestemunho/HeaderTestemunho';
+import MainTestemunho   from './MainTestemunho/MainTestemunho';
+import FooterTestemunho from './FooterTestemunho/FooterTestemunho';
 
 const Testemunho = () => {
   return (

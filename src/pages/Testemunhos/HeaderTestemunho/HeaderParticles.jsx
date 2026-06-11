@@ -4,7 +4,7 @@
 // ============================================================
 
 import React, { useMemo } from 'react';
-import styles from './headerParticles.module.scss';
+import styles from './HeaderParticles.module.scss';
 
 const HeaderParticles = () => {
   // Configuração de performance e responsividade calculada na montagem
