@@ -8,8 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Layout from './components/Layout/Layout'
 
 // Páginas Reais
-import LandingPage from './pages/LandingPage/LandingPage'
-import Historia from './pages/Historia/Historia'
+import LandingPage from "./pages/LandingPage/LandingPage.jsx";
 import Home from './pages/Home/Home'
 import Testemunhos from "./pages/Testemunhos/Testemunho.jsx";
 
