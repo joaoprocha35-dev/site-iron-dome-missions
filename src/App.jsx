@@ -28,6 +28,7 @@ export default function App() {
           <Route path="/historia" element={<Historia />} />
           <Route path="/testemunho" element={<Testemunhos />} />
 
+
         </Route>
         
         {/* Se o usuário digitar qualquer rota inexistente, manda para a Landing Page */}
