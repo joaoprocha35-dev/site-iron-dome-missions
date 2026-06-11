@@ -9,7 +9,8 @@ import Layout from './components/Layout/Layout'
 
 // Páginas Reais
 import LandingPage from "./pages/LandingPage/LandingPage.jsx";
-import Home from './pages/Home/Home'
+import Home from './pages/Home/Home';
+import Historia from "./pages/Historia/Historia";
 import Testemunhos from "./pages/Testemunhos/Testemunho.jsx";
 
 // Estilos globais (Carregados na ordem correta)
