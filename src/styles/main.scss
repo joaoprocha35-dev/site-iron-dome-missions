@@ -3,7 +3,7 @@
 @use 'mixins' as *;
 @use 'reset';
 // Importando a estrutura bruta do Bootstrap
-@import 'bootstrap/scss/bootstrap';
+@use 'bootstrap/scss/bootstrap';
 
 // Estilos globais para o tema tático escuro do Iron Dome
 body {
