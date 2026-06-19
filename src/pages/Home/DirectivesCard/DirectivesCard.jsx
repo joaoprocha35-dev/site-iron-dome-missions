@@ -1,33 +1,54 @@
 // ============================================================
-// DirectivesCard/index.jsx (Versão Animada Avançada)
+// DirectivesCard/index.jsx (Versão Final com Scroll e Sincronia)
 // ============================================================
-import styles from './DirectivesCard.module.scss'
+import { useEffect, useRef, useState } from 'react';
+import styles from './DirectivesCard.module.scss';
 
 export default function DirectivesCard() {
-    // Dados do Calendário com o mês de Julho ativado
-const timelineData = [
-    { id: 1, date: 'JAN 2026', title: 'Reunião', active: false },
-    { id: 2, date: 'MAR 2026', title: 'Retiro Iron dome', active: false },
-    { id: 3, date: 'MAI 2026', title: 'Congresso Nacional', active: false },
-    { id: 4, date: 'JUL 2026', title: 'Retiro iron dome', active: true }, // 🗓️ Julho agora está ativo e vai pulsar!
-    { id: 5, date: 'SET 2026', title: 'Reunião e alinhamento', active: false },
-    { id: 6, date: 'NOV 2026', title: 'Conferência Iron', active: false },
-    { id: 7, date: 'DEZ 2026', title: 'Encerramento', active: false },
-];
+    const [isVisible, setIsVisible] = useState(false);
+    const cardRef = useRef(null);
 
-    const scheduleData = [
-        { id: 1, day: 'SÁBADO', events: '08:00 - Palestra - 09:00 á 12:00 | 12:00 - almoço.' },
-        { id: 2, day: 'DOMINGO', events: '08:00 - Café da manhã | Palestra - 9:00 - 12:00 | 12:00 - Almoço | 14:00 - Palestra | 15:00 - Momento Iron.' },
+    const timelineData = [
+        { id: 1, date: 'JAN 2026', title: 'Reunião', active: false },
+        { id: 2, date: 'MAR 2026', title: 'Retiro Iron dome', active: false },
+        { id: 3, date: 'MAI 2026', title: 'Reunião de alinhamento', active: false },
+        { id: 4, date: 'JUL 2026', title: 'Retiro iron dome', active: true }, //  Alvo da animação
+        { id: 5, date: 'SET 2026', title: 'Novidades em breve', active: false },
+        { id: 6, date: 'NOV 2026', title: 'Local e tema a definir', active: false },
+        { id: 7, date: 'DEZ 2026', title: 'Encerramento', active: false },
     ];
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setIsVisible(true);
+                    if (cardRef.current) observer.unobserve(cardRef.current);
+                }
+            },
+            {
+                threshold: 0.4, // Ativa exatamente quando 40% do componente estiver visível
+            }
+        );
+
+        if (cardRef.current) {
+            observer.observe(cardRef.current);
+        }
+
+        return () => {
+            if (cardRef.current) observer.disconnect();
+        };
+    }, []);
+
     return (
-        <article className={styles.cardContainer}>
-            
-            {/* SEÇÃO 1: Calendário de Encontros */}
+        <article 
+            ref={cardRef} 
+            className={`${styles.cardContainer} ${isVisible ? styles.isVisible : ''}`}
+        >
             <section className={styles.section}>
                 <header className={styles.header}>
                     <h2 className={styles.title}>
-                        <span className={styles.icon} aria-hidden="true">🗓️</span>
+                        <span className={styles.icon} aria-hidden="true"></span>
                         Calendário de Encontros 2026
                     </h2>
                 </header>
@@ -37,13 +58,18 @@ const timelineData = [
                 </p>
 
                 <div className={styles.timeline}>
+                    {/* Linha guia de fundo (cinza) */}
                     <div className={styles.timelineLine}></div>
+                    
+                    {/* Linha de progresso animada (verde) */}
+                    <div className={styles.timelineProgress}></div>
+                    
                     <div className={styles.timelineGrid}>
                         {timelineData.map((item, index) => (
                             <div 
                                 key={item.id} 
                                 className={styles.timelineItem}
-                                style={{ '--item-index': index }} // Controla o delay da animação
+                                style={{ '--item-index': index }}
                             >
                                 <div className={`${styles.dot} ${item.active ? styles.dotActive : ''}`}></div>
                                 <h3 className={styles.timeDate}>{item.date}</h3>
@@ -53,32 +79,6 @@ const timelineData = [
                     </div>
                 </div>
             </section>
-
-            <hr className={styles.divider} />
-
-            {/* SEÇÃO 2: Cronograma */}
-            <section className={styles.section}>
-                <header className={styles.header}>
-                    <h2 className={styles.title}>
-                        <span className={styles.icon} aria-hidden="true">🏕️</span>
-                        Cronograma de Retiro Iron Dome
-                    </h2>
-                </header>
-
-                <ul className={styles.scheduleList}>
-                    {scheduleData.map((item, index) => (
-                        <li 
-                            key={item.id} 
-                            className={styles.scheduleItem}
-                            style={{ '--item-index': index }} // Controla o delay da lista
-                        >
-                            <div className={styles.scheduleDay}>{item.day}</div>
-                            <div className={styles.scheduleEvents}>{item.events}</div>
-                        </li>
-                    ))}
-                </ul>
-            </section>
-
         </article>
-    )
+    );
 }

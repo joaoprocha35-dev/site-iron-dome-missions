@@ -28,18 +28,23 @@ import abraco02 from '../../../assets/imagensHome/abraco02.png';
 import ministracao from '../../../assets/imagensHome/ministracao.png';
 import ministracao02 from '../../../assets/imagensHome/ministracao02.png';
 import familiaLider from '../../../assets/imagensHome/familia-lider.png';
-import duda from '../../../assets/imagensHome/duda.PNG'; // EXTENSÃO CORRIGIDA PARA .PNG MAIÚSCULO
+import duda from '../../../assets/imagensHome/duda.png'; // EXTENSÃO CORRIGIDA PARA .PNG MAIÚSCULO
 import mulherad from '../../../assets/imagensHome/mulher-ad.png'; 
-import baterista01 from '../../../assets/imagensHome/baterista01.png';
-import adoracao01 from '../../../assets/imagensHome/adoracao01.png';
-import adoracao02 from '../../../assets/imagensHome/adoracao02.png'; 
+import baterista01 from '../../../assets/imagensHome/baterista01.jpg';
+import adoracao01 from '../../../assets/imagensHome/adoracao01.jpg';
+import adoracao02 from '../../../assets/imagensHome/amigos02.png'; 
 import adoracao03 from '../../../assets/imagensHome/adoracao03.jpg'; 
-import bastidores04 from '../../../assets/imagensHome/bastidores04.jpg';
-import bastidores05 from '../../../assets/imagensHome/bastidores05.jpg';
-import bastidores06 from '../../../assets/imagensHome/bastidores06.jpg';
+import bastidores04 from '../../../assets/imagensHome/bastidores04.png';
+import bastidores05 from '../../../assets/imagensHome/bastidores05.png';
+import bastidores06 from '../../../assets/imagensHome/bastidores06.png';
 import jovem from '../../../assets/imagensHome/jovem.jpg';
 import jovem2 from '../../../assets/imagensHome/jovem2.jpg';
 import jovem3 from '../../../assets/imagensHome/jovem3.jpg';
+import intercessao01 from '../../../assets/imagensHome/intercessao01.png';
+import intercessao02 from '../../../assets/imagensHome/intercessao02.jpg';
+import intercessao03 from '../../../assets/imagensHome/intercessao03.png';
+import intercessao04 from '../../../assets/imagensHome/intercessao04.jpg';
+
 
 function useInViewport(options = { rootMargin: '120px', threshold: 0.05 }) {
   const ref = useRef(null);
@@ -169,7 +174,8 @@ export default function EventCalendar() {
     <article className={styles.gallerySection}>
       <header className={styles.galleryHeader}>
         <h2 className={styles.galleryTitle}>
-          <span className={styles.titlePrefix}>✦</span> Registro das Missões do Iron Dome
+          {/* ADICIONADO: Troca do caractere ✦ pelo emoji tático de escudo 🛡️ solicitado pelo usuário */}
+          <span className={styles.titlePrefix}>🛡️</span> Registro das Missões do Iron Dome
         </h2>
         <div className={styles.tacticalLine}></div>
       </header>
@@ -178,12 +184,12 @@ export default function EventCalendar() {
       <section className={styles.squadBlock}>
         <SquadHeader title="SQUAD 01 // Grupo de Louvores e Adoradores" groupIdx={0} />
         <div className={styles.gridContainer}>
-          <GridSlot src={louvor02} caption="Nossos voluntários servindo com alegria." absoluteIndex={0} localIndex={0} />
-          <GridSlot src={louvor03} caption="Instruções e alinhamento do propósito." absoluteIndex={1} localIndex={1} />
-          <GridSlot src={louvor04} caption="Cada membro é fundamental." absoluteIndex={2} localIndex={2} />
-          <GridSlot src={duda} caption="Cada membro é fundamental." absoluteIndex={3} localIndex={3} />
-          <GridSlot src={mulherad} caption="Cada membro é fundamental." absoluteIndex={4} localIndex={4} />
-          <GridSlot src={baterista01} caption="Cada membro é fundamental." absoluteIndex={5} localIndex={5} />
+          <GridSlot src={louvor02} caption="Ministrando ao Senhor com foco e sensibilidade." absoluteIndex={0} localIndex={0} />
+          <GridSlot src={louvor03} caption="Liderança no Altar: Conduzindo o Squad com o coração totalmente entregue." absoluteIndex={1} localIndex={1} />
+          <GridSlot src={louvor04} caption="Sincronia Tática: Homens de Deus servindo juntos na linha de frente." absoluteIndex={2} localIndex={2} />
+          <GridSlot src={duda} caption="Entrega Absoluta: Uma adoradora totalmente rendida à presença de Deus." absoluteIndex={3} localIndex={3} />
+          <GridSlot src={mulherad} caption="Rede de Intercessão: Mãos levantadas e corações rendidos ao Criador." absoluteIndex={4} localIndex={4} />
+          <GridSlot src={baterista01} caption="Ritmo e Devoção: Cada batida como um ato de entrega e adoração ao Rei." absoluteIndex={5} localIndex={5} />
         </div>
       </section>
 
@@ -191,38 +197,38 @@ export default function EventCalendar() {
       <section className={styles.squadBlock}>
         <SquadHeader title="SQUAD 02 // O que acontece nos bastidores" groupIdx={1} />
         <div className={styles.gridContainer}>
-          <GridSlot src={amigos04} caption="Servindo ao Próximo com alegria." absoluteIndex={6} localIndex={0} />
-          <GridSlot src={amigos05} caption="Comunhão e amizade que fortalecem." absoluteIndex={7} localIndex={1} />
-          <GridSlot src={amigos01} caption="Servindo com alegria e trabalho em equipe." absoluteIndex={8} localIndex={2} />
-          <GridSlot src={bastidores04} caption="Servindo com alegria e trabalho em equipe." absoluteIndex={9} localIndex={3} />
-          <GridSlot src={bastidores05} caption="Servindo com alegria e trabalho em equipe." absoluteIndex={10} localIndex={4} />
-          <GridSlot src={bastidores06} caption="Servindo com alegria e trabalho em equipe." absoluteIndex={11} localIndex={5} />
+          <GridSlot src={amigos04} caption="Cuidar dos detalhes mais simples é um ato de adoração." absoluteIndex={6} localIndex={0} />
+          <GridSlot src={amigos05} caption="Lavando e servindo com a alegria que vem do Senhor." absoluteIndex={7} localIndex={1} />
+          <GridSlot src={amigos01} caption="Servindo com Excelência: Cada detalhe preparado para abençoar o próximo." absoluteIndex={8} localIndex={2} />
+          <GridSlot src={bastidores04} caption="Alegria no Serviço: Voluntários focados em fazer a diferença nos bastidores." absoluteIndex={9} localIndex={3} />
+          <GridSlot src={bastidores05} caption="O Coração do Iron Dome: O exército de voluntários que faz a missão acontecer." absoluteIndex={10} localIndex={4} />
+          <GridSlot src={bastidores06} caption="Descanso e Comunhão: Filhas unidas pela mesma missão e pelo mesmo amor." absoluteIndex={11} localIndex={5} />
         </div>
       </section>
 
       {/* ================= SQUAD 03 ================= */}
       <section className={styles.squadBlock}>
-        <SquadHeader title="SQUAD 03 // ENGAJAMENTO E FORÇA JOVEM" groupIdx={2} />
+        <SquadHeader title="SQUAD 03 // FRUTOS DA MISSÃO: NOVA GERAÇÃO" groupIdx={2} />
         <div className={styles.gridContainer}>
-          <GridSlot src={encontrista02} caption="União e força entre os jovens." absoluteIndex={12} localIndex={0} />
-          <GridSlot src={encontrista03} caption="Alegria que contagia a todos." absoluteIndex={13} localIndex={1} />
-          <GridSlot src={encontrista04} caption="Novas amizades, novas história" absoluteIndex={14} localIndex={2} />
-          <GridSlot src={jovem} caption="Novas amizades, novas história" absoluteIndex={15} localIndex={3} />
-          <GridSlot src={jovem2} caption="Novas amizades, novas história" absoluteIndex={16} localIndex={4} />
+          <GridSlot src={encontrista02} caption="Identidade Confirmada: Uma nova história iniciada no altar do Senhor." absoluteIndex={12} localIndex={0} />
+          <GridSlot src={encontrista03} caption="Alegria do Resgate: A celebração de quem encontrou um novo propósito." absoluteIndex={13} localIndex={1} />
+          <GridSlot src={encontrista04} caption="Posicionamento e Alinhamento: Homens curados para curar esta geração." absoluteIndex={14} localIndex={2} />
+          <GridSlot src={jovem} caption="Legado que Permanece: Amizades geradas e firmadas na rocha eterna." absoluteIndex={15} localIndex={3} />
+          <GridSlot src={jovem2} caption="Legado que Permanece: Amizades geradas e firmadas na rocha eterna." absoluteIndex={16} localIndex={4} />
           <GridSlot src={jovem3} caption="Novas amizades, novas história" absoluteIndex={17} localIndex={5} />
         </div>
       </section>
 
       {/* ================= SQUAD 04 ================= */}
       <section className={styles.squadBlock}>
-        <SquadHeader title="SQUAD 04 // ESTRATÉGIA MINISTERIAL E IDENTIDADE" groupIdx={3} />
+        <SquadHeader title="SQUAD 04 // TRANSMISSÃO DE IDENTIDADE E CURA" groupIdx={3} />
         <div className={styles.gridContainer}>
-          <GridSlot src={ministracao} caption="Alinhamento estratégico ministerial." absoluteIndex={18} localIndex={0} />
-          <GridSlot src={ministracao02} caption="Fortalecendo nossa identidade em Deus." absoluteIndex={19} localIndex={1} />
-          <GridSlot src={amigos03} caption="União tática das lideranças." absoluteIndex={20} localIndex={2} />
-          <GridSlot src={adoracao01} caption="Cada membro é fundamental." absoluteIndex={21} localIndex={3} />
-          <GridSlot src={adoracao02} caption="Cada membro é fundamental." absoluteIndex={22} localIndex={4} />
-          <GridSlot src={adoracao03} caption="Cada membro é fundamental." absoluteIndex={23} localIndex={5} />
+          <GridSlot src={ministracao} caption="Direcionamento Estratégico: Ativação ministerial através do ensino e da Palavra." absoluteIndex={18} localIndex={0} />
+          <GridSlot src={ministracao02} caption="Paternidade e Instrução: Conduzindo a liderança com clareza e autoridade espiritual." absoluteIndex={19} localIndex={1} />
+          <GridSlot src={amigos03} caption="Cura e Acolhimento: O abraço que restaura a identidade e edifica a caminhada." absoluteIndex={20} localIndex={2} />
+          <GridSlot src={adoracao01} caption="Intensidade no Altar: Uma ministra clamando e liberando a verdade de Deus sobre a igreja." absoluteIndex={21} localIndex={3} />
+          <GridSlot src={adoracao02} caption="Fraternidade e Aliança: Líderes unidos pelo mesmo propósito em um abraço de alegria." absoluteIndex={22} localIndex={4} />
+          <GridSlot src={adoracao03} caption="Mentoria e Cuidado: O suporte e a cobertura espiritual necessários para firmar os passos da nova geração." absoluteIndex={23} localIndex={5} />
         </div>
       </section>
 
@@ -230,9 +236,12 @@ export default function EventCalendar() {
       <section className={styles.squadBlock}>
         <SquadHeader title="SQUAD 05 // LINHA DE FRENTE: INTERCESSÃO E ADORAÇÃO" groupIdx={4} />
         <div className={styles.gridContainer}>
-          <GridSlot src={abraco01} caption="Acolhimento e ministração profunda." absoluteIndex={24} localIndex={0} />
-          <GridSlot src={ministracao} caption="O agir que quebra as barreiras." absoluteIndex={25} localIndex={1} />
-          <GridSlot src={oracao04} caption="Firmes em oração sobre o mesmo fundamento." absoluteIndex={26} localIndex={2} />
+          <GridSlot src={abraco01} caption="Acolhimento e Alívio: O momento em que o fardo é compartilhado e a cura acontece pelo abraço." absoluteIndex={24} localIndex={0} />
+          <GridSlot src={intercessao01} caption="Clamor em Unidade: Jovens posicionados na brecha, intercedendo com o coração quebrantado." absoluteIndex={25} localIndex={1} />
+          <GridSlot src={oracao04} caption="Total Dependência: Dobrando os joelhos no chão para erguer um escudo de proteção sobre a igreja." absoluteIndex={26} localIndex={2} />
+          <GridSlot src={intercessao02} caption="Entrega e Rendição: Onde as fraquezas humanas encontram a força e o consolo do Pai." absoluteIndex={26} localIndex={2} />
+          <GridSlot src={intercessao03} caption="Blindagem em Ação: Uma liderança posicionada e com os olhos fixos no trono da graça." absoluteIndex={26} localIndex={2} />
+          <GridSlot src={intercessao04} caption="Sustentação Fraterna: O cuidado tático de um irmão que segura as pontas e ora pelo outro na batalha." absoluteIndex={26} localIndex={2} />
         </div>
       </section>
 

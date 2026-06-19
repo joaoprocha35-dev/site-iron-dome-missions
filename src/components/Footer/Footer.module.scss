@@ -5,10 +5,10 @@
 @use '../../styles/mixins' as *;
 
 .footer {
-  border-top      : 1px solid $color-border;
-  background-color: #111111;
-  padding         : $sp-4 0;
-  margin-top      : $sp-6;
+  border-top: 1px solid rgba($color-border, 0.5); // Linha mais sutil e elegante
+  background-color: #0d0d0d; // Um tom ligeiramente mais profundo e premium que #111
+  padding: $sp-5 0; // Um pouco mais de espaço vertical
+  margin-top: $sp-8;
 }
 
 .inner {
@@ -16,28 +16,70 @@
 }
 
 .brand {
-  font-family   : $font-headline;
-  font-size     : $font-size-md;
-  font-weight   : $font-weight-black;
-  color         : #ffffff;
-  letter-spacing: 0.5px;
+  font-family: $font-headline;
+  font-size: $font-size-md;
+  font-weight: $font-weight-black;
+  color: #ffffff;
+  letter-spacing: 1px; // Espaçamento levemente maior para um ar mais institucional
 }
 
 .copy {
-  font-size  : $font-size-xs;
-  color      : $color-tertiary;
-  margin     : 0;
+  font-size: $font-size-xs;
+  color: rgba($color-tertiary, 0.8);
+  font-weight: 500;
+  margin: 0;
+}
+
+// Classe para a atribuição da imagem de forma discreta e profissional
+.attribution {
+  font-size: calc(#{$font-size-xs} - 2px); // Um pouco menor que o copy principal
+  color: rgba($color-tertiary, 0.5);
+  margin: $sp-1 0 0 0;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: #ffffff;
+    }
+  }
 }
 
 .links {
   @include flex-center;
-  gap: $sp-4;
+  gap: $sp-5; // Espaçamento ligeiramente maior entre os links
 
   a {
-    font-size  : $font-size-xs;
-    color      : $color-tertiary;
-    transition : color $transition-fast;
+    font-size: $font-size-xs;
+    color: $color-tertiary;
+    text-decoration: none;
+    position: relative;
+    transition: color $transition-fast;
 
-    &:hover { color: #ffffff; }
+    // Efeito sutil de sublinhado profissional no hover
+    &::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      transform: scaleX(0);
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: #ffffff;
+      transform-origin: bottom right;
+      transition: transform 0.25s ease-out;
+    }
+
+    &:hover {
+      color: #ffffff;
+      
+      &::after {
+        transform: scaleX(1);
+        transform-origin: bottom left;
+      }
+    }
   }
 }

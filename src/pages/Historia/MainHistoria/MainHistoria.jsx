@@ -13,6 +13,19 @@
  * cadentes lineares em posições pseudo-aleatórias através de todo o plano de fundo.
  * O efeito de sumiço ("fade-out") e translação vertical reage ao ciclo de animação
  * contínuo e às proporções dinâmicas de dimensionamento da seção.
+ *
+ * ATUALIZAÇÃO — MÍDIA EXPANDIDA:
+ * O texto descritivo de cada card foi movido para dentro do .imageWrapper,
+ * sobreposto à própria imagem (com gradiente de legibilidade definido no SCSS),
+ * eliminando o espaço vazio que sobrava abaixo da imagem em cada card.
+ *
+ * ATUALIZAÇÃO 2 — TEXTO ABAIXO DA IMAGEM, DENTRO DO CARD (MOBILE):
+ * A <p className={styles.mediaDescription}> deixou de ficar DENTRO do
+ * .imageWrapper (que tem overflow:hidden e, no mobile, altura fixa — o que
+ * cortaria o texto). Agora ela é irmã do .imageWrapper, ambas dentro do
+ * .mediaContainer, que por sua vez já está dentro do .timelineContentWrapper
+ * (o card). Resultado: a imagem mantém altura fixa e a descrição flui
+ * normalmente abaixo dela, sem ser cortada e sem vazar para fora do card.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -20,23 +33,26 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './MainHistoria.module.scss';
 
 // ─── IMPORTAÇÃO MANUAL DO ACERVO DE MÍDIA CRIPTOGRAFADO ──────────────────────
-import Lideranca   from '../../../assets/imagensHistoria/lideranca.png';
-import CasaOracao  from '../../../assets/imagensHistoria/casa-oracao.png';
-import Joao        from '../../../assets/imagensHistoria/joao.png';
-import Familia01   from '../../../assets/imagensHistoria/familia01.png';
-import Oracao04    from '../../../assets/imagensHistoria/oracao04.png';
-import Adoracao01  from '../../../assets/imagensHistoria/adoracao01.png';
-import Adoracao02  from '../../../assets/imagensHistoria/adoracao02.png';
-import Adoracao03  from '../../../assets/imagensHistoria/adoracao03.jpg';
+import Lideranca from '../../../assets/imagensHistoria/lideranca.png';
+import CasaOracao from '../../../assets/imagensHistoria/casa-oracao.png';
+import Familia01 from '../../../assets/imagensHistoria/familia01.png';
+import Oracao04 from '../../../assets/imagensHistoria/oracao04.png';
+import Adoracao03 from '../../../assets/imagensHistoria/adoracao03.jpg';
+import foto01 from '../../../assets/imagensHistoria/foto01.png';
+import foto02 from '../../../assets/imagensHistoria/foto02.png';
+import foto03 from '../../../assets/imagensHistoria/foto03.png';
+import foto04 from '../../../assets/imagensHistoria/foto04.png';
+import foto05 from '../../../assets/imagensHistoria/foto05.png';
+import foto06 from '../../../assets/imagensHistoria/foto06.png';
 
 // Parâmetros estáticos de calibração fina da interface
 const HYSTERESIS = 6;
 
 export default function MainHistoria() {
-  const sectionRef  = useRef(null);
+  const sectionRef = useRef(null);
   const timelineRef = useRef(null);
-  const rafRef      = useRef(null);
-  const canvasRef   = useRef(null);
+  const rafRef = useRef(null);
+  const canvasRef = useRef(null);
 
   // Estados de controle de renderização e visibilidade tática
   const [isVisible, setIsVisible] = useState(false);
@@ -52,7 +68,8 @@ export default function MainHistoria() {
     5: undefined,
     6: undefined,
     7: undefined,
-    8: undefined
+    8: undefined,
+    9: undefined
   });
 
   /**
@@ -161,7 +178,7 @@ export default function MainHistoria() {
     if (!timelineRef.current) return;
 
     const rect = timelineRef.current.getBoundingClientRect();
-    const vh   = window.innerHeight;
+    const vh = window.innerHeight;
 
     // Ponto de partida do progresso (cruzamento do gatilho a 66% da tela)
     const triggerTop = rect.top - vh / 1.5;
@@ -280,10 +297,10 @@ export default function MainHistoria() {
       {/* Camada do Canvas */}
       <canvas ref={canvasRef} className={styles.particleCanvasSky} aria-hidden="true" />
 
-      <div className="container-fluid px-md-5" style={{ position: 'relative', zIndex: 3 }}>
+      <div className="container-fluid" style={{ position: 'relative', zIndex: 3 }}>
 
         {/* ─── HEADER DA SEÇÃO ─── */}
-        <div className="row align-items-start justify-content-between gy-5 mb-5">
+        <div className="row align-items-start justify-content-between gy-5 mb-5" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
           <div className="col-12 col-lg-6 text-start">
             <span className={`${styles.badgeTactical} ${styles.animTopDown} text-uppercase mb-4 d-inline-block`}>
               Origem &amp; Propósito
@@ -338,7 +355,7 @@ export default function MainHistoria() {
         </div>
 
         {/* ─── CORPO DA TIMELINE EXPLICITA ─── */}
-        <div className="row mt-5 pt-3 justify-content-center">
+        <div className="row mt-5 pt-3 justify-content-center" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
           <div className="col-12 col-xl-10">
             <div ref={timelineRef} className={styles.timelineContainer}>
 
@@ -350,9 +367,9 @@ export default function MainHistoria() {
               </div>
 
               {/* ITEM 1: JANEIRO 2024 (LEFT) */}
-              <div 
+              <div
                 data-index="0"
-                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[0] === true ? styles.itemActive : activeItems[0] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[0] === true ? styles.itemActive : activeItems[0] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 0, '--card-enter-x': '-22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 0 ? styles.nodeActive : ''}`}>
@@ -368,16 +385,16 @@ export default function MainHistoria() {
                       <img src={Lideranca} alt="Primeiros encontros" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[DIRETRIZ CORE]:</strong> Início dos primeiros encontros e alinhamento da visão core em Botucatu.
+                      <strong>[DIRETRIZ CORE]:</strong> Início dos primeiros encontros e alinhamento da visão em Botucatu.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 2: MARÇO 2024 (RIGHT) */}
-              <div 
+              <div
                 data-index="1"
-                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[1] === true ? styles.itemActive : activeItems[1] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[1] === true ? styles.itemActive : activeItems[1] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 1, '--card-enter-x': '22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 12 ? styles.nodeActive : ''}`}>
@@ -385,24 +402,24 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2024</span>
-                    <h4 className={styles.timelineMonth}>Março</h4>
+                    <span className={styles.timelineYear}>2008</span>
+                    <h4 className={styles.timelineMonth}>Setembro</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={CasaOracao} alt="Casa de Oração" className="img-fluid" loading="lazy" />
+                      <img src={foto01} alt="Casa de Oração" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[ESTRUTURAÇÃO]:</strong> Estabelecimento da primeira casa de oração oficial para reuniões estratégicas.
+                      <strong>[ESTRUTURAÇÃO]:</strong>[CONCEPÇÃO DA VISÃO]: O marco zero onde a intenção e o desenho estratégico do Iron Dome começaram a ganhar forma.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 3: JULHO 2024 (LEFT) */}
-              <div 
+              <div
                 data-index="2"
-                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[2] === true ? styles.itemActive : activeItems[2] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[2] === true ? styles.itemActive : activeItems[2] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 2, '--card-enter-x': '-22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 24 ? styles.nodeActive : ''}`}>
@@ -410,24 +427,24 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2024</span>
+                    <span className={styles.timelineYear}>2012</span>
                     <h4 className={styles.timelineMonth}>Julho</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Joao} alt="Liderança João" className="img-fluid" loading="lazy" />
+                      <img src={foto02} alt="Liderança João" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[EXPANSÃO]:</strong> Integração de novas lideranças focadas no crescimento do corpo de membros.
+                      <strong>[MISSÃO EM MOVIMENTO]:</strong>O trabalho nos bastidores e a dedicação prática que transportaram os alicerces do Iron Dome.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 4: DEZEMBRO 2024 (RIGHT) */}
-              <div 
+              <div
                 data-index="3"
-                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[3] === true ? styles.itemActive : activeItems[3] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[3] === true ? styles.itemActive : activeItems[3] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 3, '--card-enter-x': '22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 36 ? styles.nodeActive : ''}`}>
@@ -435,24 +452,24 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2024</span>
+                    <span className={styles.timelineYear}>2005</span>
                     <h4 className={styles.timelineMonth}>Dezembro</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Familia01} alt="Família" className="img-fluid" loading="lazy" />
+                      <img src={foto03} alt="Família" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[COMUNHÃO]:</strong> Consolidação dos núcleos familiares e celebração do primeiro ano de avanços.
+                      <strong>[INFRAESTRUTURA TÁTICA]:</strong>A montagem técnica de som e os ajustes iniciais que deram voz aos primeiros passos da nossa caminhada.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 5: MAIO 2025 (LEFT) */}
-              <div 
+              <div
                 data-index="4"
-                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[4] === true ? styles.itemActive : activeItems[4] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[4] === true ? styles.itemActive : activeItems[4] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 4, '--card-enter-x': '-22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 50 ? styles.nodeActive : ''}`}>
@@ -461,23 +478,23 @@ export default function MainHistoria() {
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
                     <span className={styles.timelineYear}>2025</span>
-                    <h4 className={styles.timelineMonth}>Maio</h4>
+                    <h4 className={styles.timelineMonth}>Setembro</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Oracao04} alt="Ação de Oração" className="img-fluid" loading="lazy" />
+                      <img src={foto04} alt="Ação de Oração" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[AÇÃO SOCIAL]:</strong> Desdobramento dos primeiros clamores de rua e suporte às famílias locais.
+                      <strong>[COMUNHÃO E FRUTOS]:</strong>A celebração dos batismos e a união da família Iron Dome colhendo os frutos da nossa missão.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 6: SETEMBRO 2025 (RIGHT) */}
-              <div 
+              <div
                 data-index="5"
-                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[5] === true ? styles.itemActive : activeItems[5] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[5] === true ? styles.itemActive : activeItems[5] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 5, '--card-enter-x': '22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 62 ? styles.nodeActive : ''}`}>
@@ -490,19 +507,19 @@ export default function MainHistoria() {
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Adoracao01} alt="Adoração Intensa" className="img-fluid" loading="lazy" />
+                      <img src={foto05} alt="Adoração Intensa" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[AVIVAMENTO]:</strong> Vigílias e cultos marcados por um ambiente profundo de adoração e quebra de cadeias.
+                      <strong>[ESTRATÉGIA CORE]:</strong>A primeira reunião de alinhamento e preparativos que estruturou a base para o nascimento da nossa primeira edição.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 7: JANEIRO 2026 (LEFT) */}
-              <div 
+              <div
                 data-index="6"
-                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[6] === true ? styles.itemActive : activeItems[6] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[6] === true ? styles.itemActive : activeItems[6] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 6, '--card-enter-x': '-22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 74 ? styles.nodeActive : ''}`}>
@@ -510,24 +527,24 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2026</span>
-                    <h4 className={styles.timelineMonth}>Janeiro</h4>
+                    <span className={styles.timelineYear}>2025</span>
+                    <h4 className={styles.timelineMonth}>Março</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Adoracao02} alt="Planejamento Anual" className="img-fluid" loading="lazy" />
+                      <img src={foto06} alt="Planejamento Anual" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[MATURIDADE]:</strong> Alinhamento tático para a abertura de novas frentes de ação na região metropolitana.
+                      <strong>[EXPANSÃO TERRITORIAL]:</strong>Missão rumo à Paraíba para romper fronteiras e estabelecer a visão do Iron Dome em novas cidades.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 8: MARÇO 2026 (RIGHT) */}
-              <div 
+              <div
                 data-index="7"
-                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[7] === true ? styles.itemActive : activeItems[7] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemRight} ${activeItems[7] === true ? styles.itemActive : activeItems[7] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 7, '--card-enter-x': '22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 86 ? styles.nodeActive : ''}`}>
@@ -540,19 +557,19 @@ export default function MainHistoria() {
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
-                      <img src={Adoracao01} alt="Consagração" className="img-fluid" loading="lazy" />
+                      <img src={Familia01} alt="Consagração" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[SISTEMA ATIVO]:</strong> Formação contínua de oficiais e envio estratégico de equipes para campo.
+                      <strong>[FRUTO DA PROMESSA]:</strong>A emoção de ver as novas gerações passando pelo Iron Dome e dando continuidade ao legado.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* ITEM 9: MAIO 2026 (LEFT) */}
-              <div 
+              <div
                 data-index="8"
-                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[8] === true ? styles.itemActive : activeItems[8] === false ? styles.itemCollapsed : ''}`} 
+                className={`${styles.timelineItem} ${styles.timelineItemLeft} ${activeItems[8] === true ? styles.itemActive : activeItems[8] === false ? styles.itemCollapsed : ''}`}
                 style={{ '--item-index': 8, '--card-enter-x': '-22px' }}
               >
                 <div className={`${styles.timelineNode} ${fillProgress >= 98 ? styles.nodeActive : ''}`}>
@@ -568,7 +585,7 @@ export default function MainHistoria() {
                       <img src={Adoracao03} alt="Consolidação" className="img-fluid" loading="lazy" />
                     </div>
                     <p className={styles.mediaDescription}>
-                      <strong>[STATUS OPERACIONAL]:</strong> Consolidação atual do Iron Dome como um refúgio e farol para a cidade.
+                      <strong>[A PRIMEIRA TURMA]:</strong>O marco histórico da primeira edição em Botucatu, onde nasceram os primeiros veteranos do Iron Dome.
                     </p>
                   </div>
                 </div>
@@ -579,7 +596,7 @@ export default function MainHistoria() {
         </div>
 
         {/* ─── FOOTER DA SEÇÃO ─── */}
-        <div className={styles.finalBridgeContainer}>
+        <div className={styles.finalBridgeContainer} style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
           <hr />
           <span className={styles.bridgeTitle}>
             A HISTÓRIA CONTINUA SENDO ESCRITA

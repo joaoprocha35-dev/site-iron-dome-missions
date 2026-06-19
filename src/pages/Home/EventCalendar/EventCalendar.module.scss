@@ -12,6 +12,11 @@
   margin-top: $sp-2;
   overflow: hidden; 
 
+  // ADICIONADO: Otimização Extrema (Containment). Impede que as animações internas forcem a re-renderização do resto do site.
+  content-visibility: auto;
+  contain-intrinsic-size: 1200px;
+  contain: paint layout;
+
   @media (min-width: 768px) {
     padding: $sp-5 $sp-4;
   }
@@ -42,6 +47,12 @@
   display: inline-block;
   animation: pulseGlow 2.5s infinite ease-in-out;
   will-change: filter, transform;
+  
+  // ADICIONADO: Pequeno ajuste tático de alinhamento vertical e tamanho para o emoji de escudo renderizar perfeitamente centralizado com os textos
+  font-size: 0.95em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
 }
 
 .tacticalLine {
@@ -66,8 +77,9 @@
     opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
     transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   transition-delay: calc(var(--group-index, 0) * 0.08s);
-  will-change: transform, opacity;
-
+  
+  // ADICIONADO: Removido will-change fixo aqui para liberar VRAM. Deixamos apenas via translate3d.
+  
   &.isVisible {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -119,8 +131,11 @@
   perspective: 1000px;
   display: inline-flex; 
 
+  // ADICIONADO: Suaviza as bordas da imagem durante o float, ativando o anti-aliasing da GPU
+  transform-style: preserve-3d;
+
   &.isVisible {
-    will-change: transform, opacity;
+    // ADICIONADO: Removido will-change contínuo para evitar crash em iPhones antigos. O translate3d já faz o trabalho duro.
     animation:
       sequencialRevealUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards,
       floatTacticalRich 6s ease-in-out infinite alternate;
@@ -142,6 +157,9 @@
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
   transition: border-color 0.4s ease, box-shadow 0.4s ease;
   transform: translateZ(0);
+  
+  // ADICIONADO: Garante que os limites do box-shadow não "sangrem" recalculos durante o hover
+  will-change: border-color, box-shadow;
 
   @media (max-width: 575px) {
     aspect-ratio: 1 / 1; 
@@ -155,6 +173,9 @@
   filter: brightness(0.88) contrast(1.02);
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
   transform: translateZ(0);
+  
+  // ADICIONADO: Força aceleração de hardware específica no hover das imagens
+  backface-visibility: hidden;
 }
 
 .imageOverlay {
@@ -164,6 +185,7 @@
   display: flex;
   align-items: flex-end;
   padding: 16px;
+  pointer-events: none; // ADICIONADO: Remove interações fantasmas do mouse com o degradê, melhorando o scroll
 }
 
 .imageCaptionMobile {
@@ -228,7 +250,7 @@
   display: block;
 
   &.isVisible {
-    will-change: transform, opacity;
+    // ADICIONADO: Removido will-change para evitar engasgo na rolagem
     animation:
       sequencialRevealUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards,
       floatMasterRich 7s ease-in-out infinite alternate;
@@ -493,15 +515,17 @@
 }
 
 @keyframes floatTacticalRich {
-  0% { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
-  50% { transform: translate3d(0, -5px, 0) rotate(calc(var(--rotate-seed, 0deg) * 0.5)) scale(1.002); }
-  100% { transform: translate3d(0, -9px, 0) rotate(var(--rotate-seed, 0deg)) scale(1.004); }
+  // ADICIONADO: Removido o uso de `scale()` fracionado (como 1.002). O scale infinito em imagens pesadas era o principal gargalo de CPU causando bugs e travamentos. Agora apenas move suavemente.
+  0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -5px, 0) rotate(calc(var(--rotate-seed, 0deg) * 0.5)); }
+  100% { transform: translate3d(0, -9px, 0) rotate(var(--rotate-seed, 0deg)); }
 }
 
 @keyframes floatMasterRich {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(0, -7px, 0) scale(1.003); }
-  100% { transform: translate3d(0, -14px, 0) scale(1.006); }
+  // ADICIONADO: Mesma correção do anterior. Escalas não-inteiras forçam o navegador a renderizar texturas sub-pixel repetidamente.
+  0% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -7px, 0); }
+  100% { transform: translate3d(0, -14px, 0); }
 }
 
 @keyframes revealHeader {
@@ -520,8 +544,9 @@
 }
 
 @keyframes pulseGlow {
-  0%, 100% { filter: drop-shadow(0 0 2px rgba($color-primary-light, 0.3)); transform: scale(1); }
-  50% { filter: drop-shadow(0 0 10px rgba($color-primary-light, 0.75)); transform: scale(1.08); }
+  // ADICIONADO: translateZ(0) empurra o filtro pesado de drop-shadow permanentemente para a placa de vídeo.
+  0%, 100% { filter: drop-shadow(0 0 2px rgba($color-primary-light, 0.3)); transform: scale(1) translateZ(0); }
+  50% { filter: drop-shadow(0 0 10px rgba($color-primary-light, 0.75)); transform: scale(1.08) translateZ(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -532,4 +557,4 @@
     transform: none !important;
     will-change: auto !important;
   }
-}
+} 

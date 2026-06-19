@@ -43,7 +43,6 @@ export default function VerseOfTheDay() {
             {/* QUADRANTE 1 */}
             <aside className={styles.card} aria-label="Liderança">
                 <h2 className={styles.title}>
-                    <span className={styles.icon} aria-hidden="true">👥</span>
                     Liderança
                 </h2>
                 <div className={styles.imageWrapper}>
@@ -57,41 +56,39 @@ export default function VerseOfTheDay() {
             {/* QUADRANTE 2 */}
             <aside className={styles.card} aria-label="Histórico de Encontros">
                 <h2 className={styles.title}>
-                    <span className={styles.icon} aria-hidden="true">📍</span>
                     Histórico de Encontros Realizados
                 </h2>
                 <ul className={styles.locationList}>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Botucatu</li>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Botucatu</li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> São Paulo</li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Rio Claro</li>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Botucatu</li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Botucatu</li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Botucatu</li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Paraíba </li>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> São Paulo</li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> Paraíba</li>
+                   
                 </ul>
             </aside>
 
             {/* QUADRANTE 3 */}
             <aside className={styles.card} aria-label="Histórico de Edições">
                 <h2 className={styles.title}>
-                    <span className={styles.icon} aria-hidden="true">🎖️</span>
                     Histórico de Edições Realizadas
                 </h2>
                 <ul className={styles.locationList}>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 1</strong><br/><span className={styles.subText}>Botucatu</span></div></li>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 2</strong><br/><span className={styles.subText}>Botucatu</span></div></li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 3</strong><br/><span className={styles.subText}>São Paulo</span></div></li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 4</strong><br/><span className={styles.subText}>Rio Claro</span></div></li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 3</strong><br/><span className={styles.subText}>Botucatu</span></div></li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 4</strong><br/><span className={styles.subText}>Botucatu</span></div></li>
                     <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 5</strong><br/><span className={styles.subText}>Botucatu</span></div></li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 6</strong><br/><span className={styles.subText}>São Paulo</span></div></li>
-                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 7</strong><br/><span className={styles.subText}>Paraíba</span></div></li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 6</strong><br/><span className={styles.subText}>Paraíba</span></div></li>
+                    <li className={styles.locationItem}><span className={styles.checkIcon}>✔</span> <div><strong>EJC Nível 7</strong><br/><span className={styles.subText}>São Paulo</span></div></li>
                 </ul>
             </aside>
 
             {/* QUADRANTE 4 */}
             <aside className={styles.card} aria-label="Nossa Equipe">
                 <h2 className={styles.title}>
-                    <span className={styles.icon} aria-hidden="true">🔥</span>
                     Não somos apenas equipes
                 </h2>
                 <div className={styles.imageWrapper}>

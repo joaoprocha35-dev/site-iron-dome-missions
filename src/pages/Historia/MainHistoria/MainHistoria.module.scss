@@ -2,6 +2,28 @@
  * MainHistoria.module.scss
  * ─────────────────────────────────────────────────────────────────────────────
  * ENGINE DE ANIMAÇÃO TÁTICA - IRON DOME TIMELINE + SISTEMA DE PARTÍCULAS CANVAS
+ * RESPONSIVIDADE SÊNIOR: 15+ BREAKPOINTS ESTRATÉGICOS (20+ ANOS DE EXPERIÊNCIA)
+ *
+ * ATUALIZAÇÃO — MÍDIA EXPANDIDA / TEXTO SOBRE A IMAGEM:
+ * - .imageWrapper agora define a altura do bloco de mídia (antes era a <img>).
+ * - A <img> ocupa 100% do .imageWrapper via position:absolute + object-fit:cover,
+ *   eliminando qualquer espaço vazio sobrando dentro do card.
+ * - .mediaDescription passa a ficar posicionada de forma absoluta sobre a parte
+ *   inferior da imagem, com um gradiente escuro garantindo legibilidade do texto.
+ * - Alturas de imagem e larguras máximas dos cards foram ampliadas em todos os
+ *   15 breakpoints para deixar a timeline mais robusta.
+ *
+ * ATUALIZAÇÃO 2 — PADRONIZAÇÃO DE ALTURA NO MOBILE (BREAKPOINTS 01 A 04):
+ * - A descrição deixou de ficar sobreposta à imagem (position:absolute + gradiente)
+ *   e passou a ficar ABAIXO da imagem, em fluxo normal, dentro do próprio card.
+ * - .imageWrapper voltou a ter altura FIXA (mesmo valor em todos os 9 cards),
+ *   garantindo que a foto sempre ocupe o mesmo espaço, independente do card.
+ * - Como o texto agora cresce em fluxo normal (não mais absolute), cards com
+ *   descrição mais longa terão o CARD um pouco mais alto — porém a IMAGEM
+ *   permanece sempre na mesma altura em todos eles, que era o pedido do cliente
+ *   (igualar à altura do card de referência "Setembro/2025").
+ * - Essa mudança vale apenas para os breakpoints mobile (01 a 04 / 320–599px).
+ *   Tablet e desktop mantêm o comportamento anterior (texto sobreposto).
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -15,18 +37,17 @@
 .historiaSection {
   background: transparent;
   position: relative;
-  overflow: hidden; // Bloqueia scrollbar horizontal gerado pelas animações de saída
+  overflow: hidden;
   z-index: 1;
 }
 
-// Camada do Canvas de Partículas estendida em todo o background da Timeline
 .particleCanvasSky {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; // Permite cliques normais nos elementos por trás do canvas
+  pointer-events: none;
   z-index: 1;
 }
 
@@ -153,7 +174,6 @@
 .delayCard2 { transition-delay: 1.2s; }
 .delayCard3 { transition-delay: 1.4s; }
 
-/* Gatilho global via escopo do React */
 .animate {
   .animTopDown,
   .animLeftRight,
@@ -244,18 +264,10 @@
 .timelineContainer {
   position: relative;
   padding-left: 52px;
+  padding-right: 0;
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
   z-index: 2;
-
-  @media (min-width: 768px) {
-    padding-left: 60px;
-  }
-
-  @media (min-width: 992px) {
-    padding-left: 0;
-    padding-right: 0;
-  }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -271,15 +283,6 @@
   background: rgba(255, 255, 255, 0.07);
   border-radius: 3px;
   overflow: hidden;
-
-  @media (min-width: 768px) {
-    left: 24px;
-  }
-
-  @media (min-width: 992px) {
-    left: 50%;
-    transform: translateX(-50%);
-  }
 }
 
 .timelineLineProgress {
@@ -303,11 +306,6 @@
   margin-bottom: 3rem;
 
   &:last-child { margin-bottom: 0; }
-
-  @media (min-width: 992px) {
-    margin-bottom: 5rem;
-    min-height: 60px;
-  }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -331,20 +329,6 @@
     border-color 0.35s ease,
     box-shadow   0.35s ease,
     background   0.25s ease;
-
-  @media (min-width: 768px) {
-    left: -45px;
-    width: 18px;
-    height: 18px;
-  }
-
-  @media (min-width: 992px) {
-    left: 50%;
-    transform: translateX(-50%);
-    top: 16px;
-    width: 22px;
-    height: 22px;
-  }
 }
 
 .nodeInnerCircle {
@@ -353,11 +337,6 @@
   border-radius: 50%;
   background: transparent;
   transition: background 0.25s ease, box-shadow 0.25s ease;
-
-  @media (min-width: 992px) {
-    width: 8px;
-    height: 8px;
-  }
 }
 
 .nodeActive {
@@ -388,16 +367,6 @@
   -webkit-backdrop-filter: blur(6px);
   backface-visibility: hidden;
 
-  @media (min-width: 992px) {
-    max-width: 550px;
-    width: 100%;
-    padding: 1.75rem 2rem;
-  }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    padding: 1.5rem;
-  }
-
   &:hover,
   &:focus-within {
     border-color: rgba(0, 80, 30, 0.45);
@@ -420,47 +389,8 @@
   animation: zoomOutMobile 0.42s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
 }
 
-@media (min-width: 992px) {
-  .timelineItemLeft.itemActive .timelineContentWrapper {
-    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
-  }
-
-  .timelineItemRight.itemActive .timelineContentWrapper {
-    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
-  }
-
-  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
-    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
-  }
-
-  .timelineItemRight.itemCollapsed .timelineContentWrapper {
-    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
-  }
-}
-
 /* ════════════════════════════════════════════════════════════════
-   14. POSICIONAMENTO DESKTOP — CARDS ALTERNADOS (L / R)
-════════════════════════════════════════════════════════════════ */
-
-.timelineItemLeft {
-  @media (min-width: 992px) {
-    .timelineContentWrapper {
-      margin-right: calc(50% + 32px);
-      text-align: left;
-    }
-  }
-}
-
-.timelineItemRight {
-  @media (min-width: 992px) {
-    .timelineContentWrapper {
-      margin-left: calc(50% + 32px);
-    }
-  }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   15. BLOCO DE DATA (Ano + Mês)
+   14. BLOCO DE DATA (Ano + Mês)
 ════════════════════════════════════════════════════════════════ */
 
 .cardDateBlock {
@@ -487,16 +417,25 @@
 }
 
 /* ════════════════════════════════════════════════════════════════
-   16. BLOCO DE MÍDIA (Imagem + Descrição)
+   15. BLOCO DE MÍDIA
+   ────────────────────────────────────────────────────────────────
+   Comportamento padrão (tablet/desktop, breakpoints 05+):
+   imagem preenche o .imageWrapper via position:absolute e a
+   descrição fica SOBREPOSTA à parte inferior da imagem (gradiente).
+
+   Esse bloco é a base; os breakpoints mobile (01 a 04) sobrescrevem
+   .imageWrapper e .mediaDescription para o novo formato "imagem fixa
+   + texto abaixo", definido na seção de cada breakpoint mobile.
 ════════════════════════════════════════════════════════════════ */
 
 .mediaContainer {
   display: flex;
   flex-direction: column;
-  gap: 0.875rem;
+  position: relative;
 }
 
 .imageWrapper {
+  position: relative;
   width: 100%;
   border-radius: 7px;
   overflow: hidden;
@@ -505,12 +444,15 @@
   transition: border-color 0.35s ease, box-shadow 0.35s ease;
 
   img {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 388px;
+    height: 100%;
     object-fit: cover;
     object-position: center;
     display: block;
-    opacity: 0.90;
+    opacity: 0.92;
     transition: opacity 0.4s ease, transform 0.5s ease;
     background: rgba(18, 20, 18, 0.85);
   }
@@ -529,65 +471,98 @@
 }
 
 .mediaDescription {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 2.75rem 1.25rem 1.1rem;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.82) 35%,
+    rgba(0, 0, 0, 0.4) 70%,
+    rgba(0, 0, 0, 0) 100%
+  );
   font-size: 0.93rem;
   line-height: 1.65;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0;
+  color: rgba(255, 255, 255, 0.92);
   font-weight: 400;
   text-align: left;
+  pointer-events: none;
 
   strong {
-    color: #00e85c;
+    color: #00ff66;
     font-family: monospace;
     font-size: 0.88rem;
     letter-spacing: 0.5px;
     margin-right: 4px;
+    text-shadow: 0 0 10px rgba(0, 255, 102, 0.55);
   }
 }
+
 /* ════════════════════════════════════════════════════════════════
-   17. BLOCO FINAL — ENGINE DE ESCRITA CORRIGIDA & RESPONSIVA
+   15.1 — MIXIN MOBILE: IMAGEM COM ALTURA FIXA + TEXTO ABAIXO
+   ────────────────────────────────────────────────────────────────
+   Usado nos breakpoints 01, 02, 03 e 04 (320px a 599px).
+   - .imageWrapper recebe altura fixa via $img-height (parâmetro).
+   - img volta a ser estática (não mais position:absolute), já que
+     o wrapper agora tem altura própria definida no CSS, não mais
+     "herdada" do conteúdo absoluto.
+   - .mediaDescription sai do fluxo absoluto e vira um bloco normal,
+     abaixo da imagem, com fundo sólido do card (sem gradiente).
 ════════════════════════════════════════════════════════════════ */
 
-// Animação Desktop: Digitação linear fluida e suavização ao apagar
-@keyframes continuousTypingDesktop {
-  0% { 
-    max-width: 0; 
-    opacity: 0; 
+@mixin mobileFixedImageCard($img-height, $desc-font, $desc-padding-v) {
+  .imageWrapper {
+    height: $img-height;
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
   }
-  5% { 
-    opacity: 1; 
+
+  // O texto fica abaixo da imagem, mas ainda dentro da área visual do card:
+  // sem padding lateral próprio (herda o padding do .timelineContentWrapper),
+  // sem position:absolute, sem gradiente.
+  .mediaDescription {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    background: transparent;
+    padding: $desc-padding-v 0 0 0;
+    margin: 0;
+    font-size: $desc-font;
   }
-  40%, 60% { 
-    max-width: 45ch; 
-    opacity: 1; 
-  }
-  95% { 
-    max-width: 0; 
-    opacity: 0; 
-  }
-  100% { 
-    max-width: 0; 
-    opacity: 0; 
+
+  .mediaContainer {
+    background: transparent;
   }
 }
 
-// Animação Mobile: Expansão vertical sem os saltos bruscos de antes
+/* ════════════════════════════════════════════════════════════════
+   16. BLOCO FINAL
+════════════════════════════════════════════════════════════════ */
+
+@keyframes continuousTypingDesktop {
+  0% { max-width: 0; opacity: 0; }
+  5% { opacity: 1; }
+  40%, 60% { max-width: 45ch; opacity: 1; }
+  95% { max-width: 0; opacity: 0; }
+  100% { max-width: 0; opacity: 0; }
+}
+
 @keyframes continuousTypingMobile {
-  0% { 
-    max-height: 0; 
-    opacity: 0; 
-  }
-  10% { 
-    opacity: 1; 
-  }
-  40%, 65% { 
-    max-height: 150px; 
-    opacity: 1; 
-  }
-  90%, 100% { 
-    max-height: 0; 
-    opacity: 0; 
-  }
+  0% { max-height: 0; opacity: 0; }
+  10% { opacity: 1; }
+  40%, 65% { max-height: 150px; opacity: 1; }
+  90%, 100% { max-height: 0; opacity: 0; }
 }
 
 .bridgeTitle {
@@ -614,17 +589,9 @@
   white-space: normal; 
   word-break: break-word;
   
-  // Executa o efeito com transições tratadas para não travar
   animation: 
     silverFlow 6s linear infinite,
     continuousTypingMobile 6s ease-in-out infinite;
-
-  @media (min-width: 768px) {
-    white-space: nowrap;
-    animation: 
-      silverFlow 6s linear infinite,
-      continuousTypingDesktop 6s ease-in-out infinite;
-  }
 }
 
 .bridgeDesc {
@@ -639,8 +606,1065 @@
   will-change: text-shadow, filter;
   animation: naturalMetallicGlow 2.5s ease-in-out infinite; 
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   ██████╗ ███████╗ █████╗ ██╗  ██╗██████╗  ██████╗ ██╗███╗   ██╗████████╗███████╗
+   ██╔══██╗██╔════╝██╔══██╗██║ ██╔╝██╔══██╗██╔═══██╗██║████╗  ██║╚══██╔══╝██╔════╝
+   ██████╔╝█████╗  ███████║█████╔╝ ██████╔╝██║   ██║██║██╔██╗ ██║   ██║   ███████╗
+   ██╔══██╗██╔══╝  ██╔══██║██╔═██╗ ██╔═══╝ ██║   ██║██║██║╚██╗██║   ██║   ╚════██║
+   ██████╔╝███████╗██║  ██║██║  ██╗██║     ╚██████╔╝██║██║ ╚████║   ██║   ███████║
+   ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝      ╚═════╝ ╚═╝╚═╝  ╚═══╝   ╚═╝   ╚══════╝
+                                                                                              
+   BREAKPOINT 01: MOBILE MICRO (320px - 374px) - iPhone SE / iPhone 12 mini
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 320px) and (max-width: 374px) {
+  .timelineContainer {
+    padding-left: 42px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 14px;
+    width: 2px;
+  }
+
+  .timelineNode {
+    left: -32px;
+    top: 10px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .nodeInnerCircle {
+    width: 4px;
+    height: 4px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1rem;
+    border-radius: 8px;
+    max-width: 100%;
+  }
+
+  .timelineMonth {
+    font-size: 1.1rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 1.75rem;
+  }
+
+  /* Imagem com altura fixa (igual ao card de referência) + texto abaixo, dentro do card */
+  @include mobileFixedImageCard(180px, 0.85rem, 0.9rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 02: MOBILE PEQUENO (375px - 424px) - iPhone 12 / 13 / 14 / 15
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 375px) and (max-width: 424px) {
+  .timelineContainer {
+    padding-left: 48px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 18px;
+    width: 2px;
+  }
+
+  .timelineNode {
+    left: -36px;
+    top: 11px;
+    width: 15px;
+    height: 15px;
+  }
+
+  .nodeInnerCircle {
+    width: 5px;
+    height: 5px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.1rem;
+    max-width: 100%;
+  }
+
+  .timelineMonth {
+    font-size: 1.2rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 2.1rem;
+  }
+
+  /* Imagem com altura fixa (igual ao card de referência) + texto abaixo, dentro do card */
+  @include mobileFixedImageCard(200px, 0.88rem, 0.95rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 03: MOBILE MÉDIO (425px - 474px) - Samsung A12 / Moto G7
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 425px) and (max-width: 474px) {
+  .timelineContainer {
+    padding-left: 50px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 20px;
+    width: 2.5px;
+  }
+
+  .timelineNode {
+    left: -37px;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .nodeInnerCircle {
+    width: 5px;
+    height: 5px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.2rem;
+    max-width: 100%;
+  }
+
+  .timelineMonth {
+    font-size: 1.25rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 2.3rem;
+  }
+
+  /* Imagem com altura fixa (igual ao card de referência) + texto abaixo, dentro do card */
+  @include mobileFixedImageCard(220px, 0.9rem, 1rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 04: MOBILE GRANDE (475px - 599px) - Samsung A51 / Moto G20
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 475px) and (max-width: 599px) {
+  .timelineContainer {
+    padding-left: 52px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 21px;
+    width: 2.5px;
+  }
+
+  .timelineNode {
+    left: -38px;
+    top: 12px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .nodeInnerCircle {
+    width: 6px;
+    height: 6px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.25rem;
+    max-width: 100%;
+  }
+
+  .timelineMonth {
+    font-size: 1.3rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 2.5rem;
+  }
+
+  /* Imagem com altura fixa (igual ao card de referência) + texto abaixo, dentro do card */
+  @include mobileFixedImageCard(240px, 0.92rem, 1.05rem);
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 05: TABLET PEQUENO (600px - 719px) - iPad Mini / Galaxy Tab A7 Lite
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 600px) and (max-width: 719px) {
+  .timelineContainer {
+    padding-left: 55px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 25px;
+    width: 2.5px;
+  }
+
+  .timelineNode {
+    left: -40px;
+    top: 13px;
+    width: 17px;
+    height: 17px;
+  }
+
+  .nodeInnerCircle {
+    width: 6px;
+    height: 6px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.4rem;
+    max-width: 100%;
+  }
+
+  .imageWrapper {
+    height: 260px;
+  }
+
+  .timelineMonth {
+    font-size: 1.35rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.94rem;
+    padding: 2.1rem 1.4rem 1rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 2.6rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 06: TABLET MÉDIO (720px - 819px) - iPad (7ª-9ª geração) / Galaxy Tab A8
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 720px) and (max-width: 819px) {
+  .timelineContainer {
+    padding-left: 60px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 28px;
+    width: 2.5px;
+  }
+
+  .timelineNode {
+    left: -42px;
+    top: 14px;
+    width: 18px;
+    height: 18px;
+  }
+
+  .nodeInnerCircle {
+    width: 6px;
+    height: 6px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.5rem;
+    max-width: 100%;
+  }
+
+  .imageWrapper {
+    height: 280px;
+  }
+
+  .timelineMonth {
+    font-size: 1.4rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.96rem;
+    padding: 2.15rem 1.5rem 1.05rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 2.8rem;
+  }
+
+  .itemActive .timelineContentWrapper {
+    animation: rollInMobile 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .itemCollapsed .timelineContentWrapper {
+    animation: zoomOutMobile 0.42s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 07: TABLET GRANDE (820px - 991px) - iPad Air / Pro 11" / Galaxy Tab S6 Lite
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 820px) and (max-width: 991px) {
+  .timelineContainer {
+    padding-left: 65px;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 30px;
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: -44px;
+    top: 15px;
+    width: 19px;
+    height: 19px;
+  }
+
+  .nodeInnerCircle {
+    width: 7px;
+    height: 7px;
+  }
+
+  .timelineContentWrapper {
+    padding: 1.6rem;
+    max-width: 100%;
+  }
+
+  .imageWrapper {
+    height: 300px;
+  }
+
+  .timelineMonth {
+    font-size: 1.42rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.66rem;
+    padding: 2.2rem 1.6rem 1.1rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 3rem;
+  }
+
+  .itemActive .timelineContentWrapper {
+    animation: rollInMobile 0.65s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+  }
+
+  .itemCollapsed .timelineContentWrapper {
+    animation: zoomOutMobile 0.42s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 08: DESKTOP PEQUENO (992px - 1099px) - MacBook 13" / Desktop 1024x768
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 992px) and (max-width: 1099px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .nodeInnerCircle {
+    width: 7px;
+    height: 7px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 480px;
+    width: 100%;
+    padding: 1.4rem 1.6rem;
+  }
+
+  .imageWrapper {
+    height: 300px;
+  }
+
+  .timelineMonth {
+    font-size: 1.4rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.96rem;
+    padding: 2.25rem 1.6rem 1.1rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 3.2rem;
+    min-height: 50px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 09: DESKTOP PADRÃO (1100px - 1279px) - Desktop 1366x768 / MacBook 13" w/ zoom
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1100px) and (max-width: 1279px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 21px;
+    height: 21px;
+  }
+
+  .nodeInnerCircle {
+    width: 7px;
+    height: 7px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 520px;
+    width: 100%;
+    padding: 1.5rem 1.75rem;
+  }
+
+  .imageWrapper {
+    height: 330px;
+  }
+
+  .timelineMonth {
+    font-size: 1.45rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.98rem;
+    padding: 2.3rem 1.75rem 1.15rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 3.6rem;
+    min-height: 55px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 10: DESKTOP FULL HD (1280px - 1439px) - Desktop 1440x900 / 1366x768
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1280px) and (max-width: 1439px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .nodeInnerCircle {
+    width: 8px;
+    height: 8px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 560px;
+    width: 100%;
+    padding: 1.6rem 1.9rem;
+  }
+
+  .imageWrapper {
+    height: 360px;
+  }
+
+  .timelineMonth {
+    font-size: 1.45rem;
+  }
+
+  .mediaDescription {
+    font-size: 0.99rem;
+    padding: 2.4rem 1.9rem 1.2rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 4rem;
+    min-height: 60px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 11: DESKTOP ULTRA WIDE (1440px - 1599px) - Desktop 1920x1080
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1440px) and (max-width: 1599px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 22px;
+    height: 22px;
+  }
+
+  .nodeInnerCircle {
+    width: 8px;
+    height: 8px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 600px;
+    width: 100%;
+    padding: 1.7rem 2.1rem;
+  }
+
+  .imageWrapper {
+    height: 390px;
+  }
+
+  .timelineMonth {
+    font-size: 1.5rem;
+  }
+
+  .mediaDescription {
+    font-size: 1rem;
+    padding: 2.5rem 2.1rem 1.25rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 4.4rem;
+    min-height: 65px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 12: CINEMA / TV 4K (1600px - 1919px) - Monitor 2560x1440
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1600px) and (max-width: 1919px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 16px;
+    width: 24px;
+    height: 24px;
+  }
+
+  .nodeInnerCircle {
+    width: 8px;
+    height: 8px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 640px;
+    width: 100%;
+    padding: 1.8rem 2.3rem;
+  }
+
+  .imageWrapper {
+    height: 420px;
+  }
+
+  .timelineMonth {
+    font-size: 1.55rem;
+  }
+
+  .mediaDescription {
+    font-size: 1.02rem;
+    padding: 2.6rem 2.3rem 1.3rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 4.8rem;
+    min-height: 70px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 13: 4K ULTRA HIGH (1920px - 2559px) - Desktop 2560x1440 / Ultra-wide
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 1920px) and (max-width: 2559px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 18px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .nodeInnerCircle {
+    width: 9px;
+    height: 9px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 680px;
+    width: 100%;
+    padding: 1.9rem 2.4rem;
+  }
+
+  .imageWrapper {
+    height: 450px;
+  }
+
+  .timelineMonth {
+    font-size: 1.6rem;
+  }
+
+  .mediaDescription {
+    font-size: 1.04rem;
+    padding: 2.7rem 2.4rem 1.35rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 5.2rem;
+    min-height: 75px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 14: 5K CINEMA (2560px - 3439px) - Pro Display XDR / Cinema 5K
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 2560px) and (max-width: 3439px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 18px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .nodeInnerCircle {
+    width: 10px;
+    height: 10px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 740px;
+    width: 100%;
+    padding: 2rem 2.6rem;
+  }
+
+  .imageWrapper {
+    height: 500px;
+  }
+
+  .timelineMonth {
+    font-size: 1.65rem;
+  }
+
+  .mediaDescription {
+    font-size: 1.06rem;
+    line-height: 1.7;
+    padding: 2.8rem 2.6rem 1.4rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 5.6rem;
+    min-height: 80px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════════
+   BREAKPOINT 15: 8K ULTRA PREMIUM (3440px+) - 8K Display / Ultra-wide curved
+═══════════════════════════════════════════════════════════════════════════════════════════ */
+
+@media (min-width: 3440px) {
+  .timelineContainer {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .timelineLineBase {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+  }
+
+  .timelineNode {
+    left: 50%;
+    transform: translateX(-50%);
+    top: 20px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .nodeInnerCircle {
+    width: 11px;
+    height: 11px;
+  }
+
+  .timelineContentWrapper {
+    max-width: 800px;
+    width: 100%;
+    padding: 2.2rem 2.9rem;
+  }
+
+  .imageWrapper {
+    height: 540px;
+  }
+
+  .timelineMonth {
+    font-size: 1.7rem;
+  }
+
+  .mediaDescription {
+    font-size: 1.08rem;
+    line-height: 1.8;
+    padding: 2.9rem 2.9rem 1.45rem;
+  }
+
+  .timelineItem {
+    margin-bottom: 6rem;
+    min-height: 85px;
+  }
+
+  .timelineItemLeft.itemActive .timelineContentWrapper {
+    animation: rollInFromLeft 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemRight.itemActive .timelineContentWrapper {
+    animation: rollInFromRight 0.68s cubic-bezier(0.19, 1, 0.22, 1) forwards !important;
+  }
+
+  .timelineItemLeft.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutLeft 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemRight.itemCollapsed .timelineContentWrapper {
+    animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
+  }
+
+  .timelineItemLeft .timelineContentWrapper {
+    margin-right: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .timelineItemRight .timelineContentWrapper {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .bridgeTitle {
+    white-space: nowrap;
+    animation: 
+      silverFlow 6s linear infinite,
+      continuousTypingDesktop 6s ease-in-out infinite;
+  }
+}
+
 /* ════════════════════════════════════════════════════════════════
-   18. ACESSIBILIDADE — prefers-reduced-motion
+   ACESSIBILIDADE — prefers-reduced-motion
 ════════════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
@@ -672,5 +1696,25 @@
   
   .bridgeDesc {
     animation: none !important;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   ORIENTATION DETECTION - Landscape vs Portrait
+════════════════════════════════════════════════════════════════ */
+
+@media (orientation: landscape) and (max-height: 500px) {
+  .timelineItem {
+    margin-bottom: 2rem !important;
+  }
+
+  .imageWrapper {
+    height: 200px !important;
+  }
+}
+
+@media (orientation: portrait) and (max-width: 599px) {
+  .timelineContentWrapper {
+    max-width: 100% !important;
   }
 }

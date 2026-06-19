@@ -15,6 +15,9 @@ export default function Footer() {
           </Col>
           <Col xs={12} md={6} className="text-center">
             <p className={styles.copy}>© 2024 IRON DOME. MISSÃO INABALÁVEL.</p>
+            <p className={styles.attribution}>
+              Imagem por <a href="https://www.freepik.com" target="_blank" rel="noopener noreferrer">Freepik</a>
+            </p>
           </Col>
           <Col xs={12} md={3} className="d-flex justify-content-end">
             <nav className={styles.links}>
