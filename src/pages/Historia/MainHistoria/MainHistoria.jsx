@@ -502,8 +502,8 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2025</span>
-                    <h4 className={styles.timelineMonth}>Setembro</h4>
+                    <span className={styles.timelineYear}>2024</span>
+                    <h4 className={styles.timelineMonth}>Fevereiro</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
@@ -552,8 +552,8 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2026</span>
-                    <h4 className={styles.timelineMonth}>Março</h4>
+                    <span className={styles.timelineYear}>2025</span>
+                    <h4 className={styles.timelineMonth}>Julho</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
@@ -577,8 +577,8 @@ export default function MainHistoria() {
                 </div>
                 <div className={styles.timelineContentWrapper}>
                   <div className={styles.cardDateBlock}>
-                    <span className={styles.timelineYear}>2026</span>
-                    <h4 className={styles.timelineMonth}>Maio</h4>
+                    <span className={styles.timelineYear}>2024</span>
+                    <h4 className={styles.timelineMonth}>Julho</h4>
                   </div>
                   <div className={styles.mediaContainer}>
                     <div className={styles.imageWrapper}>
