@@ -9,7 +9,7 @@
 //   4. Hover: seta pausa a animação e avança 6px para a direita
 // ============================================================
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.scss';
 import imagemSoldado from '../../assets/imagensHome/soldado.avif';

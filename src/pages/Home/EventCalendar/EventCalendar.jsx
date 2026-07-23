@@ -3,28 +3,28 @@
 // Otimizado: IntersectionObserver + reduced-motion + GPU
 // ============================================================
 
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom'; // IMPORTAÇÃO DO LINK ADICIONADA AQUI
 import styles from './EventCalendar.module.scss';
 
 // IMPORTS DAS IMAGENS DO SEU DIRETÓRIO LOCAL
 import amigos01 from '../../../assets/imagensHome/amigos01.png';
-import amigos02 from '../../../assets/imagensHome/amigos02.png';
+// import amigos02 from '../../../assets/imagensHome/amigos02.png';
 import amigos03 from '../../../assets/imagensHome/amigos03.png';
 import amigos04 from '../../../assets/imagensHome/amigos04.png';
 import amigos05 from '../../../assets/imagensHome/amigos05.png';
-import casaOracao from '../../../assets/imagensHome/casa-oracao.png';
+// import casaOracao from '../../../assets/imagensHome/casa-oracao.png';
 import encontrista02 from '../../../assets/imagensHome/encontrista02.png';
 import encontrista03 from '../../../assets/imagensHome/encontrista03.png';
 import encontrista04 from '../../../assets/imagensHome/encontrista04.png';
-import equipe1 from '../../../assets/imagensHome/equipe1.png';
-import familia01 from '../../../assets/imagensHome/familia01.png';
+// import equipe1 from '../../../assets/imagensHome/equipe1.png';
+// import familia01 from '../../../assets/imagensHome/familia01.png';
 import louvor02 from '../../../assets/imagensHome/louvor02.png';
 import louvor03 from '../../../assets/imagensHome/louvor03.png';
 import louvor04 from '../../../assets/imagensHome/louvor04.png';
 import oracao04 from '../../../assets/imagensHome/oracao04.png';
 import abraco01 from '../../../assets/imagensHome/abraco01.png';
-import abraco02 from '../../../assets/imagensHome/abraco02.png';
+// import abraco02 from '../../../assets/imagensHome/abraco02.png';
 import ministracao from '../../../assets/imagensHome/ministracao.png';
 import ministracao02 from '../../../assets/imagensHome/ministracao02.png';
 import familiaLider from '../../../assets/imagensHome/familia-lider.png';
@@ -45,31 +45,28 @@ import intercessao02 from '../../../assets/imagensHome/intercessao02.jpg';
 import intercessao03 from '../../../assets/imagensHome/intercessao03.png';
 import intercessao04 from '../../../assets/imagensHome/intercessao04.jpg';
 
-
 function useInViewport(options = { rootMargin: '120px', threshold: 0.05 }) {
+  const { rootMargin, threshold } = options; // 1. Desestruture aqui
+  const [inView, setInView] = useState(() => typeof IntersectionObserver === 'undefined');
   const ref = useRef(null);
-  const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
 
-    if (typeof IntersectionObserver === 'undefined') {
-      setInView(true);
-      return;
-    }
+    if (typeof IntersectionObserver === 'undefined') return;
 
+    // 2. Passe as variáveis desestruturadas diretamente no Observer
     const io = new IntersectionObserver(([entry]) => {
       setInView(entry.isIntersecting);
-    }, options);
+    }, { rootMargin, threshold });
 
     io.observe(node);
     return () => io.disconnect();
-  }, [options.rootMargin, options.threshold]);
+  }, [rootMargin, threshold]); // 3. Dependências limpas sem avisos!
 
   return [ref, inView];
 }
-
 function GridSlot({ src, href, caption, absoluteIndex, localIndex }) {
   const [ref, inView] = useInViewport();
 

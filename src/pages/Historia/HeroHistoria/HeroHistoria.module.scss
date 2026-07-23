@@ -126,3 +126,43 @@
   font-weight: 900;
   display: inline-block;
 }
+
+/* ==========================================================================
+   ANIMAÇÕES (KEYFRAMES)
+   ========================================================================== */
+
+// Animação de revelação do fundo
+@keyframes revealHeroBg {
+  from {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// Animação de entrada individual das letras (efeito pop/fade)
+@keyframes revealChar {
+  from {
+    opacity: 0;
+    transform: translateY(15px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// Animação do texto vindo da esquerda
+@keyframes revealTextLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

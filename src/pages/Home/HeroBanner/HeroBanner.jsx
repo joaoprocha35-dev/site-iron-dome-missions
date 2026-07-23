@@ -1,7 +1,7 @@
 // ============================================================
 // HeroBanner/index.jsx
 // ============================================================
-import { Button } from 'react-bootstrap'
+import 'react-bootstrap'
 import styles from './HeroBanner.module.scss'
 export default function HeroBanner() {
 
@@ -10,9 +10,9 @@ export default function HeroBanner() {
     <section className={styles.hero} aria-label="Banner principal">
 
       {/* Camadas decorativas de fundo */}
-      <div className={styles.bgBase}     aria-hidden="true" />
-      <div className={styles.bgGlow}     aria-hidden="true" />
-      <div className={styles.bgCross}    aria-hidden="true"> <span className={styles.cruz}>✝</span></div>
+      <div className={styles.bgBase}  aria-hidden="true" />
+      <div className={styles.bgGlow}  aria-hidden="true" />
+      <div className={styles.bgCross}  aria-hidden="true"> <span className={styles.cruz}>✝</span></div>
       <div className={styles.bgOverlay} aria-hidden="true" />
 
       {/* Conteúdo principal */}

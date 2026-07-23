@@ -29,14 +29,12 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import styles from './MainHistoria.module.scss';
 
 // ─── IMPORTAÇÃO MANUAL DO ACERVO DE MÍDIA CRIPTOGRAFADO ──────────────────────
 import Lideranca from '../../../assets/imagensHistoria/lideranca.png';
-import CasaOracao from '../../../assets/imagensHistoria/casa-oracao.png';
 import Familia01 from '../../../assets/imagensHistoria/familia01.png';
-import Oracao04 from '../../../assets/imagensHistoria/oracao04.png';
 import Adoracao03 from '../../../assets/imagensHistoria/adoracao03.jpg';
 import foto01 from '../../../assets/imagensHistoria/foto01.png';
 import foto02 from '../../../assets/imagensHistoria/foto02.png';

@@ -1,4 +1,4 @@
-import React from 'react';
+import 'react';
 
 // Importações ajustadas: agora apontam diretamente para as pastas que estão ao lado do Home.jsx
 import HeroBanner       from './HeroBanner/HeroBanner';

@@ -986,14 +986,23 @@
     height: 7px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 480px;
+    // Nunca passa de 440px e NUNCA ultrapassa a metade da tela (garante 32px de folga até a linha)
+    max-width: min(440px, calc(50% - 32px)) !important;
     width: 100%;
     padding: 1.4rem 1.6rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels para não cortar) */
   .imageWrapper {
-    height: 300px;
+    height: auto !important;
+    aspect-ratio: 16 / 9; // Mantém proporção perfeita de foto sem achatar ou cortar
+    
+    img {
+      object-fit: cover; // Altere para 'contain' se não quiser nenhum corte de borda
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1026,15 +1035,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 28px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 28px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1074,14 +1084,22 @@
     height: 7px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 520px;
+    max-width: min(480px, calc(50% - 32px)) !important;
     width: 100%;
     padding: 1.5rem 1.75rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 330px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1114,15 +1132,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 28px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 28px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1162,14 +1181,22 @@
     height: 8px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 560px;
+    max-width: min(510px, calc(50% - 34px)) !important;
     width: 100%;
     padding: 1.6rem 1.9rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 360px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1202,15 +1229,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 30px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 30px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1220,7 +1248,6 @@
       continuousTypingDesktop 6s ease-in-out infinite;
   }
 }
-
 /* ═══════════════════════════════════════════════════════════════════════════════════════════
    BREAKPOINT 11: DESKTOP ULTRA WIDE (1440px - 1599px) - Desktop 1920x1080
 ═══════════════════════════════════════════════════════════════════════════════════════════ */
@@ -1250,14 +1277,22 @@
     height: 8px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 600px;
+    max-width: min(540px, calc(50% - 36px)) !important;
     width: 100%;
     padding: 1.7rem 2.1rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 390px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1290,15 +1325,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 32px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 32px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1308,7 +1344,6 @@
       continuousTypingDesktop 6s ease-in-out infinite;
   }
 }
-
 /* ═══════════════════════════════════════════════════════════════════════════════════════════
    BREAKPOINT 12: CINEMA / TV 4K (1600px - 1919px) - Monitor 2560x1440
 ═══════════════════════════════════════════════════════════════════════════════════════════ */
@@ -1338,14 +1373,22 @@
     height: 8px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 640px;
+    max-width: min(580px, calc(50% - 40px)) !important;
     width: 100%;
     padding: 1.8rem 2.3rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 420px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1378,15 +1421,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 36px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 36px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1396,7 +1440,6 @@
       continuousTypingDesktop 6s ease-in-out infinite;
   }
 }
-
 /* ═══════════════════════════════════════════════════════════════════════════════════════════
    BREAKPOINT 13: 4K ULTRA HIGH (1920px - 2559px) - Desktop 2560x1440 / Ultra-wide
 ═══════════════════════════════════════════════════════════════════════════════════════════ */
@@ -1426,14 +1469,22 @@
     height: 9px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 680px;
+    max-width: min(620px, calc(50% - 45px)) !important;
     width: 100%;
     padding: 1.9rem 2.4rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 450px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1466,15 +1517,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 40px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 40px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1514,14 +1566,22 @@
     height: 10px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 740px;
+    max-width: min(680px, calc(50% - 50px)) !important;
     width: 100%;
     padding: 2rem 2.6rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 500px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1555,15 +1615,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 44px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 44px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {
@@ -1603,14 +1664,22 @@
     height: 11px;
   }
 
+  /* 🎯 AJUSTE DE LARGURA E FOLGA DA LINHA CENTRAL */
   .timelineContentWrapper {
-    max-width: 800px;
+    max-width: min(760px, calc(50% - 55px)) !important;
     width: 100%;
     padding: 2.2rem 2.9rem;
   }
 
+  /* 🎯 AJUSTE DA IMAGEM (Proporcional sem altura fixa em pixels) */
   .imageWrapper {
-    height: 540px;
+    height: auto !important;
+    aspect-ratio: 16 / 9;
+    
+    img {
+      object-fit: cover;
+      object-position: center;
+    }
   }
 
   .timelineMonth {
@@ -1644,15 +1713,16 @@
     animation: zoomOutRight 0.44s cubic-bezier(0.55, 0.055, 0.675, 0.19) forwards !important;
   }
 
+  /* Posiciona cada card estritamente do seu lado da linha */
   .timelineItemLeft .timelineContentWrapper {
-    margin-right: auto;
-    margin-left: 0;
+    margin-right: calc(50% + 48px) !important;
+    margin-left: auto !important;
     text-align: left;
   }
 
   .timelineItemRight .timelineContentWrapper {
-    margin-left: auto;
-    margin-right: 0;
+    margin-left: calc(50% + 48px) !important;
+    margin-right: auto !important;
   }
 
   .bridgeTitle {

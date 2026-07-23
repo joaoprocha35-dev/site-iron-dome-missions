@@ -1,5 +1,5 @@
 // O React gerencia o ciclo de vida e a renderização do componente
-import React from 'react';
+import 'react';
 // Importa o arquivo de estilos global específico desta página
 import styles from './Historia.module.scss';
 // Importa o componente da seção do topo (Hero)

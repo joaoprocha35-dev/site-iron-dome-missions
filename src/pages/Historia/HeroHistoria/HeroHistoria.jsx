@@ -1,18 +1,11 @@
-import React, { useEffect, useState } from 'react';
 import styles from './HeroHistoria.module.scss';
 
 export default function HeroHistoria() {
   const titleText = "O LEGADO DA ";
   const greenText = "MISSÃO";
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    // Pequeno gatilho ao montar o componente para disparar as transições
-    setIsMounted(true);
-  }, []);
 
   return (
-    <header className={`${styles.heroSection} ${isMounted ? styles.animateBg : ''} d-flex align-items-center w-100`}>
+    <header className={`${styles.heroSection} ${styles.animateBg} d-flex align-items-center w-100`}>
       
       <div className="container px-4 text-center">
         <div className="row justify-content-center">
@@ -44,8 +37,8 @@ export default function HeroHistoria() {
               </span>
             </h1>
             
-            {/* TEXTO EMOCIONAL: Branco forte e vindo da esquerda para a direita */}
-            <p className={`${styles.emotionalText} ${isMounted ? styles.animateText : ''} text-white m-0`}>
+            {/* TEXTO EMOCIONAL */}
+            <p className={`${styles.emotionalText} ${styles.animateText} text-white m-0`}>
               O Iron Dome não nasceu de uma simples ideia; nasceu de um clamor por resgate. Nós escolhemos não recuar diante do caos de uma geração. Somos a resposta viva de que nenhuma fortaleza de dor resiste quando o Reino de Deus decide avançar.
             </p>
             

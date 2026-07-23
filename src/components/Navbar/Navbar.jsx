@@ -26,7 +26,7 @@ export default function Navbar() {
           className={styles.brand}
           onClick={fecharMenu}
         >
-          <span className={styles.brandIcon} aria-hidden="true">✦</span>
+          <span className={styles.brandIcon} aria-hidden="true">✝</span>
           IRON DOME
         </BSNavbar.Brand>
 
