@@ -1,4 +1,4 @@
-import 'react';
+import { useEffect } from 'react';
 
 // Importações ajustadas: agora apontam diretamente para as pastas que estão ao lado do Home.jsx
 import HeroBanner       from './HeroBanner/HeroBanner';
@@ -10,6 +10,15 @@ import EventCalendar    from './EventCalendar/EventCalendar';
 import styles from './Home.module.scss';
 
 export default function Home() {
+  // Reseta o scroll da janela para o topo assim que a página é montada
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant' // Move de forma instantânea para evitar trepidação visual
+    });
+  }, []);
+
   return (
     <main className={styles.page}>
 

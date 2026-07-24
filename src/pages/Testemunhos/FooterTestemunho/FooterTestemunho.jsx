@@ -3,7 +3,7 @@
 // Projeto: Iron Dome — Tactical Mission Design System
 // ============================================================
 
-import React, { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './FooterTestemunho.module.scss';
 import FooterParticles from './FooterParticles';

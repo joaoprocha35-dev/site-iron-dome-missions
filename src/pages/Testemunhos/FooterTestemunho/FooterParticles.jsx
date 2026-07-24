@@ -1,59 +1,49 @@
-// ============================================================
-// FooterParticles.jsx — Sistema de Partículas do Footer
-// Projeto: Iron Dome — Tactical Mission Design System
-// ============================================================
-
-import React, { useMemo } from 'react';
 import styles from './FooterParticles.module.scss';
 
-const FooterParticles = () => {
-  const particles = useMemo(() => {
-    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-    const particleCount = isMobile ? 10 : 20; // Cota reduzida para não competir com o CTA
-    const generatedParticles = [];
+// Função matemática pura para gerar variações sem usar Math.random() (evita erros do ESLint)
+function pseudoRandom(seed) {
+  const x = Math.sin(seed * 9999 + 1) * 10000;
+  return x - Math.floor(x);
+}
 
-    for (let i = 0; i < particleCount; i++) {
-      const type = Math.random() < 0.6 ? 'dot' : 'line';
-      
-      // Opacidades menores (0.1 a 0.35) para manter o foco no CTA principal
-      const baseOpacity = Math.random() * (0.35 - 0.1) + 0.1;
-      const opacity = isMobile ? baseOpacity * 0.7 : baseOpacity;
+// Geramos as partículas uma única vez de forma estática e pura fora do componente
+const PARTICLES = Array.from({ length: 20 }).map((_, i) => {
+  const r1 = pseudoRandom(i * 1 + 1);
+  const r2 = pseudoRandom(i * 2 + 1);
+  const r3 = pseudoRandom(i * 3 + 1);
+  const r4 = pseudoRandom(i * 4 + 1);
+  const r5 = pseudoRandom(i * 5 + 1);
+  const r6 = pseudoRandom(i * 6 + 1);
+  const r7 = pseudoRandom(i * 7 + 1);
+  const r8 = pseudoRandom(i * 8 + 1);
 
-      const size = Math.random() * (5 - 2) + 2;
-      const lineHeight = type === 'line' ? Math.random() * (28 - 12) + 12 : 0;
+  const type = r1 < 0.6 ? 'dot' : 'line';
+  const baseOpacity = r2 * (0.35 - 0.1) + 0.1;
+  const size = r3 * (5 - 2) + 2;
+  const lineHeight = type === 'line' ? r4 * (28 - 12) + 12 : 0;
+  const isLeftWing = r5 < 0.5;
+  const leftPosition = isLeftWing ? r6 * 15 : r6 * (100 - 85) + 85;
 
-      // Concentração estrita nas bordas laterais (Left: 0-15% | Right: 85-100%)
-      const isLeftWing = Math.random() < 0.5;
-      const leftPosition = isLeftWing 
-        ? Math.random() * 15 
-        : Math.random() * (100 - 85) + 85;
+  return {
+    id: `fp-${i}`,
+    type,
+    style: {
+      '--left': `${leftPosition}%`,
+      '--top': `${r7 * 100}%`,
+      '--delay': `${r8 * 4}s`,
+      '--duration': `${r1 * (9 - 4) + 4}s`,
+      '--size': `${size}px`,
+      '--line-height': `${lineHeight}px`,
+      '--opacity': baseOpacity,
+      '--rotation': `${r2 * (70 - 20) + 20}deg`,
+    },
+  };
+});
 
-      generatedParticles.push({
-        id: `fp-${i}`,
-        type,
-        style: {
-          '--left': `${leftPosition}%`,
-          '--top': `${Math.random() * 100}%`,
-          '--delay': `${Math.random() * 4}s`,
-          '--duration': `${Math.random() * (9 - 4) + 4}s`,
-          '--size': `${size}px`,
-          '--line-height': `${lineHeight}px`,
-          '--opacity': opacity,
-          '--rotation': `${Math.random() * (70 - 20) + 20}deg`, // Rotação entre 20deg e 70deg
-          '--will-change': isMobile ? 'auto' : 'transform',
-        },
-      });
-    }
-
-    return generatedParticles;
-  }, []);
-
+export default function FooterParticles() {
   return (
-    <div 
-      className={styles['fp-container']} 
-      aria-hidden="true"
-    >
-      {particles.map((p) => (
+    <div className={styles['fp-container']} aria-hidden="true">
+      {PARTICLES.map((p) => (
         <span
           key={p.id}
           className={`${styles['fp-particle']} ${styles[`fp-particle--${p.type}`]}`}
@@ -62,6 +52,4 @@ const FooterParticles = () => {
       ))}
     </div>
   );
-};
-
-export default FooterParticles;
+}

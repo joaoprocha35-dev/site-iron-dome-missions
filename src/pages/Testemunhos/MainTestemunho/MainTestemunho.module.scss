@@ -1,14 +1,21 @@
 // ============================================================
-// mainTestemunho.module.scss — Grid de Cards de Testemunho
-// Projeto: Iron Dome — Tactical Mission Design System
+// MainTestemunho.module.scss — Grid de Cards de Testemunho
+// Projeto: Iron Dome — Design System Premium Dark
 // ============================================================
 
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
+// ── Variáveis Locais ──
+$neon-green: #00ff66;        // Verde principal (textos e tags)
+$dark-green: #00b34d;        // Verde mais escuro para o glow e ondas
+$dark-bg: #050505;
+$card-bg: #0a0a0a;
+$star-yellow: #FFD700;       // Amarelo vibrante
+
 // ── Seção raiz ─────────────────────────────────────────────────
 .mt-section {
-    background-color: #0a0a0a;
+    background-color: $dark-bg;
     padding-top     : $sp-8 * 2;
     padding-bottom  : $sp-8 * 2;
 
@@ -18,7 +25,7 @@
     }
 }
 
-// ── Cabeçalho "N OPERADORES RELATAM" ──────────────────────────
+// ── Cabeçalho ──────────────────────────────────────────────────
 .mt-section__header {
     @include flex-center;
     justify-content: center;
@@ -35,16 +42,16 @@
     background: linear-gradient(
         90deg,
         transparent,
-        rgba($color-primary, 0.4) 60%,
-        rgba($color-primary-light, 0.65)
+        rgba($neon-green, 0.2) 60%,
+        rgba($neon-green, 0.6)
     );
 
     &:last-child {
         background: linear-gradient(
             270deg,
             transparent,
-            rgba($color-primary, 0.4) 60%,
-            rgba($color-primary-light, 0.65)
+            rgba($neon-green, 0.2) 60%,
+            rgba($neon-green, 0.6)
         );
     }
 
@@ -53,7 +60,7 @@
 
 .mt-section__title {
     font-family   : $font-headline;
-    font-size     : clamp(1rem, 3vw, 1.5rem);
+    font-size     : clamp(1.2rem, 3vw, 1.8rem);
     font-weight   : $font-weight-black;
     letter-spacing: 3px;
     text-transform: uppercase;
@@ -68,7 +75,7 @@
 }
 
 .mt-section__title-count {
-    color       : $color-primary-light;
+    color       : $neon-green;
     margin-right: $sp-2;
 }
 
@@ -92,54 +99,83 @@
     font-weight   : $font-weight-bold;
     letter-spacing: 2px;
     text-transform: uppercase;
-    padding       : $sp-2 $sp-4;
-    background    : rgba($color-primary, 0.05);
-    border        : 1px solid $color-border;
-    border-radius : $radius-sm;
-    color         : rgba($color-tertiary, 0.6);
+    padding       : 8px 18px;
+    background    : rgba(255, 255, 255, 0.03);
+    border        : 1px solid rgba(255, 255, 255, 0.08);
+    border-radius : 30px;
+    color         : rgba(255, 255, 255, 0.6);
     cursor        : pointer;
-    transition    :
-        background    $transition-fast,
-        border-color  $transition-fast,
-        color         $transition-fast;
+    backdrop-filter: blur(4px);
+    transition    : all 0.3s ease;
 
     &:hover {
-        background  : rgba($color-primary, 0.1);
-        border-color: rgba($color-primary, 0.3);
-        color       : $color-primary-light;
+        background  : rgba($neon-green, 0.05);
+        border-color: rgba($neon-green, 0.3);
+        color       : #ffffff;
     }
 
     &--active {
-        background  : rgba($color-primary, 0.12);
-        border-color: rgba($color-primary, 0.4);
-        color       : $color-primary-light;
+        background  : rgba($neon-green, 0.1);
+        border-color: rgba($neon-green, 0.6);
+        color       : $neon-green;
+        box-shadow  : 0 0 15px rgba($neon-green, 0.2);
     }
 }
 
 // ============================================================
-// CARD DE TESTEMUNHO
+// CARD DE TESTEMUNHO (WAVE, GLOW & YOUTUBE BUTTON)
 // ============================================================
+
+// Mixin para o estado ativo (Hover no Desktop / Touch no Mobile)
+@mixin card-active-glow {
+    border-color: rgba($dark-green, 0.4);
+    transform   : translate3d(0, -8px, 0); 
+    
+    // Glow Neon mais escuro e contido
+    box-shadow  : 
+        0 20px 40px -10px rgba(0, 0, 0, 0.9),
+        0 0 35px -5px rgba($dark-green, 0.2),
+        0 0 60px -15px rgba($dark-green, 0.1);
+
+    &::after {
+        opacity  : 1;
+        // Animação de ondas LENTA (12s) para não ser agressiva
+        animation: mtWavePulse 12s ease-in-out infinite alternate;
+    }
+
+    // Dá evidência ao vídeo fazendo ele saltar levemente
+    .mt-card__video-wrapper {
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.9), 0 0 15px rgba($neon-green, 0.15);
+    }
+
+    .mt-card__video-thumb {
+        transform: scale(1.05);
+    }
+    
+    // Destaque no botão vermelho do YouTube
+    .mt-card__video-play-circle {
+        transform  : scale(1.1); 
+        box-shadow : 0 0 25px rgba(255, 0, 0, 0.4);
+    }
+}
 
 .mt-card {
     position      : relative;
     width         : 100%;
     max-width     : 380px;
-    @include card-base;
-    background    : #0a0a0a !important; 
-    padding       : $sp-5;
-    display       : flex;
-    flex-direction: column;
-    gap           : $sp-3;
-    border-color  : $color-border;
+    background    : $card-bg;
+    border-radius : 24px;
+    border        : 1px solid rgba($neon-green, 0.12);
+    overflow      : hidden;
+    cursor        : pointer;
     
-    will-change   : transform, opacity;
+    will-change   : transform, opacity, border-color, box-shadow;
     -webkit-font-smoothing: antialiased;
-    text-rendering: optimizeLegibility;
 
     transition    :
-        border-color $transition-base,
-        transform    $transition-base,
-        box-shadow   $transition-base;
+        border-color 0.4s ease,
+        transform    0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        box-shadow   0.4s ease;
 
     opacity            : 0;
     transform          : translate3d(0, 30px, 0);
@@ -149,36 +185,48 @@
     animation-delay    : var(--mt-stagger-delay, 0s);
     animation-play-state: paused;
 
-    & > * {
-        will-change: transform;
-        animation: mtCardFloatInternal 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
-        animation-delay: calc(var(--mt-stagger-delay, 0s) + 0.6s);
-        animation-play-state: paused;
+    // Fundo Dinâmico de Ondas (Verde escuro)
+    &::after {
+        content       : "";
+        position      : absolute;
+        inset         : -50%;
+        background    : radial-gradient(circle at center, rgba($dark-green, 0.12) 0%, transparent 50%),
+                        linear-gradient(120deg, rgba($dark-green, 0.04) 0%, transparent 30%, rgba($dark-green, 0.08) 70%, transparent 100%);
+        background-size: 200% 200%;
+        opacity       : 0;
+        transition    : opacity 0.8s ease; // Transição suave de entrada
+        pointer-events: none;
+        z-index       : 0;
     }
 
-    &:hover {
-        border-color: rgba($color-primary, 0.35);
-        transform   : translate3d(0, -14px, 0) !important; 
-        box-shadow  :
-            0 20px 40px rgba(0, 0, 0, 0.7),
-            0 0 0 1px rgba($color-primary, 0.2);
-
-        & > * {
-            animation-play-state: paused !important;
-            transform: translate3d(0, 0, 0) !important;
+    // Ativa no Desktop (Hover)
+    @media (hover: hover) {
+        &:hover {
+            @include card-active-glow;
         }
     }
+
+    // Ativa no Mobile (Touch / Active)
+    &:active {
+        @include card-active-glow;
+        transition: transform 0.1s ease, box-shadow 0.1s ease; 
+    }
+}
+
+.mt-card__content-inner {
+    position      : relative;
+    z-index       : 1;
+    padding       : $sp-5;
+    display       : flex;
+    flex-direction: column;
+    gap           : $sp-4;
 }
 
 [data-visible="true"] .mt-card {
     animation-play-state: running;
-
-    & > * {
-        animation-play-state: running;
-    }
 }
 
-// ── MOBILE (Loops desligados para focar em rolagem fluida) ──
+// ── MOBILE (Otimização de Entrada) ──
 @media (max-width: 768px) {
     .mt-card {
         animation : none !important; 
@@ -186,16 +234,11 @@
         transform : translate3d(0, 30px, 0);
         filter    : blur(4px);
         transition:
-            opacity      0.5s cubic-bezier(0.16, 1, 0.3, 1),
-            transform    0.5s cubic-bezier(0.16, 1, 0.3, 1),
+            opacity      0.5s ease,
+            transform    0.5s ease,
             filter       0.5s ease,
-            border-color $transition-base,
-            box-shadow   $transition-base;
-
-        & > * {
-            animation: none !important;
-            transform: none !important;
-        }
+            border-color 0.4s ease,
+            box-shadow   0.4s ease;
     }
 
     .mt-card[data-visible="true"] {
@@ -203,37 +246,40 @@
         transform: translate3d(0, 0, 0);
         filter   : blur(0);
     }
-
-    .mt-card:not([data-visible="true"]) {
-        opacity  : 0;
-        transform: translate3d(0, 30px, 0);
-        filter   : blur(4px);
-    }
 }
 
-// ── Componentes internos do card ──────────────────────────────
+// ── Elementos Internos do Card ──────────────────────────────
+
 .mt-card__tag {
-    @include badge-base;
-    position      : absolute;
-    top           : $sp-4;
-    left          : $sp-4;
-    background    : rgba($color-primary, 0.1);
-    border        : 1px solid rgba($color-primary, 0.22);
-    color         : $color-primary-light;
-    letter-spacing: 1.5px;
+    align-self    : flex-start;
+    padding       : 4px 12px;
+    background    : rgba($neon-green, 0.08);
+    border        : 1px solid rgba($neon-green, 0.25);
+    border-radius : 20px;
+    color         : $neon-green;
+    font-family   : $font-label;
+    font-size     : 0.65rem;
+    font-weight   : $font-weight-bold;
+    letter-spacing: 2px;
     text-transform: uppercase;
-    font-size     : $font-size-xs;
-    z-index       : 3;
+    backdrop-filter: blur(4px);
+    
+    // Animação de pulsação infinita
+    animation: mtTagGlowPulse 2.5s ease-in-out infinite;
 }
 
+// Video 
 .mt-card__video-wrapper {
     position     : relative;
     width        : 100%;
     aspect-ratio : 16 / 9;
-    border-radius: $radius-md;
+    border-radius: 16px;
     overflow     : hidden;
-    background   : #121212; 
-    border       : 1px solid $color-border;
+    background   : #000000; // Fundo preto puro (aparece se não houver thumb)
+    border       : 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow   : 0 4px 20px rgba(0, 0, 0, 0.5);
+    z-index      : 2; 
+    transition   : box-shadow 0.4s ease;
 }
 
 .mt-card__video-thumb {
@@ -241,12 +287,21 @@
     height    : 100%;
     object-fit: cover;
     display   : block;
-    transition: transform $transition-slow, filter $transition_slow;
+    transition: transform 0.6s ease, opacity 0.3s ease;
 
-    .mt-card__video-wrapper:hover & {
-        transform: scale(1.04);
-        filter   : brightness(0.75);
+    // Oculta a thumb cinza padrão do YouTube
+    &[src*="default.jpg"],
+    &[src*="mqdefault.jpg"],
+    &[src*="hqdefault.jpg"] {
+        opacity: 0; 
     }
+}
+
+.mt-card__video-overlay {
+    position  : absolute;
+    inset     : 0;
+    background: linear-gradient(0deg, rgba(#0a0a0a, 0.9) 0%, rgba(0,0,0,0.1) 60%, transparent 100%);
+    pointer-events: none;
 }
 
 .mt-card__video-play-btn {
@@ -258,28 +313,21 @@
     background     : transparent;
     border         : none;
     cursor         : pointer;
-
-    &:hover .mt-card__video-play-circle {
-        transform   : scale(1.12);
-        background  : rgba($color-primary, 0.22);
-        border-color: rgba($color-primary-light, 0.9);
-    }
+    z-index        : 2;
 }
 
+// Botão vermelho estilo YouTube
 .mt-card__video-play-circle {
-    width         : 54px;
-    height        : 54px;
-    border-radius : $radius-full;
-    background    : rgba(0, 0, 0, 0.6);
-    border        : 2px solid rgba($color-primary-light, 0.65);
-    display       : flex;
-    align-items   : center;
+    width          : 68px;
+    height         : 48px;
+    border-radius  : 14px; 
+    background     : #FF0000; 
+    border         : none; 
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    transition    :
-        transform    $transition-base,
-        background   $transition-base,
-        border-color $transition-base;
-    animation     : mtPlayPulse 2.5s ease-in-out infinite;
+    transition     : transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow     : 0 4px 15px rgba(255, 0, 0, 0.15); 
 }
 
 .mt-card__video-play-triangle {
@@ -287,8 +335,8 @@
     height       : 0;
     border-top   : 9px solid transparent;
     border-bottom: 9px solid transparent;
-    border-left  : 16px solid $color-primary-light;
-    margin-left  : 3px;
+    border-left  : 15px solid #ffffff; 
+    margin-left  : 4px; 
 }
 
 .mt-card__video-iframe {
@@ -297,107 +345,122 @@
     width   : 100%;
     height  : 100%;
     border  : none;
+    z-index : 3;
 }
 
 .mt-card__video-label {
     @include flex-center;
     gap           : $sp-2;
     font-family   : $font-label;
-    font-size     : $font-size-xs;
+    font-size     : 0.7rem;
     font-weight   : $font-weight-bold;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color         : rgba($color-tertiary, 0.5);
+    color         : rgba(255, 255, 255, 0.5);
 }
 
 .mt-card__video-dot {
     width        : 6px;
     height       : 6px;
-    border-radius: $radius-full;
-    background   : $color-danger;
+    border-radius: 50%;
+    background   : #ff3333;
     flex-shrink  : 0;
     animation    : mtDotBlink 1.8s ease-in-out infinite;
+    box-shadow   : 0 0 8px rgba(#ff3333, 0.6);
 }
 
+// Avatar e Identidade
 .mt-card__avatar-wrapper {
-    @include flex-center;
-    gap: $sp-3;
+    display    : flex;
+    align-items: center;
+    gap        : $sp-3;
 }
 
 .mt-card__avatar {
-    width         : 52px;
-    height        : 52px;
-    border-radius : $radius-full;
-    flex-shrink   : 0;
-    display       : flex;
-    align-items   : center;
+    width          : 50px;
+    height         : 50px;
+    border-radius  : 50%;
+    flex-shrink    : 0;
+    display        : flex;
+    align-items    : center;
     justify-content: center;
-    border        : 1px solid rgba($color-primary, 0.18);
+    border         : 1px solid rgba($neon-green, 0.3);
+    box-shadow     : inset 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
 .mt-card__avatar-initials {
     font-family   : $font-headline;
     font-size     : $font-size-md;
     font-weight   : $font-weight-bold;
-    color         : rgba(#ffffff, 0.8);
+    color         : #ffffff;
     letter-spacing: 1px;
 }
 
 .mt-card__identity {
     display       : flex;
     flex-direction: column;
-    gap           : 4px; /* Leve ajuste para acomodar melhor os textos sem a unidade */
+    gap           : 2px;
 }
 
 .mt-card__role {
     font-family   : $font-label;
-    font-size     : $font-size-xs;
+    font-size     : 0.65rem;
     font-weight   : $font-weight-semibold;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color         : rgba($color-tertiary, 0.5);
+    color         : rgba(255, 255, 255, 0.5);
     margin        : 0;
 }
 
 .mt-card__name {
     font-family: $font-headline;
-    font-size  : $font-size-lg;
+    font-size  : 1.15rem;
     font-weight: $font-weight-bold;
     color      : #ffffff;
     margin     : 0;
-    line-height: $line-height-tight;
+    line-height: 1.2;
 }
 
+// Avaliação (Estrelas em Amarelo)
 .mt-card__stars {
     @include flex-center;
-    gap: 3px;
+    gap: 4px;
 }
 
 .mt-card__star {
-    font-size : 0.85rem;
-    color     : rgba($color-tertiary, 0.15);
-    transition: color $transition-fast;
+    font-size : 1.1rem;
+    color     : rgba(255, 255, 255, 0.1);
+    transition: color 0.3s ease, text-shadow 0.3s ease;
 
-    &--filled { color: #facc15; }
+    &--filled { 
+        color      : $star-yellow; 
+        text-shadow: 0 0 8px rgba($star-yellow, 0.5);
+    }
 }
 
-.mt-card__divider { @include divider; }
+.mt-card__divider { 
+    height    : 1px;
+    width     : 100%;
+    background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+    margin    : 4px 0;
+}
 
+// Resumo textual
 .mt-card__summary {
     font-family: $font-body;
-    font-size  : $font-size-base;
-    line-height: $line-height-relaxed;
-    color      : rgba($color-tertiary, 0.7);
+    font-size  : 0.95rem;
+    line-height: 1.6;
+    color      : rgba(255, 255, 255, 0.85); 
     margin     : 0;
 }
 
 .mt-card__summary-label {
     font-family   : $font-label;
-    font-size     : $font-size-xs;
+    font-size     : 0.75rem;
     font-weight   : $font-weight-bold;
     letter-spacing: 1.5px;
     text-transform: uppercase;
-    color         : $color-primary-light;
+    color         : $neon-green; 
     margin-right  : $sp-1;
 }
 
@@ -418,23 +481,39 @@
     }
 }
 
-@keyframes mtCardFloatInternal {
-    from {
-        transform: translate3d(0, 0, 0);
+// Animação de Ondas para o fundo (Lenta e fluida)
+@keyframes mtWavePulse {
+    0% {
+        background-position: 0% 50%;
+        transform: rotate(0deg) scale(1);
     }
-    to {
-        transform: translate3d(0, -20px, 0);
+    50% {
+        background-position: 100% 50%;
+        transform: rotate(2deg) scale(1.05);
+    }
+    100% {
+        background-position: 0% 50%;
+        transform: rotate(0deg) scale(1);
     }
 }
 
 @keyframes mtDotBlink {
     0%, 100% { opacity: 1; }
-    50%      { opacity: 0.15; }
+    50%      { opacity: 0.2; }
 }
 
-@keyframes mtPlayPulse {
-    0%, 100% { box-shadow: 0 0 0 0 rgba($color-primary-light, 0); }
-    50%      { box-shadow: 0 0 0 6px rgba($color-primary-light, 0.12); }
+// Animação de pulsação (Glow/Breathing) para a tag
+@keyframes mtTagGlowPulse {
+    0%, 100% {
+        box-shadow  : 0 0 0 rgba($neon-green, 0);
+        border-color: rgba($neon-green, 0.25);
+        background  : rgba($neon-green, 0.08);
+    }
+    50% {
+        box-shadow  : 0 0 12px rgba($neon-green, 0.4);
+        border-color: rgba($neon-green, 0.6);
+        background  : rgba($neon-green, 0.15);
+    }
 }
 
 // ============================================================
@@ -443,19 +522,15 @@
 @include md {
     .mt-card {
         max-width: 100%;
-        padding  : $sp-4;
     }
-
+    .mt-card__content-inner {
+        padding: $sp-4;
+    }
     .mt-filter {
-        gap: $sp-1;
+        gap: 6px;
     }
-
     .mt-filter__btn {
-        padding   : $sp-1 $sp-3;
-        font-size : 0.6rem;
+        padding  : 6px 14px;
+        font-size: 0.6rem;
     }
-}
-
-@include sm {
-    .mt-card__name { font-size: $font-size-md; }
 }

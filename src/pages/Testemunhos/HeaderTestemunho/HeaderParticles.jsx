@@ -1,61 +1,51 @@
-// ============================================================
-// headerParticles.jsx — Sistema de Partículas do Header
-// Projeto: Iron Dome — Tactical Mission Design System
-// ============================================================
-
-import React, { useMemo } from 'react';
 import styles from './HeaderParticles.module.scss';
 
-const HeaderParticles = () => {
-  // Configuração de performance e responsividade calculada na montagem
-  const particles = useMemo(() => {
-    // Verificação de viewport para otimização mobile em tempo de execução
-    const isMobile = typeof window !== 'undefined' ? window.innerWidth < 768 : false;
-    const particleCount = isMobile ? 15 : 30;
-    const generatedParticles = [];
+// Função matemática pura para gerar variações sem usar Math.random() (evita erros do ESLint)
+function pseudoRandom(seed) {
+  const x = Math.sin(seed * 9999 + 1) * 10000;
+  return x - Math.floor(x);
+}
 
-    for (let i = 0; i < particleCount; i++) {
-      // Proporção estrita de 60% bolinhas (dot) e 40% traços (line)
-      const type = Math.random() < 0.6 ? 'dot' : 'line';
-      
-      // Cálculo de opacidade com atenuação tática de 30% para telas mobile
-      const baseOpacity = Math.random() * (0.5 - 0.15) + 0.15;
-      const opacity = isMobile ? baseOpacity * 0.7 : baseOpacity;
+// Geramos as partículas de forma estática e pura fora do componente
+const PARTICLES = Array.from({ length: 30 }).map((_, i) => {
+  const r1 = pseudoRandom(i * 1 + 1);
+  const r2 = pseudoRandom(i * 2 + 1);
+  const r3 = pseudoRandom(i * 3 + 1);
+  const r4 = pseudoRandom(i * 4 + 1);
+  const r5 = pseudoRandom(i * 5 + 1);
+  const r6 = pseudoRandom(i * 6 + 1);
+  const r7 = pseudoRandom(i * 7 + 1);
+  const r8 = pseudoRandom(i * 8 + 1);
+  const r9 = pseudoRandom(i * 9 + 1);
 
-      // Dimensões customizadas por tipo de elemento
-      const size = Math.random() * (5 - 2) + 2; // 2px a 5px
-      const lineHeight = type === 'line' ? Math.random() * (28 - 12) + 12 : 0; // 12px a 28px
+  const type = r1 < 0.6 ? 'dot' : 'line';
+  const baseOpacity = r2 * (0.5 - 0.15) + 0.15;
+  const size = r3 * (5 - 2) + 2;
+  const lineHeight = type === 'line' ? r4 * (28 - 12) + 12 : 0;
+  const drift = r5 * (60 - -60) + -60;
 
-      // Deslocamento lateral senoidal (drift) para as bolinhas
-      const drift = Math.random() * (60 - -60) + -60; // -60px a 60px
+  return {
+    id: `hp-${i}`,
+    type,
+    style: {
+      '--left': `${r6 * 100}%`,
+      '--top': `${r7 * 100}%`,
+      '--delay': `${r8 * 4}s`,
+      '--duration': `${r9 * (9 - 4) + 4}s`,
+      '--size': `${size}px`,
+      '--line-height': `${lineHeight}px`,
+      '--opacity': baseOpacity,
+      '--drift': `${drift}px`,
+      '--rotation': `${r1 * 90 - 45}deg`,
+      '--will-change': 'transform',
+    },
+  };
+});
 
-      generatedParticles.push({
-        id: `hp-${i}`,
-        type,
-        style: {
-          '--left': `${Math.random() * 100}%`,
-          '--top': `${Math.random() * 100}%`,
-          '--delay': `${Math.random() * 4}s`,
-          '--duration': `${Math.random() * (9 - 4) + 4}s`,
-          '--size': `${size}px`,
-          '--line-height': `${lineHeight}px`,
-          '--opacity': opacity,
-          '--drift': `${drift}px`,
-          '--rotation': `${Math.random() * 90 - 45}deg`, // Rotação diagonal entre -45deg e 45deg
-          '--will-change': isMobile ? 'auto' : 'transform', // Otimização de GPU: desativado em mobile
-        },
-      });
-    }
-
-    return generatedParticles;
-  }, []);
-
+export default function HeaderParticles() {
   return (
-    <div 
-      className={styles['hp-container']} 
-      aria-hidden="true"
-    >
-      {particles.map((p) => (
+    <div className={styles['hp-container']} aria-hidden="true">
+      {PARTICLES.map((p) => (
         <span
           key={p.id}
           className={`${styles['hp-particle']} ${styles[`hp-particle--${p.type}`]}`}
@@ -64,6 +54,4 @@ const HeaderParticles = () => {
       ))}
     </div>
   );
-};
-
-export default HeaderParticles;
+}

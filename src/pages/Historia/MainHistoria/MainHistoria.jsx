@@ -2,30 +2,6 @@
  * MainHistoria.jsx
  * ─────────────────────────────────────────────────────────────────────────────
  * ENGINE DE ANIMAÇÃO CRONOLÓGICA & PARALLAX DE PARTÍCULAS — IRON DOME
- * * ARQUITETURA DE CÓDIGO ABERTO (ANTI-ABSTRAÇÃO / NÃO-AUTOMATIZADO):
- * O corpo da linha do tempo foi estruturado de forma explicitamente linear. 
- * A eliminação de loops iterativos dinâmicos (.map) no JSX mitiga overheads de
- * reconciliação do Virtual DOM e garante que cada nó de renderização possua
- * escopo fixo e chamadas diretas aos imports de mídia alocados em memória.
- *
- * ENGINE DE RISCOS TÁTICOS (CHUVA DE NEON CADENTE COM DISSIPAÇÃO):
- * Camada computacional nativa em Canvas que renderiza um sistema de partículas
- * cadentes lineares em posições pseudo-aleatórias através de todo o plano de fundo.
- * O efeito de sumiço ("fade-out") e translação vertical reage ao ciclo de animação
- * contínuo e às proporções dinâmicas de dimensionamento da seção.
- *
- * ATUALIZAÇÃO — MÍDIA EXPANDIDA:
- * O texto descritivo de cada card foi movido para dentro do .imageWrapper,
- * sobreposto à própria imagem (com gradiente de legibilidade definido no SCSS),
- * eliminando o espaço vazio que sobrava abaixo da imagem em cada card.
- *
- * ATUALIZAÇÃO 2 — TEXTO ABAIXO DA IMAGEM, DENTRO DO CARD (MOBILE):
- * A <p className={styles.mediaDescription}> deixou de ficar DENTRO do
- * .imageWrapper (que tem overflow:hidden e, no mobile, altura fixa — o que
- * cortaria o texto). Agora ela é irmã do .imageWrapper, ambas dentro do
- * .mediaContainer, que por sua vez já está dentro do .timelineContentWrapper
- * (o card). Resultado: a imagem mantém altura fixa e a descrição flui
- * normalmente abaixo dela, sem ser cortada e sem vazar para fora do card.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
@@ -72,20 +48,17 @@ export default function MainHistoria() {
 
   /**
    * FIX: ENGINE DE AUTO-RESET DE ROLAGEM DE PÁGINA
-   * Garante que sempre que o usuário alternar de rotas e retornar para a tela
-   * da história, a janela do navegador limpe o cache de scroll e retorne ao topo.
    */
   useEffect(() => {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: 'instant' // Instantâneo para evitar flickers visuais na renderização dos primeiros nós
+      behavior: 'instant'
     });
   }, []);
 
   /**
    * ENGINE DE PARTÍCULAS EM CANVAS (BACKGROUND CHROMATIC STREAKS)
-   * Controla a inicialização, redimensionamento e loop de animação do fundo em tempo real.
    */
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -107,7 +80,7 @@ export default function MainHistoria() {
     class Particle {
       constructor() {
         this.reset();
-        this.y = Math.random() * canvas.height; // Distribuição inicial vertical
+        this.y = Math.random() * canvas.height;
       }
 
       reset() {
@@ -170,7 +143,6 @@ export default function MainHistoria() {
 
   /**
    * INTERPOLAÇÃO VETORIAL DO SCROLL E PROCESSAMENTO DA HISTERESE
-   * Executa os cálculos geométricos de posicionamento e atualiza as flags de animação.
    */
   const computeScroll = useCallback(() => {
     if (!timelineRef.current) return;
@@ -178,7 +150,6 @@ export default function MainHistoria() {
     const rect = timelineRef.current.getBoundingClientRect();
     const vh = window.innerHeight;
 
-    // Ponto de partida do progresso (cruzamento do gatilho a 66% da tela)
     const triggerTop = rect.top - vh / 1.5;
     let progress = 0;
 
@@ -188,44 +159,34 @@ export default function MainHistoria() {
 
     setFillProgress(progress);
 
-    // Avaliação individualizada por threshold e amortecimento por margem de tolerância
     setActiveItems(prev => {
       const next = { ...prev };
       let changed = false;
 
-      // ITEM 1 (Threshold: 0%)
       if (progress >= 0 && prev[0] !== true) { next[0] = true; changed = true; }
       else if (progress < 0 && prev[0] === true) { next[0] = false; changed = true; }
 
-      // ITEM 2 (Threshold: 12%)
       if (progress >= 12 && prev[1] !== true) { next[1] = true; changed = true; }
       else if (progress < 12 && prev[1] === true && progress < (12 - HYSTERESIS)) { next[1] = false; changed = true; }
 
-      // ITEM 3 (Threshold: 24%)
       if (progress >= 24 && prev[2] !== true) { next[2] = true; changed = true; }
       else if (progress < 24 && prev[2] === true && progress < (24 - HYSTERESIS)) { next[2] = false; changed = true; }
 
-      // ITEM 4 (Threshold: 36%)
       if (progress >= 36 && prev[3] !== true) { next[3] = true; changed = true; }
       else if (progress < 36 && prev[3] === true && progress < (36 - HYSTERESIS)) { next[3] = false; changed = true; }
 
-      // ITEM 5 (Threshold: 50%)
       if (progress >= 50 && prev[4] !== true) { next[4] = true; changed = true; }
       else if (progress < 50 && prev[4] === true && progress < (50 - HYSTERESIS)) { next[4] = false; changed = true; }
 
-      // ITEM 6 (Threshold: 62%)
       if (progress >= 62 && prev[5] !== true) { next[5] = true; changed = true; }
       else if (progress < 62 && prev[5] === true && progress < (62 - HYSTERESIS)) { next[5] = false; changed = true; }
 
-      // ITEM 7 (Threshold: 74%)
       if (progress >= 74 && prev[6] !== true) { next[6] = true; changed = true; }
       else if (progress < 74 && prev[6] === true && progress < (74 - HYSTERESIS)) { next[6] = false; changed = true; }
 
-      // ITEM 8 (Threshold: 86%)
       if (progress >= 86 && prev[7] !== true) { next[7] = true; changed = true; }
       else if (progress < 86 && prev[7] === true && progress < (86 - HYSTERESIS)) { next[7] = false; changed = true; }
 
-      // ITEM 9 (Threshold: 98%)
       if (progress >= 98 && prev[8] !== true) { next[8] = true; changed = true; }
       else if (progress < 98 && prev[8] === true && progress < (98 - HYSTERESIS)) { next[8] = false; changed = true; }
 
@@ -233,13 +194,11 @@ export default function MainHistoria() {
     });
   }, []);
 
-  // Blindagem contra jank e layout thrashing via RequestAnimationFrame
   const handleScroll = useCallback(() => {
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     rafRef.current = requestAnimationFrame(computeScroll);
   }, [computeScroll]);
 
-  // Monitor de entrada na Viewport nativa
   const triggerIfVisible = useCallback(() => {
     if (!sectionRef.current) return;
     const rect = sectionRef.current.getBoundingClientRect();
@@ -250,6 +209,9 @@ export default function MainHistoria() {
 
   // Ciclo de gerenciamento global de eventos de interface
   useEffect(() => {
+    // 💡 FIX: Cópia local da referência DOM para evitar problemas no cleanup
+    const currentSection = sectionRef.current;
+
     triggerIfVisible();
 
     const delayedCheck = setTimeout(() => {
@@ -269,7 +231,7 @@ export default function MainHistoria() {
       ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
       { threshold: 0.05, rootMargin: '0px 0px -40px 0px' }
     );
-    if (sectionRef.current) observer.observe(sectionRef.current);
+    if (currentSection) observer.observe(currentSection);
 
     computeScroll();
 
@@ -279,7 +241,7 @@ export default function MainHistoria() {
     return () => {
       clearTimeout(delayedCheck);
       document.removeEventListener('visibilitychange', onVisibilityChange);
-      if (sectionRef.current) observer.unobserve(sectionRef.current);
+      if (currentSection) observer.unobserve(currentSection); // 💡 Usa a cópia local segura
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);

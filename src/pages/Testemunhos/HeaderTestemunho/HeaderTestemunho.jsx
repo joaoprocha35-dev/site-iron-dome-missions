@@ -19,7 +19,7 @@
 //   calcular seu animation-delay individualmente (typewriter).
 // ============================================================
 
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './HeaderTestemunho.module.scss';
 import HeaderParticles from './HeaderParticles';

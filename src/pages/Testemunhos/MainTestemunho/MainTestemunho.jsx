@@ -1,55 +1,20 @@
 // ============================================================
-// mainTestemunho.jsx — Grid de 12 Cards de Testemunho
-// Projeto: Iron Dome — Design System Civil
-// ============================================================
-// Estrutura visual:
-//   1. Cabeçalho da seção  → "N DEPOIMENTOS" com linhas deco
-//   2. Filtro por tema     → botões de tag para filtrar os cards
-//   3. Grid de cards       → 12 cards em layout responsivo Bootstrap
-//
-// Cada card contém:
-//   - Tag de tema (canto superior)
-//   - Vídeo com lazy load (thumbnail → iframe só ao clicar)
-//   - Label "RELATÓRIO EM VÍDEO" com ponto piscante
-//   - Avatar com iniciais + identidade (cargo e nome)
-//   - Avaliação em estrelas
-//   - Divisória + resumo textual
-//
-// Estratégia de animação:
-//   DESKTOP (> 768px):
-//     Cards entram em cascata da esq para dir via @keyframes
-//     mtCardReveal com animation-delay = --mt-stagger-delay (index * 0.1s).
-//     A animação fica pausada até a seção receber data-visible="true".
-//
-//   MOBILE (≤ 768px):
-//     Cada card tem IntersectionObserver próprio (threshold 0.15).
-//     Ao entrar na viewport → data-visible="true" → transição suave.
-//     Ao SAIR da viewport → data-visible removido → volta ao estado oculto.
-//     Isso libera memória e torna a rolagem ultra leve no celular.
-//
-// Lazy loading de vídeo:
-//   Estado inicial: apenas a thumbnail do YouTube (hqdefault).
-//   URL: https://img.youtube.com/vi/VIDEO_ID/hqdefault.jpg
-//   Ao clicar no play → substitui pelo iframe com autoplay=1.
-//   O iframe nunca é criado antes do clique (zero impacto na banda).
-//
-// MANUTENÇÃO:
-//   Para adicionar/editar cards, edite apenas TESTIMONIALS_DATA.
-//   videoId: substitua 'ID_DO_VIDEO_AQUI' pelo ID de 11 chars do YouTube.
+// MainTestemunho.jsx — Grid de 12 Cards de Testemunho
+// Projeto: Iron Dome — Design System Civil (Premium Dark)
 // ============================================================
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './MainTestemunho.module.scss';
 
-// ── Dados dos 12 testemunhos (Alternando entre Encontristas e Servos) ──
+// ── Dados dos 12 testemunhos ──
 const TESTIMONIALS_DATA = [
   {
     id            : 1,
     name          : 'Lucas Pereira',
     role          : 'Encontrista',
     avatarInitials: 'LP',
-    avatarColor   : '#0d2b1a',
+    avatarColor   : '#0a120e',
     tag           : 'IDENTIDADE',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -60,7 +25,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Anderson Souza',
     role          : 'Servo',
     avatarInitials: 'AS',
-    avatarColor   : '#0d1a2b',
+    avatarColor   : '#0a120e',
     tag           : 'ANSIEDADE',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -71,7 +36,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Maria Ferreira',
     role          : 'Encontrista',
     avatarInitials: 'MF',
-    avatarColor   : '#2b0d0d',
+    avatarColor   : '#0a120e',
     tag           : 'FÉ',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -82,7 +47,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Rafael Oliveira',
     role          : 'Servo',
     avatarInitials: 'RO',
-    avatarColor   : '#1a1a0d',
+    avatarColor   : '#0a120e',
     tag           : 'PROPÓSITO',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -93,7 +58,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Thiago Mendes',
     role          : 'Encontrista',
     avatarInitials: 'TM',
-    avatarColor   : '#1a0d2b',
+    avatarColor   : '#0a120e',
     tag           : 'RESTAURAÇÃO',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -104,7 +69,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Camila Torres',
     role          : 'Servo',
     avatarInitials: 'CT',
-    avatarColor   : '#2b1a0d',
+    avatarColor   : '#0a120e',
     tag           : 'ESGOTAMENTO',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -115,7 +80,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Felipe Costa',
     role          : 'Encontrista',
     avatarInitials: 'FC',
-    avatarColor   : '#0d2b0d',
+    avatarColor   : '#0a120e',
     tag           : 'LIDERANÇA',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -126,7 +91,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Juliana Ramos',
     role          : 'Servo',
     avatarInitials: 'JR',
-    avatarColor   : '#2b0d1a',
+    avatarColor   : '#0a120e',
     tag           : 'IDENTIDADE',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -137,7 +102,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Bruno Alves',
     role          : 'Encontrista',
     avatarInitials: 'BA',
-    avatarColor   : '#0d1a1a',
+    avatarColor   : '#0a120e',
     tag           : 'FÉ',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -148,7 +113,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Isabela Nunes',
     role          : 'Servo',
     avatarInitials: 'IN',
-    avatarColor   : '#1a0d1a',
+    avatarColor   : '#0a120e',
     tag           : 'PROPÓSITO',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -159,7 +124,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Gabriel Rocha',
     role          : 'Encontrista',
     avatarInitials: 'GR',
-    avatarColor   : '#1b1b1b',
+    avatarColor   : '#0a120e',
     tag           : 'DEPRESSÃO',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -170,7 +135,7 @@ const TESTIMONIALS_DATA = [
     name          : 'Rodrigo Teixeira',
     role          : 'Servo',
     avatarInitials: 'RT',
-    avatarColor   : '#3a0f0d',
+    avatarColor   : '#0a120e',
     tag           : 'LIDERANÇA',
     rating        : 5,
     videoId       : 'ID_DO_VIDEO_AQUI',
@@ -233,6 +198,7 @@ const VideoThumb = ({ videoId, name }) => {
         className={styles['mt-card__video-thumb']}
         loading="lazy"
       />
+      <div className={styles['mt-card__video-overlay']} />
       <button
         className={styles['mt-card__video-play-btn']}
         onClick={handlePlay}
@@ -283,43 +249,48 @@ const TestimonyCard = ({ data, index }) => {
       style={{ '--mt-stagger-delay': `${index * 0.1}s` }}
       aria-label={`Testemunho de ${data.name}, ${data.role}`}
     >
-      <span
-        className={styles['mt-card__tag']}
-        aria-label={`Tema: ${data.tag}`}
-      >
-        {data.tag}
-      </span>
-
-      <VideoThumb videoId={data.videoId} name={data.name} />
-
-      <div className={styles['mt-card__video-label']} aria-hidden="true">
-        <span className={styles['mt-card__video-dot']} />
-        RELATÓRIO EM VÍDEO
-      </div>
-
-      <div className={styles['mt-card__avatar-wrapper']}>
-        <div
-          className={styles['mt-card__avatar']}
-          style={{ background: data.avatarColor }}
-          aria-hidden="true"
+      <div className={styles['mt-card__content-inner']}>
+        
+        <span
+          className={styles['mt-card__tag']}
+          aria-label={`Tema: ${data.tag}`}
         >
-          <span className={styles['mt-card__avatar-initials']}>
-            {data.avatarInitials}
-          </span>
+          {data.tag}
+        </span>
+
+        <VideoThumb videoId={data.videoId} name={data.name} />
+
+        <div className={styles['mt-card__video-label']} aria-hidden="true">
+          <span className={styles['mt-card__video-dot']} />
+          RELATÓRIO EM VÍDEO
         </div>
-        <div className={styles['mt-card__identity']}>
-          <p className={styles['mt-card__role']}>{data.role}</p>
-          <h3 className={styles['mt-card__name']}>{data.name}</h3>
+
+        <div className={styles['mt-card__avatar-wrapper']}>
+          <div
+            className={styles['mt-card__avatar']}
+            style={{ background: data.avatarColor }}
+            aria-hidden="true"
+          >
+            <span className={styles['mt-card__avatar-initials']}>
+              {data.avatarInitials}
+            </span>
+          </div>
+          <div className={styles['mt-card__identity']}>
+            <p className={styles['mt-card__role']}>{data.role}</p>
+            <h3 className={styles['mt-card__name']}>{data.name}</h3>
+          </div>
         </div>
+
+        <StarRating value={data.rating} />
+
+        <div className={styles['mt-card__divider']} aria-hidden="true" />
+        
+        <p className={styles['mt-card__summary']}>
+          <span className={styles['mt-card__summary-label']}>RESUMO: </span>
+          {data.summary}
+        </p>
+
       </div>
-
-      <StarRating value={data.rating} />
-
-      <div className={styles['mt-card__divider']} aria-hidden="true" />
-      <p className={styles['mt-card__summary']}>
-        <span className={styles['mt-card__summary-label']}>RESUMO: </span>
-        {data.summary}
-      </p>
     </article>
   );
 };

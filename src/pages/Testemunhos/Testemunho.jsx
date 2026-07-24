@@ -16,7 +16,7 @@
 //   O scroll suave entre seções é controlado pelo CSS do wrapper.
 // ============================================================
 
-import React from 'react';
+import 'react';
 import styles from './Testemunho.module.scss';
 
 import HeaderTestemunho from './HeaderTestemunho/HeaderTestemunho';
