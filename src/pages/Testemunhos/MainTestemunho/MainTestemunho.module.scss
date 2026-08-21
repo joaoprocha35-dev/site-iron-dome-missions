@@ -316,27 +316,34 @@ $star-yellow: #FFD700;       // Amarelo vibrante
     z-index        : 2;
 }
 
-// Botão vermelho estilo YouTube
+// Botão minimalista/translúcido (disfarça a cara de YouTube)
 .mt-card__video-play-circle {
-    width          : 68px;
-    height         : 48px;
-    border-radius  : 14px; 
-    background     : #FF0000; 
-    border         : none; 
-    display        : flex;
-    align-items    : center;
-    justify-content: center;
-    transition     : transform 0.3s ease, box-shadow 0.3s ease;
-    box-shadow     : 0 4px 15px rgba(255, 0, 0, 0.15); 
+    width           : 36px;
+    height          : 36px;
+    border-radius   : 50%; // Torna o botão perfeitamente redondo
+    background      : rgba(0, 0, 0, 0.192); // Fundo escuro semi-transparente
+    backdrop-filter : blur(4px); // Efeito de desfoque moderno (glassmorphism)
+    border          : 1px solid rgba(255, 255, 255, 0.2); // Borda sutil
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    transition      : all 0.3s ease;
+    box-shadow      : 0 8px 20px rgba(0, 0, 0, 0.25);
+
+    &:hover {
+        background  : rgba(0, 0, 0, 0.85); // Escurece um pouco mais ao passar o mouse
+        transform   : scale(1.05); // Leve zoom para indicar interatividade
+        border-color: rgba(255, 255, 255, 0.4);
+    }
 }
 
 .mt-card__video-play-triangle {
-    width        : 0;
-    height       : 0;
-    border-top   : 9px solid transparent;
-    border-bottom: 9px solid transparent;
-    border-left  : 15px solid #ffffff; 
-    margin-left  : 4px; 
+    width          : 0;
+    height         : 0;
+    border-top     : 7px solid transparent;
+    border-bottom  : 7px solid transparent;
+    border-left    : 12px solid #04df0f; // Triângulo branco limpo
+    margin-left    : 3px; // Ajuste fino para centralizar opticamente o triângulo
 }
 
 .mt-card__video-iframe {

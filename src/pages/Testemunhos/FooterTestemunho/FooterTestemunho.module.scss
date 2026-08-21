@@ -1,12 +1,12 @@
 // ============================================================
-// footerTestemunho.module.scss — Footer da Tela de Testemunhos
-// Projeto: Iron Dome — Tactical Mission Design System
+// footerTestemunho.module.scss — COMPLETO E INTEGRADO
+// Design: Tático / High Visibility
 // ============================================================
 
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
-// ── Wrapper raiz ───────────────────────────────────────────────
+// ── Wrapper Raiz ───────────────────────────────────────────────
 .ft-footer {
     width           : 100%;
     background-color: #0a0a0a; 
@@ -15,63 +15,46 @@
 }
 
 // ============================================================
-// FAIXA DE ESTATÍSTICAS (FLUTUAÇÃO NO CARD PAI)
+// FAIXA DE ESTATÍSTICAS
 // ============================================================
 
 .ft-footer__stats {
-    padding   : $sp-8 0;
-    background: rgba($color-primary, 0.02);
+    padding      : $sp-8 0;
+    background   : rgba($color-primary, 0.02);
     border-bottom: 1px solid $color-border;
 }
 
-// Item individual de estatística (CARD PAI)
 .ft-footer__stat {
-    display       : flex;
-    flex-direction: column;
-    align-items   : center;
-    gap           : $sp-2;
-    padding       : $sp-4 $sp-3;
-    background    : rgba($color-primary, 0.04);
-    border        : 1px solid rgba($color-primary, 0.12);
-    border-radius : $radius-md;
-    width         : 100%;
-    max-width     : 160px;
-    
-    // Aceleração por Hardware (GPU) para animação fluida
-    will-change   : transform, opacity;
-    
-    // Transições para os estados de reveal e interações do mouse
-    transition    :
-        background    $transition-base,
-        border-color  $transition-base,
-        box-shadow    $transition-base,
-        opacity       0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    display             : flex;
+    flex-direction      : column;
+    align-items         : center;
+    gap                 : $sp-2;
+    padding             : $sp-4 $sp-3;
+    background          : rgba($color-primary, 0.04);
+    border              : 1px solid rgba($color-primary, 0.12);
+    border-radius       : $radius-md;
+    width               : 100%;
+    max-width           : 160px;
+    will-change         : transform, opacity;
+    transition          :
+        background      $transition-base,
+        border-color    $transition-base,
+        box-shadow      $transition-base,
+        opacity         0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
-    // ── ANIMAÇÃO 1: Entrada (Stagger) ──
-    opacity   : 0;
-    transform : translate3d(0, 25px, 0);
-    
-    // Executa o reveal tático assim que entra na tela
-    animation : ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: var(--ft-stat-delay, 0s);
+    opacity             : 0;
+    transform           : translate3d(0, 25px, 0);
+    animation           : ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                          ftStatFloatMain 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
+    animation-delay     : var(--ft-stat-delay, 0s), calc(var(--ft-stat-delay, 0s) + 0.6s);
     animation-play-state: paused;
 
-    // ── ANIMAÇÃO 2: Loop de Flutuação Contínua ──
-    animation: ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards,
-               ftStatFloatMain 4.8s cubic-bezier(0.45, 0, 0.55, 1) infinite alternate;
-    
-    // O float espera o reveal acabar (0.6s) + o delay do stagger para começar de forma orgânica
-    animation-delay: var(--ft-stat-delay, 0s), calc(var(--ft-stat-delay, 0s) + 0.6s);
-
     &:hover {
-        background  : rgba($color-primary, 0.06);
-        border-color: rgba($color-primary, 0.35);
-        
-        // Trava o loop infinito e força uma subida fixa e imponente de hover
+        background          : rgba($color-primary, 0.06);
+        border-color        : rgba($color-primary, 0.35);
         animation-play-state: paused !important; 
-        transform   : translate3d(0, -15px, 0) !important; 
-        
-        box-shadow  : 
+        transform           : translate3d(0, -15px, 0) !important; 
+        box-shadow          : 
             0 16px 32px rgba(0, 0, 0, 0.6),
             0 0 0 1px rgba($color-primary, 0.2);
     }
@@ -101,25 +84,25 @@
 }
 
 // ============================================================
-// BLOCO CTA (ARQUITETURA DE BORDA INFINITA ULTRA-BLACK)
+// BLOCO CTA (Com animação de texto imponente)
 // ============================================================
 
 .ft-footer__cta {
-    padding: $sp-8 * 2 0;
-    opacity  : 0;
-    transform: translate3d(0, 25px, 0);
-    transition:
-        opacity   0.7s ease,
-        transform 0.7s ease;
+    padding         : ($sp-8 * 2) 0;
+    opacity         : 0;
+    transform       : translate3d(0, 25px, 0);
+    transition      :
+        opacity     0.7s ease,
+        transform   0.7s ease;
     transition-delay: 0.2s;
 
     @include md { padding: $sp-8 0; }
 }
 
 .ft-footer__cta-line {
-    width     : 0;
-    height    : 1px;
-    background: linear-gradient(
+    width           : 0;
+    height          : 1px;
+    background      : linear-gradient(
         90deg,
         transparent,
         rgba($color-primary, 0.45) 30%,
@@ -127,184 +110,154 @@
         rgba($color-primary, 0.45) 70%,
         transparent
     );
-    margin    : $sp-5 auto;
-    transition: width 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+    margin          : $sp-5 auto;
+    transition      : width 0.85s cubic-bezier(0.16, 1, 0.3, 1);
     transition-delay: 0.45s;
 }
 
-.ft-footer__cta-title {
-    font-family   : $font-headline;
-    font-size     : clamp(0.95rem, 2.5vw, 1.25rem);
-    font-weight   : $font-weight-black;
-    letter-spacing: 2.5px;
-    text-transform: uppercase;
+// ── Texto descritivo — Imponente e Animado ──
+.ft-cta-prompt {
+    font-family   : $font-body;
+    font-size     : 1.05rem;
     color         : #ffffff;
-    margin-bottom : $sp-3;
-    line-height   : $line-height-base;
+    font-weight   : 500;
+    margin        : 0 auto 20px;
+    text-align    : center;
+    max-width     : 420px;
+    line-height   : 1.4;
+    letter-spacing: 0.5px;
+    text-shadow   : 0 0 10px rgba(255, 255, 255, 0.2);
+    
+    // Animação de entrada
+    opacity       : 0;
+    animation     : ftTextReveal 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+    animation-delay: 0.3s;
 }
 
-.ft-footer__cta-sub {
-    font-family : $font-body;
-    font-size   : $font-size-md;
-    color       : rgba($color-tertiary, 0.65);
-    max-width   : 680px;
-    margin      : 0 auto $sp-6 auto;
-    line-height : $line-height-relaxed;
-}
-
-// ── CONTAINER DE AÇÕES COMPILADAS ──
-.ft-action-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.ft-btn-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.ft-footer__cta-btn {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 290px;
-  height: 54px;
-  padding: 1.5px; 
-  background: transparent;
-  border: none;
-  border-radius: $radius-sm;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.7);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  // Feixe tático de radar rotativo contínuo e infinito
-  &::before {
-    content: '';
-    position: absolute;
-    top: -180%;
-    left: -180%;
-    width: 460%;
-    height: 460%;
-    background: conic-gradient(
-      transparent 0deg,
-      transparent 120deg,
-      #00ff66 180deg,
-      transparent 240deg,
-      transparent 360deg
-    );
-    animation: ftRotateBorder 3.5s linear infinite;
-    will-change: transform;
-    z-index: 0;
-  }
-
-  // Camada interna para blindagem do fundo preto puro
-  .ft-footer__cta-btn-content {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: $sp-3;
-    background-color: #000000 !important; 
-    width: 100%;
-    height: 100%;
-    padding: 0 $sp-5;
-    border-radius: calc(#{$radius-sm} - 1px);
-    transition: background-color 0.3s ease;
-  }
-
-  .ft-btn-text {
-    font-family: $font-body;
-    font-size: $font-size-md;
-    font-weight: $font-weight-bold;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #00ff66; 
-    transition: color 0.3s ease;
-  }
-
-  .ft-footer__cta-btn-icon {
-    font-size: 1.1rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 2;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    transform: translate3d(0, -2px, 0);
-    box-shadow: 0 8px 25px rgba(0, 255, 102, 0.25);
+// ── Botão pílula com glassmorphism + feixe verde tático ─────
+.ft-glass-btn {
+    position                : relative;
+    display                 : inline-flex;
+    align-items             : center;
+    justify-content         : center;
+    gap                     : 12px;
+    width                   : 100%;
+    max-width               : 380px;
+    height                  : 64px;
+    padding                 : 0 28px;
+    margin                  : 0 auto;
+    border-radius           : 9999px;
+    background              : linear-gradient(135deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter         : blur(16px);
+    -webkit-backdrop-filter : blur(16px);
+    border                  : 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow              : 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -2px 5px rgba(0, 0, 0, 0.5);
+    color                   : #00ff66;
+    cursor                  : pointer;
+    overflow                : hidden;
+    transition              : all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 
     &::before {
-      animation-duration: 1.8s; 
+        content       : '';
+        position      : absolute;
+        top           : 2px;
+        left          : 20px;
+        width         : 100px;
+        height        : 4px;
+        background    : linear-gradient(90deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0));
+        border-radius : 50%;
+        filter        : blur(1px);
+        pointer-events: none;
+        opacity       : 0.8;
     }
 
-    .ft-footer__cta-btn-content {
-      background-color: #050505 !important; 
+    &::after {
+        content    : '';
+        position   : absolute;
+        top        : 0;
+        left       : -100%;
+        width      : 100%;
+        height     : 100%;
+        background : linear-gradient(90deg, transparent, rgba(0, 255, 102, 0.03) 30%, rgba(0, 255, 102, 0.25) 50%, rgba(0, 255, 102, 0.03) 70%, transparent);
+        transform     : skewX(-20deg);
+        pointer-events: none;
+        animation     : tacticalGreenScan 4.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
     }
 
-    .ft-btn-text {
-      color: #ffffff; 
+    .ft-glass-btn-icon { font-size: 1.2rem; z-index: 1; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    .ft-glass-btn-text {
+        font-family   : $font-body;
+        font-size     : $font-size-md;
+        font-weight   : $font-weight-bold;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color         : inherit;
+        z-index       : 1;
+        text-shadow   : 0 0 10px rgba(0, 255, 102, 0.3);
+        transition    : color 0.3s ease;
     }
 
-    .ft-footer__cta-btn-icon {
-      transform: scale(1.12);
+    &:hover {
+        transform   : translateY(-3px) scale(1.01);
+        background  : linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%);
+        border-color: rgba(0, 255, 102, 0.5);
+        box-shadow  : 0 14px 35px rgba(0, 0, 0, 0.5), 0 0 25px rgba(0, 255, 102, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+        color       : #ffffff;
+        .ft-glass-btn-icon { transform: scale(1.15) translate3d(2px, 0, 0); }
     }
-  }
 
-  &:active {
-    transform: translate3d(0, 0, 0);
-  }
-
-  @include md {
-    min-width: 100%;
-    max-width: 340px;
-  }
+    &:active { transform: translateY(-1px) scale(0.99); }
 }
 
-// ── CTA SECUNDÁRIO: LINK DE VOLTA PARA A ROTA DA HISTÓRIA ──
-.ft-back-home-block {
-  display: flex;
-  justify-content: center;
-  margin-top: 4px;
+// ── CTA Secundário: Botão Retornar Customizado ──
+.ft-back-home-block { 
+    display        : flex; 
+    justify-content: center; 
+    margin-top     : $sp-6; 
+    margin-bottom  : $sp-4;
 }
 
 .ft-back-home-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: 'Monospace', monospace;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.4);
-  text-decoration: none;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  transition: all 0.3s ease;
+    display                 : inline-flex;
+    align-items             : center;
+    justify-content         : center;
+    gap                     : 12px;
+    font-family             : 'Monospace', monospace;
+    font-size               : 0.8rem;
+    font-weight             : 700;
+    color                   : rgba(255, 255, 255, 0.75);
+    text-decoration         : none;
+    letter-spacing          : 2px;
+    text-transform          : uppercase;
+    padding                 : 14px 32px;
+    border-radius           : 9999px;
+    border                  : 1px solid rgba(255, 255, 255, 0.12);
+    background              : linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    backdrop-filter         : blur(12px);
+    -webkit-backdrop-filter : blur(12px);
+    box-shadow              : 0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    transition              : all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 
-  .ft-back-home-icon {
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    color: #00ff66; 
-    border-color: rgba(0, 255, 102, 0.15);
-    background-color: rgba(0, 255, 102, 0.02);
-    text-shadow: 0 0 10px rgba(0, 255, 102, 0.3);
-
-    .ft-back-home-icon {
-      transform: translate3d(-4px, 0, 0); 
+    .ft-back-home-icon { 
+        transition          : transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); 
     }
-  }
+
+    &:hover {
+        color               : #ffffff; 
+        border-color        : rgba(0, 255, 102, 0.4);
+        background-color    : rgba(0, 255, 102, 0.06);
+        box-shadow          : 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 255, 102, 0.2);
+        text-shadow         : 0 0 8px rgba(0, 255, 102, 0.4);
+        
+        .ft-back-home-icon { 
+            transform       : translateX(-6px); 
+        }
+    }
+
+    &:active { 
+        transform           : scale(0.98); 
+    }
 }
 
 // ============================================================
@@ -312,10 +265,10 @@
 // ============================================================
 
 .ft-footer__legal {
-    padding  : $sp-5 0;
-    border-top: 1px solid $color-border;
-    opacity  : 0;
-    transition: opacity 0.6s ease;
+    padding         : $sp-5 0;
+    border-top      : 1px solid $color-border;
+    opacity         : 0;
+    transition      : opacity 0.6s ease;
     transition-delay: 0.6s;
 }
 
@@ -326,12 +279,7 @@
     letter-spacing: 4px;
     text-transform: uppercase;
     color         : $color-primary-light;
-
-    @include md {
-        display      : block;
-        text-align   : center;
-        margin-bottom: $sp-3;
-    }
+    @include md { display: block; text-align: center; margin-bottom: $sp-3; }
 }
 
 .ft-footer__links {
@@ -340,7 +288,6 @@
     justify-content: center;
     gap            : $sp-4;
     flex-wrap      : wrap;
-
     @include sm { gap: $sp-3; }
 }
 
@@ -351,9 +298,7 @@
     text-decoration: none;
     letter-spacing : 0.5px;
     transition     : color $transition-fast;
-
     &:hover { color: $color-primary-light; }
-
     @include sm { font-size: $font-size-xs; }
 }
 
@@ -362,57 +307,43 @@
     font-size  : $font-size-sm;
     color      : rgba($color-tertiary, 0.3);
     margin     : 0;
-
     @include md { text-align: center; }
 }
 
 // ============================================================
-// KEYFRAMES E DETECTORES TÁTICOS
+// KEYFRAMES (Animações Táticas)
 // ============================================================
 
-@keyframes ftRotateBorder {
-  0%   { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
 @keyframes ftStatReveal {
-    from {
-        opacity  : 0;
-        transform: translate3d(0, 25px, 0);
-    }
-    to {
-        opacity  : 1;
-        transform: translate3d(0, 0, 0);
-    }
+    from { opacity: 0; transform: translate3d(0, 25px, 0); }
+    to { opacity: 1; transform: translate3d(0, 0, 0); }
 }
 
 @keyframes ftStatFloatMain {
-    0% {
-        transform: translate3d(0, 0, 0);
-    }
-    100% {
-        transform: translate3d(0, -18px, 0);
-    }
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(0, -18px, 0); }
 }
 
-// ── ATIVAÇÃO PELO OBSERVER ───────────────────────────────────
+@keyframes ftTextReveal {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tacticalGreenScan {
+    0% { left: -100%; opacity: 0; }
+    10% { opacity: 1; }
+    33.3% { left: 200%; opacity: 0; }
+    100% { left: 200%; opacity: 0; }
+}
+
+// ── Ativação pelo Observer ───────────────────────────────────
 [data-visible="true"] {
-    .ft-footer__stat {
-        animation-play-state: running;
-    }
-
-    .ft-footer__cta {
-        opacity  : 1;
-        transform: translate3d(0, 0, 0);
-    }
-
+    .ft-footer__stat { animation-play-state: running; }
+    .ft-footer__cta { opacity: 1; transform: translate3d(0, 0, 0); }
     .ft-footer__cta-line { width: 100px; }
-
     .ft-footer__legal { opacity: 1; }
 }
 
 @media (max-width: 768px) {
-    .ft-footer__stat {
-        animation: ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
-    }
+    .ft-footer__stat { animation: ftStatReveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards !important; }
 }

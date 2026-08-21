@@ -1,151 +1,111 @@
 // ============================================================
-// MainTestemunho.jsx — Grid de 12 Cards de Testemunho
+// MainTestemunho.jsx — Grid de Cards de Testemunho
 // Projeto: Iron Dome — Design System Civil (Premium Dark)
 // ============================================================
 
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styles from './MainTestemunho.module.scss';
 
-// ── Dados dos 12 testemunhos ──
+// ── Dados dos testemunhos ──
+// Aqui eu substitui os dados de teste pelos 8 testemunhos reais.
+// Separei apenas o código final (ID) de cada link do YouTube para o player funcionar corretamente.
 const TESTIMONIALS_DATA = [
   {
     id            : 1,
-    name          : 'Lucas Pereira',
-    role          : 'Encontrista',
-    avatarInitials: 'LP',
-    avatarColor   : '#0a120e',
-    tag           : 'IDENTIDADE',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Lucas descreve como o Iron Dome o ajudou a reconstruir sua identidade depois de anos se sentindo vazio e focado apenas em metas comerciais. A fé voltou a ser o centro da sua vida e dos seus negócios.',
-  },
-  {
-    id            : 2,
-    name          : 'Anderson Souza',
-    role          : 'Servo',
-    avatarInitials: 'AS',
-    avatarColor   : '#0a120e',
-    tag           : 'ANSIEDADE',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Anderson vencia grandes desafios profissionais no mercado de trabalho, mas perdia as batalhas internas. O programa o ensinou a confrontar a ansiedade com ferramentas concretas ancoradas na Palavra.',
-  },
-  {
-    id            : 3,
-    name          : 'Maria Ferreira',
-    role          : 'Encontrista',
-    avatarInitials: 'MF',
-    avatarColor   : '#0a120e',
-    tag           : 'FÉ',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Maria reencontrou sua fé depois de passar por um período de forte estresse profissional. O suporte espiritual do Iron Dome foi decisivo para sua recuperação emocional e paixão pela carreira.',
-  },
-  {
-    id            : 4,
-    name          : 'Rafael Oliveira',
-    role          : 'Servo',
-    avatarInitials: 'RO',
-    avatarColor   : '#0a120e',
-    tag           : 'PROPÓSITO',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Rafael chegou ao Iron Dome sem saber qual rumo tomar ou o que queria do futuro. Saiu com clareza de propósito, direção vocacional e uma comunidade que o sustenta diariamente.',
-  },
-  {
-    id            : 5,
-    name          : 'Thiago Mendes',
-    role          : 'Encontrista',
-    avatarInitials: 'TM',
-    avatarColor   : '#0a120e',
-    tag           : 'RESTAURAÇÃO',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Thiago trabalhava num ambiente corporativo exaustivo que sufocava sua espiritualidade. O Iron Dome foi o espaço seguro que ele precisava para restaurar sua relação com Deus.',
-  },
-  {
-    id            : 6,
-    name          : 'Camila Torres',
-    role          : 'Servo',
-    avatarInitials: 'CT',
-    avatarColor   : '#0a120e',
-    tag           : 'ESGOTAMENTO',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Após enfrentar uma rotina desgastante na área da saúde, Camila estava no limite do esgotamento. O programa a ajudou a distinguir o cuidar dos outros de se destruir para servi-los.',
-  },
-  {
-    id            : 7,
-    name          : 'Felipe Costa',
-    role          : 'Encontrista',
-    avatarInitials: 'FC',
-    avatarColor   : '#0a120e',
-    tag           : 'LIDERANÇA',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Felipe queria ser um líder melhor para sua equipe no escritório. O Iron Dome o ensinou que a liderança genuína e influente começa com autoconhecimento e espírito de serviço.',
-  },
-  {
-    id            : 8,
-    name          : 'Juliana Ramos',
+    name          : 'João Rocha',
     role          : 'Servo',
     avatarInitials: 'JR',
     avatarColor   : '#0a120e',
-    tag           : 'IDENTIDADE',
+    tag           : 'TRANSFORMAÇÃO',
     rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Juliana vivia num ciclo constante de insegurança e comparação profissional. O programa a confrontou com verdades sobre identidade em Cristo que transformaram totalmente sua postura em sala de aula.',
+    videoId       : 'hZeAcnRk8iQ', // Extraído de https://youtu.be/hZeAcnRk8iQ
+    summary       : 'João compartilha como o projeto trouxe uma verdadeira transformação para a sua vida, mudando suas atitudes e seu modo de enxergar o mundo.',
   },
   {
-    id            : 9,
-    name          : 'Bruno Alves',
-    role          : 'Encontrista',
-    avatarInitials: 'BA',
+    id            : 2,
+    name          : 'Yan',
+    role          : 'Servo',
+    avatarInitials: 'Y',
+    avatarColor   : '#0a120e',
+    tag           : 'CHAMADO',
+    rating        : 5,
+    videoId       : 'KcUO_zWLw5I', // Extraído de https://youtu.be/KcUO_zWLw5I
+    summary       : 'Yan descreve o momento exato em que entendeu o seu chamado e como isso deu um novo propósito para sua caminhada na fé.',
+  },
+  {
+    id            : 3,
+    name          : 'André',
+    role          : 'Servo',
+    avatarInitials: 'A',
+    avatarColor   : '#0a120e',
+    tag           : 'RESTAURAÇÃO',
+    rating        : 5,
+    videoId       : 'j37nh5waSX8', // Extraído de https://youtu.be/j37nh5waSX8
+    summary       : 'Um relato forte sobre como Deus restaurou áreas da sua vida que pareciam perdidas, trazendo paz e um novo recomeço.',
+  },
+  {
+    id            : 4,
+    name          : 'Arthur',
+    role          : 'Servo',
+    avatarInitials: 'A',
+    avatarColor   : '#0a120e',
+    tag           : 'CHAMADO',
+    rating        : 5,
+    videoId       : '-GF8X4UYS5g', // Extraído de https://youtu.be/-GF8X4UYS5g
+    summary       : 'Arthur conta sobre os desafios e as confirmações que teve ao aceitar o seu chamado para servir no Iron Dome.',
+  },
+  {
+    id            : 5,
+    name          : 'Chrystian',
+    role          : 'Servo',
+    avatarInitials: 'C',
+    avatarColor   : '#0a120e',
+    tag           : 'RESTAURAÇÃO',
+    rating        : 5,
+    videoId       : 'xT5deZOA2Og', // Extraído de https://youtu.be/xT5deZOA2Og
+    summary       : 'O testemunho de Chrystian é focado na cura interior e na reconstrução da sua base espiritual através da fé.',
+  },
+  {
+    id            : 6,
+    name          : 'Hugo',
+    role          : 'Servo',
+    avatarInitials: 'H',
+    avatarColor   : '#0a120e',
+    tag           : 'IDENTIDADE',
+    rating        : 5,
+    videoId       : 'z6BQPnFbf9s', // Extraído de https://youtu.be/z6BQPnFbf9s
+    summary       : 'Hugo descreve como o Iron Dome o ajudou a reconstruir sua identidade, preenchendo o vazio e voltando a ter Jesus como centro.',
+  },
+  {
+    id            : 7,
+    name          : 'Pedro',
+    role          : 'Servo',
+    avatarInitials: 'P',
+    avatarColor   : '#0a120e',
+    tag           : 'RESTAURAÇÃO',
+    rating        : 5,
+    videoId       : 'F6mBj8nqeLM', // Extraído de https://youtu.be/F6mBj8nqeLM
+    summary       : 'Pedro compartilha um testemunho emocionante sobre a restauração da sua família e de seus princípios cristãos.',
+  },
+  {
+    id            : 8,
+    name          : 'Rayane',
+    role          : 'Servo',
+    avatarInitials: 'R',
     avatarColor   : '#0a120e',
     tag           : 'FÉ',
     rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Bruno havia se afastado da fé por muitos anos devido às decepções da rotina. O Iron Dome foi o ambiente acolhedor e sem julgamentos que ele precisava para voltar a crer — primeiro em Deus, depois em si mesmo.',
-  },
-  {
-    id            : 10,
-    name          : 'Isabela Nunes',
-    role          : 'Servo',
-    avatarInitials: 'IN',
-    avatarColor   : '#0a120e',
-    tag           : 'PROPÓSITO',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Isabela, que passa o dia ajudando outras pessoas a direcionarem suas vidas, admite que precisava de direcionamento também. O Iron Dome integrou desenvolvimento pessoal e fé de forma extraordinária.',
-  },
-  {
-    id            : 11,
-    name          : 'Gabriel Rocha',
-    role          : 'Encontrista',
-    avatarInitials: 'GR',
-    avatarColor   : '#0a120e',
-    tag           : 'DEPRESSÃO',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Gabriel enfrentava o desgaste mental e o peso psicológico de litígios complexos cotidianamente. O método tático e o refrigério espiritual do Iron Dome quebraram o ciclo depressivo que ameaçava sua vida pessoal.',
-  },
-  {
-    id            : 12,
-    name          : 'Rodrigo Teixeira',
-    role          : 'Servo',
-    avatarInitials: 'RT',
-    avatarColor   : '#0a120e',
-    tag           : 'LIDERANÇA',
-    rating        : 5,
-    videoId       : 'ID_DO_VIDEO_AQUI',
-    summary       : 'Mesmo liderando dezenas de colaboradores, Rodrigo se sentia isolado e cansado ao chegar em casa. No Iron Dome, ele descobriu como usar a vulnerabilidade estratégica para guiar sua família com sabedoria.',
-  },
+    videoId       : 'c7zlVE7QJA8', // Extraído de https://youtu.be/c7zlVE7QJA8
+    summary       : 'Rayane fala sobre os testes que enfrentou e como sua fé foi fortalecida durante sua trajetória servindo no projeto.',
+  }
 ];
 
+// Mapeio todas as tags únicas automaticamente para gerar os botões de filtro
 const ALL_TAGS = ['TODOS', ...new Set(TESTIMONIALS_DATA.map(t => t.tag))];
 
 // ── Sub-componente: StarRating ────────────────────────────────
+// Renderiza as 5 estrelas de avaliação
 const StarRating = ({ value = 5 }) => (
   <div
     className={styles['mt-card__stars']}
@@ -167,15 +127,22 @@ const StarRating = ({ value = 5 }) => (
   </div>
 );
 
-// ── Sub-componente: VideoThumb (Lazy Load) ────────────────────
+// ── Sub-componente: VideoThumb ────────────────────────────────
+// Cuida da exibição da miniatura real do vídeo e do player do YouTube
 const VideoThumb = ({ videoId, name }) => {
   const [playing, setPlaying] = useState(false);
 
-  const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+  // Se não houver videoId cadastrado ainda, renderizo um espaço vazio
+  if (!videoId) {
+    return <div className={styles['mt-card__video-wrapper']} />;
+  }
+
+  // A MÁGICA ACONTECE AQUI: 
+  // Usamos '0.jpg' para forçar o YouTube a entregar o frame automático do vídeo!
+  const thumbUrl = `https://img.youtube.com/vi/${videoId}/0.jpg`;
   const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
 
-  const handlePlay = useCallback(() => setPlaying(true), []);
-
+  // Se o usuário clicou em play, substituo a imagem pelo iframe do vídeo
   if (playing) {
     return (
       <div className={styles['mt-card__video-wrapper']}>
@@ -190,6 +157,7 @@ const VideoThumb = ({ videoId, name }) => {
     );
   }
 
+  // Estado inicial: Mostro a miniatura com o botão de play em cima
   return (
     <div className={styles['mt-card__video-wrapper']}>
       <img
@@ -197,11 +165,13 @@ const VideoThumb = ({ videoId, name }) => {
         alt={`Capa do vídeo de ${name}`}
         className={styles['mt-card__video-thumb']}
         loading="lazy"
+        // Estilo extra para garantir que o frame preencha o espaço sem distorcer
+        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
       />
       <div className={styles['mt-card__video-overlay']} />
       <button
         className={styles['mt-card__video-play-btn']}
-        onClick={handlePlay}
+        onClick={() => setPlaying(true)}
         aria-label={`Reproduzir depoimento de ${name}`}
         type="button"
       >
@@ -217,9 +187,11 @@ const VideoThumb = ({ videoId, name }) => {
 };
 
 // ── Sub-componente: TestimonyCard ──────────────────────────────
+// Estrutura de cada Card individual do grid
 const TestimonyCard = ({ data, index }) => {
   const cardRef = useRef(null);
 
+  // Adiciona animação de scroll no mobile
   useEffect(() => {
     const el = cardRef.current;
     if (!el) return;
@@ -251,6 +223,7 @@ const TestimonyCard = ({ data, index }) => {
     >
       <div className={styles['mt-card__content-inner']}>
         
+        {/* Tag no topo (ex: FÉ, RESTAURAÇÃO, etc) */}
         <span
           className={styles['mt-card__tag']}
           aria-label={`Tema: ${data.tag}`}
@@ -258,6 +231,7 @@ const TestimonyCard = ({ data, index }) => {
           {data.tag}
         </span>
 
+        {/* Player de vídeo do YouTube */}
         <VideoThumb videoId={data.videoId} name={data.name} />
 
         <div className={styles['mt-card__video-label']} aria-hidden="true">
@@ -265,6 +239,7 @@ const TestimonyCard = ({ data, index }) => {
           RELATÓRIO EM VÍDEO
         </div>
 
+        {/* Informações de perfil (Foto/Iniciais e Nome) */}
         <div className={styles['mt-card__avatar-wrapper']}>
           <div
             className={styles['mt-card__avatar']}
@@ -281,10 +256,12 @@ const TestimonyCard = ({ data, index }) => {
           </div>
         </div>
 
+        {/* Estrelinhas de avaliação */}
         <StarRating value={data.rating} />
 
         <div className={styles['mt-card__divider']} aria-hidden="true" />
         
+        {/* Resumo em texto daquele testemunho */}
         <p className={styles['mt-card__summary']}>
           <span className={styles['mt-card__summary-label']}>RESUMO: </span>
           {data.summary}
@@ -296,14 +273,17 @@ const TestimonyCard = ({ data, index }) => {
 };
 
 // ── Componente principal exportado ────────────────────────────
+// Ponto de entrada que carrega tudo na tela
 const MainTestemunho = () => {
   const sectionRef = useRef(null);
   const [activeTag, setActiveTag] = useState('TODOS');
 
+  // Filtra os cards baseados na tag selecionada
   const filtered = activeTag === 'TODOS'
     ? TESTIMONIALS_DATA
     : TESTIMONIALS_DATA.filter(t => t.tag === activeTag);
 
+  // Efeito para adicionar visibilidade assim que entra na tela (Intersection Observer)
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -312,7 +292,7 @@ const MainTestemunho = () => {
       ([entry]) => {
         if (entry.isIntersecting) {
           el.setAttribute('data-visible', 'true');
-          observer.disconnect();
+          observer.disconnect(); // Disconecta para animar apenas na primeira vez
         }
       },
       { threshold: 0.05 }
@@ -330,7 +310,7 @@ const MainTestemunho = () => {
     >
       <Container>
 
-        {/* Cabeçalho da seção */}
+        {/* Cabeçalho da seção mostrando a quantidade de resultados */}
         <div className={`${styles['mt-section__header']} mb-4`}>
           <div className={styles['mt-section__header-line']} aria-hidden="true" />
           <h2 id="mt-section-title" className={styles['mt-section__title']}>
@@ -342,7 +322,7 @@ const MainTestemunho = () => {
           <div className={styles['mt-section__header-line']} aria-hidden="true" />
         </div>
 
-        {/* Filtro por tema */}
+        {/* Filtros para o usuário clicar (Ex: TODOS, FÉ, CHAMADO) */}
         <div
           className={`${styles['mt-filter']} mb-5`}
           role="group"
@@ -364,7 +344,7 @@ const MainTestemunho = () => {
           ))}
         </div>
 
-        {/* Grid de cards */}
+        {/* Renderização do Grid de cards filtrados */}
         <Row
           className="g-4 justify-content-center"
           role="list"

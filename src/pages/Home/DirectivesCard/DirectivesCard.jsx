@@ -1,32 +1,30 @@
-// ============================================================
-// DirectivesCard/index.jsx (Versão Final com Scroll e Sincronia)
-// ============================================================
 import { useEffect, useRef, useState } from "react";
 import styles from "./DirectivesCard.module.scss";
 
 export default function DirectivesCard() {
+  // Aqui eu crio um aviso para saber se a pessoa já rolou a tela até chegar nesse cartão
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef(null);
 
+  // Aqui eu guardo a minha lista com as datas do ano, os títulos dos encontros e qual é o próximo destaque
   const timelineData = [
     { id: 1, date: "JAN 2026", title: "Reunião", active: false },
     { id: 2, date: "MAR 2026", title: "Retiro Iron dome", active: false },
     { id: 3, date: "MAI 2026", title: "Reunião de alinhamento", active: false },
-    { id: 4, date: "JUL 2026", title: "Retiro iron dome", active: true }, //  Alvo da animação
+    { id: 4, date: "JUL 2026", title: "Retiro iron dome", active: false }, 
     { id: 5, date: "SET 2026", title: "Novidades em breve", active: false },
-    { id: 6, date: "NOV 2026", title: "Local e tema a definir", active: false },
+    { id: 6, date: "NOV 2026", title: "Proxímo Retiro de Jovens - Botucatu", active: true },
     { id: 7, date: "DEZ 2026", title: "Encerramento", active: false },
   ];
 
+  // Aqui eu ligo o "radar" do site: assim que a pessoa enxergar essa parte da página, as animações começam a rodar
   useEffect(() => {
-    // 1. Salva a referência atual em uma variável local
     const currentElement = cardRef.current;
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          // 2. Usa a variável local para parar de observar
           if (currentElement) observer.unobserve(currentElement);
         }
       },
@@ -39,18 +37,19 @@ export default function DirectivesCard() {
       observer.observe(currentElement);
     }
 
-    // 3. A limpeza agora limpa o observer com segurança
     return () => {
       observer.disconnect();
     };
   }, []);
 
   return (
+    // Aqui eu coloco o cartão na tela e ativo a animação se a pessoa já estiver vendo ele
     <article
       ref={cardRef}
       className={`${styles.cardContainer} ${isVisible ? styles.isVisible : ""}`}
     >
       <section className={styles.section}>
+        {/* Aqui eu mostro o título principal da seção */}
         <header className={styles.header}>
           <h2 className={styles.title}>
             <span className={styles.icon} aria-hidden="true"></span>
@@ -58,18 +57,18 @@ export default function DirectivesCard() {
           </h2>
         </header>
 
+        {/* Aqui eu coloco a frase explicativa do calendário */}
         <p className={styles.description}>
           Acompanhe as próximas datas e locais onde a missão será estabelecida
           ao longo de todo o ano.
         </p>
 
+        {/* Aqui fica a estrutura do caminho: a linha cinza e a linha verde */}
         <div className={styles.timeline}>
-          {/* Linha guia de fundo (cinza) */}
           <div className={styles.timelineLine}></div>
-
-          {/* Linha de progresso animada (verde) */}
           <div className={styles.timelineProgress}></div>
 
+          {/* Aqui eu faço um loop para desenhar cada mês na tela, um por um */}
           <div className={styles.timelineGrid}>
             {timelineData.map((item, index) => (
               <div

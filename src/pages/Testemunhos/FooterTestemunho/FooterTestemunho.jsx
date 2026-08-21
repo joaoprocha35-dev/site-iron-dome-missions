@@ -8,21 +8,25 @@ import { Container, Row, Col } from 'react-bootstrap';
 import styles from './FooterTestemunho.module.scss';
 import FooterParticles from './FooterParticles';
 
-// ── Constantes de conteúdo direcionadas aos Veteranos/Servos ──
-const CTA_TITLE   = 'VETERANO OU SERVO, REGISTRE TUA EXPERIÊNCIA DE CAMPO';
-const CTA_SUB     = 'Espaço exclusivo para quem já passou ou serve no Encontro Iron Dome. Tua história fortalece a missão.';
-const CTA_BUTTON  = 'ENVIAR RELATÓRIO TÁTICO';
-
 // Configuração do WhatsApp do Operador
 const WHATSAPP_PHONE = '5514998813787'; // DDI + DDD + Número
-const WHATSAPP_MSG   = 'Olá! Participei/sirvo no Encontro Iron Dome e gostaria de enviar meu testemunho para o projeto.';
+
+// ── Constantes do Botão 1: QUERO PARTICIPAR ──
+const PROMPT_NOVO = 'Gostou do que viu? Mande uma mensagem para nós e saiba como participar.';
+const BTN_NOVO    = 'QUERO PARTICIPAR';
+const MSG_NOVO    = 'Eu fiquei muito interessada(o) em participar do Iron Dome, como que eu faço?';
+
+// ── Constantes do Botão 2: VETERANOS ──
+const PROMPT_VET  = 'Já participou do Iron Dome e quer enviar seu relatório em vídeo? Aperte aqui.';
+const BTN_VET     = 'ENVIAR RELATÓRIO TÁTICO';
+const MSG_VET     = 'Olá! Participei/sirvo no Encontro Iron Dome e gostaria de enviar meu testemunho para o projeto.';
 
 // Estatísticas exibidas na faixa superior
 const STATS_DATA = [
-  { value: '12', label: 'RELATÓRIOS ATIVOS',      icon: '🎖️' },
-  { value: '8', label: 'TEMÁTICAS DE COMBATE',     icon: '🎯' },
-  { value: '4.97', label: 'MÉDIA DE AVALIAÇÃO',   icon: '⭐' },
-  { value: '100%', label: 'SATISFAÇÃO',           icon: '🛡️' },
+  { value: '12', label: 'RELATÓRIOS ATIVOS',    icon: '🎖️' },
+  { value: '8',  label: 'TEMÁTICAS DE COMBATE', icon: '🎯' },
+  { value: '4.97', label: 'MÉDIA DE AVALIAÇÃO', icon: '⭐' },
+  { value: '100%', label: 'SATISFAÇÃO',         icon: '🛡️' },
 ];
 
 // Links do rodapé legal
@@ -57,9 +61,14 @@ const FooterTestemunho = () => {
     return () => observer.disconnect();
   }, []);
 
-  // Redirecionamento seguro para a API do WhatsApp com mensagem tática
-  const handleWhatsAppRedirect = useCallback(() => {
-    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(WHATSAPP_MSG)}`;
+  // Redirecionamentos para WhatsApp
+  const handleWhatsAppNovo = useCallback(() => {
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(MSG_NOVO)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  }, []);
+
+  const handleWhatsAppVet = useCallback(() => {
+    const url = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(MSG_VET)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   }, []);
 
@@ -116,7 +125,7 @@ const FooterTestemunho = () => {
         <div className={styles['ft-footer__cta']}>
           <Container>
             <Row className="justify-content-center text-center">
-              <Col xs={12} lg={9}>
+              <Col xs={12} lg={10}>
 
                 {/* Linha decorativa superior */}
                 <div
@@ -124,41 +133,43 @@ const FooterTestemunho = () => {
                   aria-hidden="true"
                 />
 
-                {/* Título e subtítulo do CTA */}
-                <h2 className={styles['ft-footer__cta-title']}>{CTA_TITLE}</h2>
-                <p className={styles['ft-footer__cta-sub']}>{CTA_SUB}</p>
-
-                {/* CONTAINER DAS AÇÕES TÁTICAS */}
-                <div className={styles['ft-action-container']}>
+                {/* CONTAINER DAS AÇÕES TÁTICAS (2 COLUNAS) */}
+                <Row className="g-5 mt-3 mb-5 justify-content-center">
                   
-                  {/* Botão Operacional Ultra Black com Borda Infinita Conic-Gradient */}
-                  <div className={styles['ft-btn-wrapper']}>
+                  {/* Bloco 1: Quero Participar */}
+                  <Col xs={12} md={6} className="d-flex flex-column align-items-center">
+                    <p className={styles['ft-cta-prompt']}>{PROMPT_NOVO}</p>
                     <button
-                      className={styles['ft-footer__cta-btn']}
-                      onClick={handleWhatsAppRedirect}
+                      className={styles['ft-glass-btn']}
+                      onClick={handleWhatsAppNovo}
                       type="button"
-                      aria-label={CTA_BUTTON}
                     >
-                      <span className={styles['ft-footer__cta-btn-content']}>
-                        <span
-                          className={styles['ft-footer__cta-btn-icon']}
-                          aria-hidden="true"
-                        >
-                          📋
-                        </span>
-                        <span className={styles['ft-btn-text']}>{CTA_BUTTON}</span>
-                      </span>
+                      <span className={styles['ft-glass-btn-icon']} aria-hidden="true">🎯</span>
+                      <span className={styles['ft-glass-btn-text']}>{BTN_NOVO}</span>
                     </button>
-                  </div>
+                  </Col>
 
-                  {/* CTA SECUNDÁRIO: RETORNO DIRETAMENTE À ROTA HISTÓRIA */}
-                  <div className={styles['ft-back-home-block']}>
-                    <a href="/historia" className={styles['ft-back-home-link']}>
-                      <span className={styles['ft-back-home-icon']}>←</span>
-                      RETORNAR AO QG PRINCIPAL
-                    </a>
-                  </div>
+                  {/* Bloco 2: Enviar Relatório */}
+                  <Col xs={12} md={6} className="d-flex flex-column align-items-center">
+                    <p className={styles['ft-cta-prompt']}>{PROMPT_VET}</p>
+                    <button
+                      className={styles['ft-glass-btn']}
+                      onClick={handleWhatsAppVet}
+                      type="button"
+                    >
+                      <span className={styles['ft-glass-btn-icon']} aria-hidden="true">📋</span>
+                      <span className={styles['ft-glass-btn-text']}>{BTN_VET}</span>
+                    </button>
+                  </Col>
 
+                </Row>
+
+                {/* CTA SECUNDÁRIO: RETORNO DIRETAMENTE À ROTA HISTÓRIA */}
+                <div className={styles['ft-back-home-block']}>
+                  <a href="/historia" className={styles['ft-back-home-link']}>
+                    <span className={styles['ft-back-home-icon']}>←</span>
+                    RETORNAR AO QG PRINCIPAL
+                  </a>
                 </div>
 
                 {/* Linha decorativa inferior */}
@@ -176,7 +187,6 @@ const FooterTestemunho = () => {
         <div className={styles['ft-footer__legal']}>
           <Container>
             <Row className="align-items-center g-3 text-center text-md-start">
-
               {/* Brand */}
               <Col xs={12} md={4}>
                 <span
@@ -209,7 +219,6 @@ const FooterTestemunho = () => {
               <Col xs={12} md={4} className="text-center text-md-end">
                 <p className={styles['ft-footer__copy']}>{COPYRIGHT}</p>
               </Col>
-
             </Row>
           </Container>
         </div>

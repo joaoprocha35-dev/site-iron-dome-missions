@@ -1,14 +1,13 @@
-// ============================================================
-// DirectivesCard.module.scss (Otimizado, Sincronizado e Responsivo)
-// ============================================================
 @use '../../../styles/variables' as *;
 @use '../../../styles/mixins' as *;
 
+// Cores base do componente
 $bg-card: #0a0a0a;
 $text-main: #e0e0e0;
 $text-muted: #888888;
 $color-green: #66bb6a;
 
+// Estrutura principal do card
 .cardContainer {
     background-color: $bg-card;
     border-radius: 12px;
@@ -22,43 +21,42 @@ $color-green: #66bb6a;
     transform: translateY(20px);
     transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
+    // Dispara as animações quando o elemento entra na tela
     &.isVisible {
         opacity: 1;
         transform: translateY(0);
 
-        // 1. Linha de progresso verde
         .timelineProgress {
             animation: fillProgressHorizontal 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
             animation-delay: 0.4s; 
 
             @media (max-width: 900px) {
                 animation: fillProgressVertical 2.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-                animation-delay: 0.4s;
+                animation-delay: 0.3s;
             }
         }
 
-        // 2. Aparição gradual dos blocos de textos
         .timelineItem {
             animation: slideUpItem 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
             animation-delay: calc(0.3s + (var(--item-index) * 0.1s));
         }
 
-        // 3. Sincronização corrigida de colisão com as bolinhas (Curva Bezier)
+        // Sincronia do acendimento das bolinhas (Jan até Jul)
         .timelineItem:nth-child(1) .dot {
             animation: popDot 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
             animation-delay: 0.4s; 
         }
         .timelineItem:nth-child(2) .dot {
             animation: popDot 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            animation-delay: 0.75s; 
+            animation-delay: 0.84s; 
         }
         .timelineItem:nth-child(3) .dot {
             animation: popDot 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            animation-delay: 1.15s; // Ajuste exato do mês de Maio
+            animation-delay: 1.28s; 
         }
         .timelineItem:nth-child(4) .dot {
             animation: popDot 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            animation-delay: 2.6s; 
+            animation-delay: 1.72s; 
         }
     }
 }
@@ -96,15 +94,13 @@ $color-green: #66bb6a;
     margin-bottom: 24px;
 }
 
-// =========================================
-// LINHA DO TEMPO E ESTRUTURA GRID
-// =========================================
 .timeline {
     position: relative;
     padding-top: 10px;
     width: 100%;
 }
 
+// Trilho cinza de fundo
 .timelineLine {
     position: absolute;
     top: 14px; 
@@ -122,6 +118,7 @@ $color-green: #66bb6a;
     }
 }
 
+// Barra verde de progresso
 .timelineProgress {
     position: absolute;
     top: 14px;
@@ -142,9 +139,10 @@ $color-green: #66bb6a;
     }
 }
 
+// Grid da timeline (7 colunas no desktop / 1 coluna no mobile)
 .timelineGrid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr); // Garante alinhamento em 1 única linha no desktop
+    grid-template-columns: repeat(7, 1fr); 
     gap: 16px;
     position: relative;
     z-index: 3;
@@ -193,8 +191,10 @@ $color-green: #66bb6a;
     }
 }
 
+// Ponto ativo com animação contínua (Novembro)
 .dotActive {
-    background-color: #333; // Inicializa cinza para o Pop ser perfeito
+    background-color: $color-green; 
+    box-shadow: 0 0 6px rgba(102, 187, 106, 0.4);
 
     &::after {
         content: '';
@@ -205,10 +205,8 @@ $color-green: #66bb6a;
         height: 100%;
         border-radius: 50%;
         background-color: $color-green;
-        
-        // Pulso inicia 0.4s após o impacto de Julho chegar aos 2.6s
         animation: radarPulse 2s infinite ease-in-out;
-        animation-delay: 3.0s; 
+        animation-delay: 2.2s;
     }
 }
 
@@ -229,26 +227,24 @@ $color-green: #66bb6a;
     transition: color 0.3s ease;
 }
 
-// =========================================
-// KEYFRAMES (Motores e Física das Animações)
-// =========================================
+// Animação dos cards subindo
 @keyframes slideUpItem {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-// Alinhamento exato ao centro do 4º item de 7 + offset de 5px (raio da bolinha)
+// Avanço da linha até o ponto central (Agosto)
 @keyframes fillProgressHorizontal {
     from { width: 0%; }
-    to { width: calc((3 / 7) * 100% + 5px); } 
+    to { width: calc((4 / 7) * 100%); } 
 }
 
 @keyframes fillProgressVertical {
     from { height: 0%; }
-    to { height: calc(43% + 5px); } 
+    to { height: 57%; } 
 }
 
-// Efeito Pop de ampliação e impacto da cor verde
+// Efeito de pulso e destaque dos pontos
 @keyframes popDot {
     0% {
         background-color: #333;
@@ -266,6 +262,7 @@ $color-green: #66bb6a;
     }
 }
 
+// Pulsar constante da bolinha destacada
 @keyframes radarPulse {
     0% { transform: scale(1); opacity: 0.8; }
     100% { transform: scale(3.2); opacity: 0; }
